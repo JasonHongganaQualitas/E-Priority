@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_title">24sp</dimen>
+    <dimen name="text_reg1">16sp</dimen>
+    <dimen name="text_reg2">14sp</dimen>
+    <dimen name="text_reg3">13sp</dimen>
+    <dimen name="text_small1">12sp</dimen>
+    <dimen name="text_small2">10sp</dimen>
+
+</resources>
