@@ -1,4 +1,4 @@
-package com.example.e_priority;
+package com.example.e_priority.fragment;
 
 import android.os.Bundle;
 
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.e_priority.R;
 
 public class ChatDetailFragment extends Fragment {
     View view;

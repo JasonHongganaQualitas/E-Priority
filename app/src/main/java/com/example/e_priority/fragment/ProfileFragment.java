@@ -1,4 +1,4 @@
-package com.example.e_priority;
+package com.example.e_priority.fragment;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.e_priority.R;
 import com.example.e_priority.adapter.BookingHistoryAdapter;
 
 public class ProfileFragment extends Fragment {

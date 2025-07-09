@@ -1,8 +1,10 @@
-package com.example.e_priority;
+package com.example.e_priority.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.e_priority.R;
 
 public class SplashActivity extends AppCompatActivity {
 
