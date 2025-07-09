@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="16dp"
-    tools:context=".fragment.EditPlanDetailsFragment">
+    tools:context="id.co.qualitas.epriority.fragment.EditPlanDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

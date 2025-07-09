@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="16dp"
-    tools:context=".fragment.ChatFragment">
+    tools:context="id.co.qualitas.epriority.fragment.ChatFragment">
 
     <TextView
         android:layout_width="wrap_content"
