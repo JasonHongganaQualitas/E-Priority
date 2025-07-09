@@ -1,4 +1,4 @@
-package com.example.e_priority;
+package com.example.e_priority.fragment;
 
 import android.os.Bundle;
 
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.e_priority.R;
 
 public class HomeFragment extends Fragment {
     View view;

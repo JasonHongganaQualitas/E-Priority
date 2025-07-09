@@ -1,4 +1,4 @@
-package com.example.e_priority;
+package com.example.e_priority.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,24 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity {
-    TextView btnSignIn;
+import com.example.e_priority.R;
+
+public class SplashActivity extends AppCompatActivity {
+    TextView btnGetStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_splash);
 
         initialize();
 
-        btnSignIn.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        btnGetStarted.setOnClickListener(v -> {
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         });
     }
 
     private void initialize() {
-        btnSignIn = findViewById(R.id.btnSignIn);
+        btnGetStarted = findViewById(R.id.btnGetStarted);
     }
 }
