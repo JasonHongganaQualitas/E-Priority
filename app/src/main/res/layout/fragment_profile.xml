@@ -40,14 +40,15 @@
                 android:layout_height="wrap_content"
                 android:text="User Name"
                 android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg1"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="aaaa@gmail.com"
-                android:textSize="14sp"
-                android:textColor="#888888"/>
+                android:textSize="@dimen/text_reg2"
+                android:textColor="@color/gray4"/>
         </LinearLayout>
 
         <LinearLayout
@@ -78,6 +79,7 @@
         android:layout_height="wrap_content"
         android:text="General Setting"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="12dp"/>
@@ -99,7 +101,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Language"/>
+            android:text="Language"
+            android:textColor="@color/black"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -124,7 +127,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Notification"/>
+            android:text="Notification"
+            android:textColor="@color/black"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -149,7 +153,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Log Out"/>
+            android:text="Log Out"
+            android:textColor="@color/black"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -174,7 +179,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Help"/>
+            android:text="Help"
+            android:textColor="@color/black"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -186,6 +192,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Booking History"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginTop="25dp"

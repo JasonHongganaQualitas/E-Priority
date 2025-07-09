@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="20dp">
 
@@ -114,10 +115,10 @@
 
 
     <TextView
-        android:id="@+id/btnGetStarted"
+        android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Get Started"
+        android:text="Sign In"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:textStyle="bold"

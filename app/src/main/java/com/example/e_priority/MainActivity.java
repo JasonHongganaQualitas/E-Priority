@@ -18,13 +18,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initialize();
+        replaceFragment(new HomeFragment());
 
         navigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.action_home){
                 replaceFragment(new HomeFragment());
-            }
-            else if (item.getItemId() == R.id.action_categories){
-                replaceFragment(new CategoriesFragment());
             }
             else if (item.getItemId() == R.id.action_chat){
                 replaceFragment(new ChatFragment());

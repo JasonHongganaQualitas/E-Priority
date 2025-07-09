@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ModifyBookingFragment extends Fragment {
     View view;
     TextView btnConfirm, btnCancel;
+    LinearLayout btnEditPlan;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,11 +31,17 @@ public class ModifyBookingFragment extends Fragment {
 
         });
 
+        btnEditPlan.setOnClickListener(v -> {
+            EditPlanDetailsFragment fragment = new EditPlanDetailsFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
+        });
+
         return view;
     }
 
     private void initialize() {
         btnConfirm = view.findViewById(R.id.btnConfirm);
         btnCancel = view.findViewById(R.id.btnCancel);
+        btnEditPlan = view.findViewById(R.id.btnEditPlan);
     }
 }
