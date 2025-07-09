@@ -27,7 +27,8 @@ public class PassengerInformationFragment extends Fragment {
         });
 
         btnChoose.setOnClickListener(v -> {
-
+            ChoosePackageFragment fragment = new ChoosePackageFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
         });
 
         return view;
