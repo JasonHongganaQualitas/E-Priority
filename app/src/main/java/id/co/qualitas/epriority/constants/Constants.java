@@ -49,12 +49,7 @@ public class Constants {
     public static final String PATTERN_DECIMAL = "#,###,###,###,###,###.#######";
     public static final String KEY_URL = "key_url";
     public static final String IS_URL = "IsUrl";
-    public static final String PRODUCT = "Product detail";
-    public static final String LOCATION_FILTER = "Location Filter";
-    public static final String ITEM_FILTER = "Item Filter";
-    public static final String LIST_CART = "List Cart";
-    public static final String IMAGE_URL = "Image URL";
-    public static final String ITEM_LINE = "Item Line";
+    public static final String BOOKING_DETAIL = "Booking detail";
 
     //PRD
     public static String BASE_URL = "http://";

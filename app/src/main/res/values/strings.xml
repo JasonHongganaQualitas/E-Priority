@@ -6,4 +6,7 @@
     <string name="cannotBeFound">The item you are trying to access cannot be found.</string>
     <string name="emailCannotEmpty">Email cannot empty</string>
     <string name="passwordCannotEmpty">Password cannot empty</string>
+    <string name="pending">Pending</string>
+    <string name="active">Active</string>
+    <string name="upcoming">Upcoming</string>
 </resources>
