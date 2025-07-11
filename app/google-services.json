@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "186779783163",
+    "project_id": "qas-owp",
+    "storage_bucket": "qas-owp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186779783163:android:05362c9db168d49bf7855e",
+        "android_client_info": {
+          "package_name": "id.co.qualitas.epriority"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9BVZiFMoHIkDygxTeDOqwessaKojxgZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

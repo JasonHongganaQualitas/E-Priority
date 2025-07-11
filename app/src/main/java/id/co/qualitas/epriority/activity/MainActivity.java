@@ -29,7 +29,9 @@ import id.co.qualitas.epriority.fragment.BookingDetailsFragment;
 import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeCustomerFragment;
 import id.co.qualitas.epriority.fragment.ProfileFragment;
+import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
+import id.co.qualitas.epriority.session.SessionManager;
 
 public class MainActivity extends BaseActivity {
 
@@ -162,6 +164,29 @@ public class MainActivity extends BaseActivity {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+    }
+
+    public void callLogout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to logout?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        session.logoutUser();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 }

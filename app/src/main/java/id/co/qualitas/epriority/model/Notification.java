@@ -2,6 +2,7 @@ package id.co.qualitas.epriority.model;
 
 public class Notification {
     public String title;
+    public String body;
     public String description;
     public String timestamp;
     public boolean isUnread;
@@ -43,5 +44,13 @@ public class Notification {
 
     public void setUnread(boolean unread) {
         isUnread = unread;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

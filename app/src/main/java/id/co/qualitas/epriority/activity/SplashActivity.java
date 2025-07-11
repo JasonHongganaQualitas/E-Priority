@@ -15,6 +15,8 @@ import id.co.qualitas.epriority.session.SessionManager;
 
 import com.github.ybq.android.spinkit.BuildConfig;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class SplashActivity extends BaseActivity {
@@ -27,7 +29,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        testCrashlytic();
         initialize();
     }
 
@@ -52,8 +54,6 @@ public class SplashActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                     } catch (Exception e) {
-                        session.clearCart();
-                        session.clearCookies();
                         session.logoutUser();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -73,5 +73,9 @@ public class SplashActivity extends BaseActivity {
         }
 
 
+    }
+
+    public void testCrashlytic() {
+        throw new RuntimeException("FIREBASE CRASHLYTICS TEST::" + DateFormat.getDateTimeInstance().format(new Date()));
     }
 }

@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:paddingVertical="8dp">
 
         <ImageView
@@ -137,6 +138,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

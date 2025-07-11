@@ -9,4 +9,9 @@
     <string name="pending">Pending</string>
     <string name="active">Active</string>
     <string name="upcoming">Upcoming</string>
+    <string name="channelID">E-Priority_ID</string>
+    <string name="bundleChannelID">E-Priority_Bundle_ID</string>
+    <string name="channelName">E-Priority Channel</string>
+    <string name="getTokenError">Get Token Error</string>
+    <string name="wrongUser">Wrong user or password</string>
 </resources>

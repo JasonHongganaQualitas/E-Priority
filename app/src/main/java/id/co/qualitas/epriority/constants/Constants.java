@@ -19,11 +19,14 @@ public class Constants {
     public static final String BEARER = "Bearer ";
     public static final String HTTP_HEADER_CONTENT_TYPE = "application/x-www-form-urlencoded";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
+    public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/userMobile/getEmployeeDetail";
+
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String CLIENT_ID = "|000";
     public static final String GRANT_TYPE = "grant_type=password&";
     public static final String _GRANT_TYPE = "|000&password=";
+    public static final String QUESTION_MARK = "?";
     public static final String TOKEN = "TOKEN";
     public static final String ERROR_LOGIN = "errorLogin";
     public static final String IS_LOGIN = "isLogin";
@@ -57,6 +60,8 @@ public class Constants {
 
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
     public static final String DATA_NOT_FOUND = "Data not found";
+    public static final String REGIISTERID = "Register ID";
+    public static final String PATTERN_DATE_3 = "yyyy-MM-dd";
 
 
 }
