@@ -47,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
             }else if(binding.etPassword.getText().toString().isEmpty()){
                 Snackbar.make(binding.lParent, R.string.passwordCannotEmpty, Snackbar.LENGTH_SHORT).show();
             }else {
+                user = new User();
                 if (binding.etUsername.getText().toString().toUpperCase().equals("AGENT")) {
-                    user = new User();
                     user.setRole("AGENT");
                     user.setName("Agent");
                     user.setEmail("agent@gmail.com");

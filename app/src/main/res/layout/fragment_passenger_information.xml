@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".PassengerInformationFragment">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,6 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="John"
+                        android:textColor="@color/black"
                         android:background="@drawable/bg_rounded_edittext_gray"
                         android:padding="8dp"/>
                 </LinearLayout>
@@ -110,6 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Smith"
+                        android:textColor="@color/black"
                         android:background="@drawable/bg_rounded_edittext_gray"
                         android:padding="8dp"/>
                 </LinearLayout>
@@ -126,6 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="email@gmail.com"
+                android:textColor="@color/black"
                 android:background="@drawable/bg_rounded_edittext_gray"
                 android:padding="8dp" />
 
@@ -140,6 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="+62 82312 12312"
+                android:textColor="@color/black"
                 android:background="@drawable/bg_rounded_edittext_gray"
                 android:padding="8dp" />
 
@@ -154,6 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="20/07/2005"
+                android:textColor="@color/black"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
                 android:background="@drawable/bg_rounded_edittext_gray"
@@ -170,6 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Select Nationality"
+                android:textColor="@color/black"
                 android:background="@drawable/bg_rounded_edittext_gray"
                 android:padding="8dp" />
 
@@ -182,6 +187,7 @@
                 android:textStyle="bold" />
 
             <Spinner
+                android:id="@+id/travelClassSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Economy Class"
@@ -302,8 +308,10 @@
             android:layout_height="wrap_content"/>
 
         <Spinner
+            android:id="@+id/numPassengerSpinner"
             android:background="@drawable/bg_rounded_edittext_gray"
             android:layout_marginTop="4dp"
+            android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -316,6 +324,7 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_rounded_qr_border_blue">
             <TextView
+                android:id="@+id/addPassengerTxt"
                 android:text="Add List Passenger"
                 android:textColor="@color/blue1"
                 android:textSize="@dimen/text_reg1"

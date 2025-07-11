@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="16dp"
+    android:orientation="vertical"
+    tools:context=".fragment.BookingCreatedFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Booking Trip Created"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_reg1"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:text="Thank you! Your booking has been submitted. We're processing it and will confirm shortly."
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_reg3"
+        android:layout_marginTop="60dp"
+        android:layout_marginHorizontal="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:src="@drawable/img_book_created"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_border_gray"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="6dp"
+    android:layout_marginVertical="8dp">
+    <TextView
+        android:id="@+id/badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upcoming"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:background="@drawable/bg_upcoming_status"
+        android:textColor="@color/blue1"
+        android:textSize="12sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tokyo, Japan"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_reg1" />
+
+        <TextView
+            android:id="@+id/booking_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Booking ID: #129-B012"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_reg2" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_calendar"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="05/07/25 at 14:30"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/text_reg2"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/flight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flight NH782"
+            android:textColor="@color/gray4"
+            android:textSize="@dimen/text_reg2" />
+    </LinearLayout>
+</LinearLayout>

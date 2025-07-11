@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import id.co.qualitas.epriority.R;
@@ -21,6 +22,7 @@ public class AdditionalPassengerFragment extends Fragment {
     RecyclerView passengerRV;
     PassangerAdapter adapter;
     TextView btnAdd;
+    LinearLayout btnCreate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,11 +32,17 @@ public class AdditionalPassengerFragment extends Fragment {
         initialize();
         iniAdapter();
         backBtn.setOnClickListener(v -> {
-
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
         btnAdd.setOnClickListener(v -> {
+            PassengerInformationFragment fragment = new PassengerInformationFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+        });
 
+        btnCreate.setOnClickListener(v -> {
+            CreatePassengerFragment fragment = new CreatePassengerFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
         return view;
@@ -50,5 +58,6 @@ public class AdditionalPassengerFragment extends Fragment {
         backBtn = view.findViewById(R.id.backBtn);
         passengerRV = view.findViewById(R.id.passengerRV);
         btnAdd = view.findViewById(R.id.btnAdd);
+        btnCreate = view.findViewById(R.id.btnCreate);
     }
 }

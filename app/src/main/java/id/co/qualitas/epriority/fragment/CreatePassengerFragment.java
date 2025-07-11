@@ -25,11 +25,12 @@ public class CreatePassengerFragment extends Fragment {
         initialize();
 
         btnCreate.setOnClickListener(v -> {
-
+            AdditionalPassengerFragment fragment = new AdditionalPassengerFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
         backBtn.setOnClickListener(v -> {
-
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
         return view;
