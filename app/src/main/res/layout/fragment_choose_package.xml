@@ -88,7 +88,6 @@
                 android:textSize="@dimen/text_small1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
             <LinearLayout
                 android:id="@+id/transferLL"
                 android:layout_width="match_parent"
@@ -104,18 +103,15 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="4dp"/>
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/transferImg"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
                     android:background="@color/gray3"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_vehicle_gray"/>
-                </LinearLayout>
+                    android:padding="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:src="@drawable/ic_vehicle_gray"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -244,18 +240,15 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="4dp"/>
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/loungeImg"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
                     android:background="@color/gray3"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_couch_gray"/>
-                </LinearLayout>
+                    android:padding="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:src="@drawable/ic_couch_gray"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -355,19 +348,15 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="4dp"/>
-
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/flightImg"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
                     android:background="@color/gray3"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_airplane_gray"/>
-                </LinearLayout>
+                    android:padding="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:src="@drawable/ic_airplane_gray"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -468,18 +457,15 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="4dp"/>
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/fastLaneImg"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
                     android:background="@color/gray3"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_fastlane_gray"/>
-                </LinearLayout>
+                    android:padding="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:src="@drawable/ic_fastlane_gray"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -580,18 +566,15 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="4dp"/>
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/baggageImg"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
                     android:background="@color/gray3"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_baggage_gray"/>
-                </LinearLayout>
+                    android:padding="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:src="@drawable/ic_baggage_gray"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -676,6 +659,7 @@
                     android:padding="12dp"
                     android:gravity="top"/>
             </LinearLayout>
+
 
         </LinearLayout>
 
