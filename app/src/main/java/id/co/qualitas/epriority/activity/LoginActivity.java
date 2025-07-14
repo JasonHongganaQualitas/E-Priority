@@ -18,6 +18,7 @@ import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.Employee;
 import id.co.qualitas.epriority.model.LoginResponse;
+import id.co.qualitas.epriority.model.SignUp;
 import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.model.WSMessage;
 import id.co.qualitas.epriority.session.SessionManager;
@@ -73,10 +74,6 @@ public class LoginActivity extends BaseActivity {
                                 Helper.setItemParam(Constants.REGIISTERID, refreshedToken);
                                 registerID = refreshedToken;
 
-                                // Log and toast
-//                                String msg = getString(R.string.msg_token_fmt, token);
-//                                Log.d(TAG, msg);
-//                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -106,11 +103,11 @@ public class LoginActivity extends BaseActivity {
         });
 
         binding.btnSignIn.setOnClickListener(v -> {
-            if(binding.etUsername.getText().toString().isEmpty()){
+            if (binding.etUsername.getText().toString().isEmpty()) {
                 Snackbar.make(binding.lParent, R.string.emailCannotEmpty, Snackbar.LENGTH_SHORT).show();
-            }else if(binding.etPassword.getText().toString().isEmpty()){
+            } else if (binding.etPassword.getText().toString().isEmpty()) {
                 Snackbar.make(binding.lParent, R.string.passwordCannotEmpty, Snackbar.LENGTH_SHORT).show();
-            }else {
+            } else {
                 username = binding.etUsername.getText().toString().trim().toLowerCase();
                 password = binding.etPassword.getText().toString().trim();
                 openDialogProgress();
@@ -137,25 +134,35 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void getToken() {
-        String pwd = "&".concat("password").concat("=") + password;
-        String email1 = "&" + Constants.USERNAME.concat("=") + username;
-        String baseUrl = Helper.getItemParam(Constants.BASE_URL).toString();
-        final String url = baseUrl.concat(Constants.OAUTH_TOKEN_PATH).concat(Constants.QUESTION_MARK).concat(Constants.GRANT_TYPE.concat(email1).concat(pwd));
+//        String pwd = "&".concat("password").concat("=") + password;
+//        String email1 = "&" + Constants.USERNAME.concat("=") + username;
+//        String baseUrl = Helper.getItemParam(Constants.BASE_URL).toString();
+//        final String url = baseUrl.concat(Constants.OAUTH_TOKEN_PATH).concat(Constants.QUESTION_MARK).concat(Constants.GRANT_TYPE.concat(email1).concat(pwd));
+        SignUp signUp = new SignUp();
+        signUp.setUsername(username);
+        signUp.setPassword(password);
         apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
-        Call<LoginResponse> httpRequest = apiInterface.login(Constants.AUTHORIZATION_LOGIN, Constants.HTTP_HEADER_CONTENT_TYPE, url);
+        Call<LoginResponse> httpRequest = apiInterface.getToken(signUp);
         httpRequest.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse result = response.body();
                     if (result != null) {
-                        if (String.valueOf(result.getError()).equals("invalid_grant")) {
-                            setToast(getString(R.string.wrongUser));
-                            dialog.dismiss();
-                        } else {
+                        if (result.getStatus() == 200) {
                             token = result.getAccess_token();
                             getEmployeeDetail();
+                        } else {
+                            setToast(getString(R.string.wrongUser));
+                            dialog.dismiss();
                         }
+//                        if (String.valueOf(result.getError()).equals("invalid_grant")) {
+//                            setToast(getString(R.string.wrongUser));
+//                            dialog.dismiss();
+//                        } else {
+//                            token = result.getAccess_token();
+//                            getEmployeeDetail();
+//                        }
                     } else {
                         openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
                         dialog.dismiss();

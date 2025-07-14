@@ -19,7 +19,10 @@ public class Constants {
     public static final String BEARER = "Bearer ";
     public static final String HTTP_HEADER_CONTENT_TYPE = "application/x-www-form-urlencoded";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
-    public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/userMobile/getEmployeeDetail";
+    public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/mobile/home/getEmployeeDetail";
+    public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
+    public static final String API_FORGET_PASSWORD = "/api/v1/mobile/email/sendCode";//email
+    public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -55,7 +58,7 @@ public class Constants {
     public static final String BOOKING_DETAIL = "Booking detail";
 
     //PRD
-    public static String BASE_URL = "http://";
+    public static String BASE_URL = "http://192.168.137.202:3443";
     public static String IP = "";
 
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";

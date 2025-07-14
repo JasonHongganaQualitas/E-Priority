@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -8,7 +9,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.e_priority"
+        applicationId "id.co.qualitas.epriority"
         minSdk 24
         targetSdk 34
         versionCode 1
@@ -48,6 +49,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging:24.1.0")
     implementation("com.google.firebase:firebase-crashlytics")
+    implementation 'com.google.firebase:firebase-inappmessaging-display:21.0.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'

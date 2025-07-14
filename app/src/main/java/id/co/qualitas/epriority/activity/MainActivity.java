@@ -20,6 +20,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+
 import id.co.qualitas.epriority.databinding.ActivityMainBinding;
 
 import id.co.qualitas.epriority.R;

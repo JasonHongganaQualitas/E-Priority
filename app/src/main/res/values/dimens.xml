@@ -6,5 +6,6 @@
     <dimen name="text_reg3">13sp</dimen>
     <dimen name="text_small1">12sp</dimen>
     <dimen name="text_small2">10sp</dimen>
+    <dimen name="minWidthDialog">300dp</dimen>
 
 </resources>
