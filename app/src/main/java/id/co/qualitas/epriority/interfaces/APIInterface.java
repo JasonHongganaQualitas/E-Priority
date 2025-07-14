@@ -22,4 +22,6 @@ public interface APIInterface {
     @POST(Constants.API_GET_EMPLOYEE_DETAIL)
     Call<WSMessage> getEmployeeDetail(@Body Employee body);
 
+    @GET(Constants.API_LOG_OUT)
+    Call<WSMessage> logOut();
 }

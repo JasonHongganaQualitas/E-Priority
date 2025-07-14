@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.ActivityMainBinding;
 
 import id.co.qualitas.epriority.R;
@@ -30,8 +32,14 @@ import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeCustomerFragment;
 import id.co.qualitas.epriority.fragment.ProfileFragment;
 import id.co.qualitas.epriority.helper.Helper;
+import id.co.qualitas.epriority.helper.RetrofitAPIClient;
+import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
+import id.co.qualitas.epriority.model.WSMessage;
 import id.co.qualitas.epriority.session.SessionManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -173,11 +181,7 @@ public class MainActivity extends BaseActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        session.logoutUser();
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        finish();
+                        logOut();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -188,5 +192,43 @@ public class MainActivity extends BaseActivity {
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+
+    public void logOut() {
+        openDialogProgress();
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.logOut();
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            session.logoutUser();
+                            NotificationManagerCompat.from(getApplicationContext()).cancelAll();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            openDialogInformation(Constants.DATA_NOT_FOUND, response.message(), null);
+                        }
+                    } else {
+                        openDialogInformation(Constants.DATA_NOT_FOUND, response.message(), null);
+                    }
+                } else {
+                    openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
+            }
+        });
     }
 }
