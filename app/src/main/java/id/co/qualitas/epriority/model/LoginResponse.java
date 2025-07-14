@@ -17,8 +17,18 @@ public class LoginResponse implements Serializable {
     String scope;
     @SerializedName("error")
     String error;
+    @SerializedName("status")
+    int status;//200
     @SerializedName("error_description")
     String error_description;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getError_description() {
         return error_description;

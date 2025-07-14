@@ -29,7 +29,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        testCrashlytic();
+//        testCrashlytic();
         initialize();
     }
 

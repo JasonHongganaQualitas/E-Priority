@@ -71,10 +71,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
+            mBuilder.setSmallIcon(R.mipmap.ic_logo_round);
 //            mBuilder.setColor(ContextCompat.getColor(context, R.color.white));
         } else {
-            mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
+            mBuilder.setSmallIcon(R.mipmap.ic_logo_round);
         }
         mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getBody()));
 

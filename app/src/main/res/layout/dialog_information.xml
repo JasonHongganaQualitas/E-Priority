@@ -25,6 +25,7 @@
             android:textStyle="bold"
             android:text="@string/serverError"
             android:textSize="20sp"
+            android:textColor="@color/black"
             android:textAllCaps="false"/>
 
         <TextView
@@ -34,6 +35,7 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="16dp"
+            android:textColor="@color/black"
             android:text="@string/cannotBeFound"
             android:textAllCaps="false"/>
 

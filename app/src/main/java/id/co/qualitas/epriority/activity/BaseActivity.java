@@ -517,14 +517,11 @@ public class BaseActivity extends AppCompatActivity {
         txtTitle.setText(title);
         txtMsg.setText(msg);
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                if (intent != null) {
-                    startActivity(intent);
-                    finish();
-                }
+        btnClose.setOnClickListener(view -> {
+            dialog.dismiss();
+            if (intent != null) {
+                startActivity(intent);
+                finish();
             }
         });
         dialog.show();
