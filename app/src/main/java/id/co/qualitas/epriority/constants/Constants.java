@@ -16,11 +16,11 @@ public class Constants {
     public static final String UNKNOWN_RESOURCE = "Unknown Resource";
     public static final String NO_CONNECTION = "no connection";
     public static final String AUTHORIZATION_LOGIN = "Basic V0VCX0NMSUVOVDpXRUJfQ0xJRU5U";
-    public static final String BEARER = "Bearer ";
+    public static final String BEARER = "bearer ";
     public static final String HTTP_HEADER_CONTENT_TYPE = "application/x-www-form-urlencoded";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
-    public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/userMobile/getEmployeeDetail";
     public static final String API_LOG_OUT = "/api/v1/mobile/user/logout";
+    public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/mobile/user/getEmployeeDetail";
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
     public static final String API_FORGET_PASSWORD = "/api/v1/mobile/email/sendCode";//email
     public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
