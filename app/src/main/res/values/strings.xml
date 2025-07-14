@@ -14,4 +14,6 @@
     <string name="channelName">E-Priority Channel</string>
     <string name="getTokenError">Get Token Error</string>
     <string name="wrongUser">Wrong user or password</string>
+    <string name="employee">EMPLOYEE</string>
+    <string name="customer">CUSTOMER</string>
 </resources>

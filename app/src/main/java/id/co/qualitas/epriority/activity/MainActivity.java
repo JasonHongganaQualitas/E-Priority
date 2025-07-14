@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initialize() {
-        if(user.getRole().equals("AGENT")){
+        if(user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))){
             currentFabIconId = R.drawable.ic_scan;
             replaceFragment(new HomeAgentFragment());
         }else{
@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity {
         binding.fab.setImageResource(currentFabIconId);
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.action_home){
-                if(user.getRole().equals("AGENT")){
+                if(user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))){
                     currentFabIconId = R.drawable.ic_scan;
                     replaceFragment(new HomeAgentFragment());
                 }else{

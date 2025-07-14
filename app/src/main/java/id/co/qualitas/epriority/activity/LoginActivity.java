@@ -1,7 +1,6 @@
 package id.co.qualitas.epriority.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -112,23 +111,27 @@ public class LoginActivity extends BaseActivity {
             }else if(binding.etPassword.getText().toString().isEmpty()){
                 Snackbar.make(binding.lParent, R.string.passwordCannotEmpty, Snackbar.LENGTH_SHORT).show();
             }else {
-                user = new User();
-                if (binding.etUsername.getText().toString().toUpperCase().equals("AGENT")) {
-                    user.setRole("AGENT");
-                    user.setName("Agent");
-                    user.setEmail("agent@gmail.com");
-                    user.setPhone("12345678");
-                } else {
-                    user.setRole("CUSTOMER");
-                    user.setName("Customer");
-                    user.setEmail("customer@gmail.com");
-                    user.setPhone("12345678");
-                }
-                new SessionManager(getApplicationContext()).createLoginSession(Helper.objectToString(user));
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
+                username = binding.etUsername.getText().toString().trim().toLowerCase();
+                password = binding.etPassword.getText().toString().trim();
+                openDialogProgress();
+                getToken();
+//                user = new User();
+//                if (binding.etUsername.getText().toString().toUpperCase().equals("AGENT")) {
+//                    user.setRole("AGENT");
+//                    user.setName("Agent");
+//                    user.setEmail("agent@gmail.com");
+//                    user.setPhone("12345678");
+//                } else {
+//                    user.setRole("CUSTOMER");
+//                    user.setName("Customer");
+//                    user.setEmail("customer@gmail.com");
+//                    user.setPhone("12345678");
+//                }
+//                new SessionManager(getApplicationContext()).createLoginSession(Helper.objectToString(user));
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                finish();
             }
         });
     }
@@ -201,9 +204,6 @@ public class LoginActivity extends BaseActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             startActivity(intent);
                             finish();
-//                            }else{
-//                                setToast(getResources().getString(R.string.user_permission));
-//                            }
                         } else {
                             openDialogInformation(Constants.DATA_NOT_FOUND, response.message(), null);
                         }

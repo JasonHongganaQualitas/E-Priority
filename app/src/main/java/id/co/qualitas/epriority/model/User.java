@@ -1,5 +1,7 @@
 package id.co.qualitas.epriority.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -10,8 +12,9 @@ public class User implements Serializable {
 	String mobile;
 	String address;
 	String email;
+	@SerializedName("phone_no")
 	String phone;
-	String role;
+	String tipe;
 	String username;
 	String password;
 	String street;
@@ -133,12 +136,12 @@ public class User implements Serializable {
 		this.country = country;
 	}
 
-	public String getRole() {
-		return role;
+	public String getTipe() {
+		return tipe;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setTipe(String tipe) {
+		this.tipe = tipe;
 	}
 }
 	
