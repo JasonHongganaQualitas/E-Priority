@@ -1,9 +1,22 @@
 package id.co.qualitas.epriority.activity;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.credentials.Credential;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.CustomCredential;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialException;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CancellationSignal;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,14 +41,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.Executor;
 
 public class LoginActivity extends BaseActivity {
     private ActivityLoginBinding binding;
@@ -43,6 +69,9 @@ public class LoginActivity extends BaseActivity {
     private String registerID;
     private String username, password;
     private String token;
+    boolean showPassword = false;
+    GetGoogleIdOption googleIdOption;
+    String nonce = UUID.randomUUID().toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +123,9 @@ public class LoginActivity extends BaseActivity {
         }
 
         getRegisterID();
-        binding.txtSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
+        binding.txtSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
         });
 
         binding.btnSignIn.setOnClickListener(v -> {
@@ -112,32 +138,103 @@ public class LoginActivity extends BaseActivity {
                 password = binding.etPassword.getText().toString().trim();
                 openDialogProgress();
                 getToken();
-//                user = new User();
-//                if (binding.etUsername.getText().toString().toUpperCase().equals("AGENT")) {
-//                    user.setRole("AGENT");
-//                    user.setName("Agent");
-//                    user.setEmail("agent@gmail.com");
-//                    user.setPhone("12345678");
-//                } else {
-//                    user.setRole("CUSTOMER");
-//                    user.setName("Customer");
-//                    user.setEmail("customer@gmail.com");
-//                    user.setPhone("12345678");
-//                }
-//                new SessionManager(getApplicationContext()).createLoginSession(Helper.objectToString(user));
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                startActivity(intent);
-//                finish();
             }
         });
+
+        binding.imgShowPassword.setOnClickListener(view -> {
+            if (!showPassword) {
+                //show password
+                binding.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(LoginActivity.this, R.drawable.ic_pass_hide));
+                showPassword = true;
+            } else {
+                // hide password
+                binding.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(LoginActivity.this, R.drawable.ic_pass_show));
+                showPassword = false;
+            }
+            binding.etPassword.setSelection(Helper.isEmpty(binding.etPassword) ? 0 : binding.etPassword.getText().length());
+        });
+
+        binding.btnGoogleSignIn.setOnClickListener(view -> {
+            googleSignIn();
+        });
+
+    }
+
+    private void googleSignIn() {
+        googleIdOption = new GetGoogleIdOption.Builder()
+                .setServerClientId(getString(R.string.server_client_id))
+                .setFilterByAuthorizedAccounts(false) // false allows sign-up with unregistered accounts
+                .setAutoSelectEnabled(false) // Optional: true for seamless sign-in
+                .setNonce(nonce) // Optional for security
+                .build();
+
+        GetCredentialRequest request = new GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build();
+
+        CredentialManager credentialManager = CredentialManager.create(this);
+
+        credentialManager.getCredentialAsync(
+                this,
+                request,
+                new CancellationSignal(),
+                ContextCompat.getMainExecutor(this),
+                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+                    @Override
+                    public void onResult(GetCredentialResponse getCredentialResponse) {
+                        handleSignInWithGoogleOption(getCredentialResponse);
+                    }
+
+                    @Override
+                    public void onError(@NonNull GetCredentialException e) {
+                        Log.e("SignUp", "Credential error: " + e.getMessage());
+
+                    }
+                }
+        );
+    }
+
+    private void handleSignInWithGoogleOption(GetCredentialResponse result) {
+        Credential credential = result.getCredential();
+
+        if (credential instanceof CustomCredential) {
+            CustomCredential customCredential = (CustomCredential) credential;
+
+            if (GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(customCredential.getType())) {
+                GoogleIdTokenCredential googleIdTokenCredential =
+                        GoogleIdTokenCredential.createFrom(customCredential.getData());
+
+                JSONObject payload = decodeJwtPayload(googleIdTokenCredential.getIdToken());
+                if (payload != null) {
+                    String email = payload.optString("email");
+                    String name = payload.optString("name");
+                    String picture = payload.optString("picture");
+                    String sub = payload.optString("sub"); // user ID
+
+                    Log.d("DecodedJWT", "Email: " + email);
+                }
+            } else {
+                Log.e("SignUp", "Unsupported credential type");
+            }
+        } else {
+            Log.e("SignUp", "Unexpected credential type");
+        }
+    }
+
+    private JSONObject decodeJwtPayload(String idToken) {
+        try {
+            String[] parts = idToken.split("\\.");
+            String payloadJson = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            return new JSONObject(payloadJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void getToken() {
-//        String pwd = "&".concat("password").concat("=") + password;
-//        String email1 = "&" + Constants.USERNAME.concat("=") + username;
-//        String baseUrl = Helper.getItemParam(Constants.BASE_URL).toString();
-//        final String url = baseUrl.concat(Constants.OAUTH_TOKEN_PATH).concat(Constants.QUESTION_MARK).concat(Constants.GRANT_TYPE.concat(email1).concat(pwd));
         SignUp signUp = new SignUp();
         signUp.setUsername(username);
         signUp.setPassword(password);
@@ -156,13 +253,6 @@ public class LoginActivity extends BaseActivity {
                             setToast(getString(R.string.wrongUser));
                             dialog.dismiss();
                         }
-//                        if (String.valueOf(result.getError()).equals("invalid_grant")) {
-//                            setToast(getString(R.string.wrongUser));
-//                            dialog.dismiss();
-//                        } else {
-//                            token = result.getAccess_token();
-//                            getEmployeeDetail();
-//                        }
                     } else {
                         openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
                         dialog.dismiss();
@@ -261,5 +351,40 @@ public class LoginActivity extends BaseActivity {
         } else {
             registerID = Helper.getItemParam(Constants.REGIISTERID).toString();
         }
+    }
+
+    public void signOutFromGoogle(Context context, boolean revokeAccess) {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, gso);
+
+        if (revokeAccess) {
+            googleSignInClient.revokeAccess()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("GoogleSignOut", "Access revoked successfully.");
+                        } else {
+                            Log.e("GoogleSignOut", "Failed to revoke access.");
+                        }
+                    });
+        } else {
+            googleSignInClient.signOut()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("GoogleSignOut", "User signed out successfully.");
+                        } else {
+                            Log.e("GoogleSignOut", "Sign out failed.");
+                        }
+                    });
+        }
+
+//        // Just sign out (keep access)
+//        signOutFromGoogle(this, false);
+//
+//// Or revoke access (logout + disconnect account)
+//        signOutFromGoogle(this, true);
+
     }
 }

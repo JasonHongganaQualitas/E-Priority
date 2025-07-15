@@ -63,12 +63,12 @@ public class SignUpActivity extends BaseActivity {
             if (!showPassword) {
                 //show password
                 binding.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_hide_password));
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
                 showPassword = true;
             } else {
                 // hide password
                 binding.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_show_password));
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
                 showPassword = false;
             }
             binding.etPassword.setSelection(Helper.isEmpty(binding.etPassword) ? 0 : binding.etPassword.getText().length());
@@ -78,12 +78,12 @@ public class SignUpActivity extends BaseActivity {
             if (!showConfirmPassword) {
                 //show password
                 binding.etConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_hide_password));
+                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
                 showConfirmPassword = true;
             } else {
                 // hide password
                 binding.etConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_show_password));
+                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
                 showConfirmPassword = false;
             }
             binding.etConfirmPassword.setSelection(Helper.isEmpty(binding.etConfirmPassword) ? 0 : binding.etConfirmPassword.getText().length());
@@ -93,6 +93,9 @@ public class SignUpActivity extends BaseActivity {
             int error = 0;
             if (binding.etUsername.getText().toString().isEmpty()) {
                 binding.etUsername.setError("This value is required.");
+                error++;
+            } else if (!isValidEmail(binding.etUsername.getText().toString().trim())) {
+                binding.etUsername.setError("Invalid email address.");
                 error++;
             }
             if (binding.etPhoneNumber.getText().toString().isEmpty()) {
@@ -183,5 +186,12 @@ public class SignUpActivity extends BaseActivity {
             onBackPressed();
         });
         dialog.show();
+    }
+
+    private boolean isValidEmail(CharSequence email) {
+        if (email == null) {
+            return false;
+        }
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

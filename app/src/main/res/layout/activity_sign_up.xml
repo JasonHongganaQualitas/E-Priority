@@ -67,8 +67,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
+                    android:inputType="textEmailAddress"
                     android:background="@android:color/transparent"
-                    android:hint="Username"
+                    android:hint="Email"
                     android:textColor="@color/black"
                     android:textColorHint="@color/gray4" />
             </LinearLayout>
@@ -149,7 +150,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_hide_password" />
+                    android:src="@drawable/ic_pass_hide" />
             </LinearLayout>
 
             <LinearLayout
@@ -191,7 +192,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_hide_password" />
+                    android:src="@drawable/ic_pass_hide" />
             </LinearLayout>
             <!-- Sign Up Button -->
             <Button
@@ -199,6 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:textAllCaps="true"
                 android:background="@drawable/bg_rounded_button_blue"
                 android:text="Sign Up"
                 android:textColor="@color/white" />
@@ -238,6 +240,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:text="Or sign up with"
         android:textAlignment="center"
         android:textSize="@dimen/text_reg2" />
@@ -247,6 +250,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:visibility="gone"
         android:background="@drawable/bg_rounded_button_border"
         android:elevation="5dp"
         android:gravity="center"

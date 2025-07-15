@@ -117,7 +117,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_hide_password" />
+                    android:src="@drawable/ic_pass_hide" />
             </LinearLayout>
 
             <RelativeLayout
@@ -155,6 +155,7 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/bg_rounded_button_blue"
                 android:text="Sign In"
+                android:textAllCaps="true"
                 android:textColor="@color/white" />
 
             <LinearLayout
@@ -200,6 +201,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/bg_rounded_button_border"
+        android:clickable="true"
         android:elevation="5dp"
         android:gravity="center"
         android:orientation="horizontal"

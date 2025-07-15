@@ -66,6 +66,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_logo" />
+        <meta-data
+            android:name="com.google.android.gms.client_id"
+            android:value="186779783163-5s35s6r05km04fdahk11i99a3u8a0kk2.apps.googleusercontent.com" />
     </application>
 
 </manifest>

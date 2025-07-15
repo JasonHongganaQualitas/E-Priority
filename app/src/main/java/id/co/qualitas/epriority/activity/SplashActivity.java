@@ -6,14 +6,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+//import id.co.qualitas.epriority.BuildConfig;
+
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
 
 import id.co.qualitas.epriority.databinding.ActivitySplashBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.session.SessionManager;
-
-import com.github.ybq.android.spinkit.BuildConfig;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -41,8 +41,8 @@ public class SplashActivity extends BaseActivity {
         } else {
             Helper.setItemParam(Constants.BASE_URL, Constants.BASE_URL);
         }
-        String versionName = BuildConfig.VERSION_NAME;
-        binding.txtVersion.setText(getResources().getString(R.string.app_name) + " v" + versionName);
+//        String versionName = BuildConfig.VERSION_NAME;
+//        binding.txtVersion.setText(getResources().getString(R.string.app_name) + " v" + versionName);
         if (session.isLoggedIn()) {
             binding.btnGetStarted.setVisibility(View.GONE);
             Thread background = new Thread() {

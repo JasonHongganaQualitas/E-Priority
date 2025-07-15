@@ -16,4 +16,6 @@
     <string name="wrongUser">Wrong user or password</string>
     <string name="employee">EMPLOYEE</string>
     <string name="customer">CUSTOMER</string>
+    <string name="client_id">186779783163-5s35s6r05km04fdahk11i99a3u8a0kk2.apps.googleusercontent.com</string>
+    <string name="server_client_id">186779783163-7db06iciu2c5trd7q6vqdebti016ahmp.apps.googleusercontent.com</string>
 </resources>
