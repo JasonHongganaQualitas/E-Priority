@@ -68,7 +68,7 @@
             android:resource="@mipmap/ic_logo" />
         <meta-data
             android:name="com.google.android.gms.client_id"
-            android:value="186779783163-5s35s6r05km04fdahk11i99a3u8a0kk2.apps.googleusercontent.com" />
+            android:value="@string/client_id" />
     </application>
 
 </manifest>
