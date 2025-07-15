@@ -21,7 +21,7 @@ public class User implements Serializable {
 	String street2;
 	String zip;
 	String country;
-	Calendar loginDate;
+	String dateLogin;
 
 
 	public int getId() {
@@ -72,12 +72,12 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public Calendar getLoginDate() {
-		return loginDate;
+	public String getDateLogin() {
+		return dateLogin;
 	}
 
-	public void setLoginDate(Calendar loginDate) {
-		this.loginDate = loginDate;
+	public void setDateLogin(String dateLogin) {
+		this.dateLogin = dateLogin;
 	}
 
 	public String getPhone() {

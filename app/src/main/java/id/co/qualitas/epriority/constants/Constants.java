@@ -59,7 +59,9 @@ public class Constants {
     public static final String BOOKING_DETAIL = "Booking detail";
 
     //PRD
-    public static String BASE_URL = "http://192.168.137.202:3443";
+//    public static String BASE_URL = "http://192.168.137.202:3443";
+    public static String BASE_URL = "http://192.168.1.20:3443";
+//    public static String BASE_URL = "http://70.153.16.18:3443";
     public static String IP = "";
 
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";

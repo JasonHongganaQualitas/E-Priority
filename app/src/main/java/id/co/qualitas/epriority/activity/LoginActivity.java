@@ -195,9 +195,9 @@ public class LoginActivity extends BaseActivity {
                     WSMessage result = response.body();
                     if (result != null) {
                         String jsonInString = new Gson().toJson(result.getResult());
-                        Employee employee = new Gson().fromJson(jsonInString, Employee.class);
-                        if (employee != null) {
-                            employee.setDateLogin(Helper.getDateNow(Constants.PATTERN_DATE_3));
+                        User user = new Gson().fromJson(jsonInString, User.class);
+                        if (user != null) {
+                            user.setDateLogin(Helper.getDateNow(Constants.PATTERN_DATE_3));
 //                            if(employee.getGroup_id().equals(Constants.ROLE_ATTENDANCE) || employee.getGroup_id().equals(Constants.ROLE_REGISTER)) {
                             if (binding.rememberMeCB.isChecked()) {
                                 new SessionManager(getApplicationContext()).createRememberMeSession(binding.etUsername.getText().toString(), binding.etPassword.getText().toString());
@@ -205,7 +205,7 @@ public class LoginActivity extends BaseActivity {
                                 new SessionManager(getApplicationContext()).clearRememberMe();
                             }
                             new SessionManager(getApplicationContext()).createTokenSession(token);
-                            new SessionManager(getApplicationContext()).createLoginSession(Helper.objectToString(employee));
+                            new SessionManager(getApplicationContext()).createLoginSession(Helper.objectToString(user));
 
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
