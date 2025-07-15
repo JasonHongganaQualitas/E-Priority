@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity {
     private ActivityLoginBinding binding;
     private User user;
     private String registerID;
-    private String username, password;
+    private String email, password;
     private String token;
     boolean showPassword = false;
     GetGoogleIdOption googleIdOption;
@@ -117,7 +117,7 @@ public class LoginActivity extends BaseActivity {
         if (session.isRememberMe()) {
             Map<String, String> rememberMe = new HashMap<>();
             rememberMe = session.getRememberMe();
-            binding.etUsername.setText(rememberMe.get(Constants.KEY_USER_ID));
+            binding.etEmail.setText(rememberMe.get(Constants.KEY_USER_ID));
             binding.etPassword.setText(rememberMe.get(Constants.KEY_PASSWORD));
             binding.rememberMeCB.setChecked(true);
         }
@@ -129,12 +129,12 @@ public class LoginActivity extends BaseActivity {
         });
 
         binding.btnSignIn.setOnClickListener(v -> {
-            if (binding.etUsername.getText().toString().isEmpty()) {
+            if (binding.etEmail.getText().toString().isEmpty()) {
                 Snackbar.make(binding.lParent, R.string.emailCannotEmpty, Snackbar.LENGTH_SHORT).show();
             } else if (binding.etPassword.getText().toString().isEmpty()) {
                 Snackbar.make(binding.lParent, R.string.passwordCannotEmpty, Snackbar.LENGTH_SHORT).show();
             } else {
-                username = binding.etUsername.getText().toString().trim().toLowerCase();
+                email = binding.etEmail.getText().toString().trim().toLowerCase();
                 password = binding.etPassword.getText().toString().trim();
                 openDialogProgress();
                 getToken();
@@ -276,7 +276,7 @@ public class LoginActivity extends BaseActivity {
 
     public void getToken() {
         SignUp signUp = new SignUp();
-        signUp.setUsername(username);
+        signUp.setUsername(email);
         signUp.setPassword(password);
         apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
         Call<LoginResponse> httpRequest = apiInterface.getToken(signUp);
@@ -330,7 +330,7 @@ public class LoginActivity extends BaseActivity {
                             user.setDateLogin(Helper.getDateNow(Constants.PATTERN_DATE_3));
 //                            if(employee.getGroup_id().equals(Constants.ROLE_ATTENDANCE) || employee.getGroup_id().equals(Constants.ROLE_REGISTER)) {
                             if (binding.rememberMeCB.isChecked()) {
-                                new SessionManager(getApplicationContext()).createRememberMeSession(binding.etUsername.getText().toString(), binding.etPassword.getText().toString());
+                                new SessionManager(getApplicationContext()).createRememberMeSession(binding.etEmail.getText().toString(), binding.etPassword.getText().toString());
                             } else {
                                 new SessionManager(getApplicationContext()).clearRememberMe();
                             }

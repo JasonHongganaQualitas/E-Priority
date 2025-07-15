@@ -36,7 +36,7 @@ import retrofit2.Response;
 public class SignUpActivity extends BaseActivity {
     private ActivitySignUpBinding binding;
     boolean showPassword = false, showConfirmPassword = false;
-    private String username, phoneNumber, password;
+    private String email, phoneNumber, password, fullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +91,19 @@ public class SignUpActivity extends BaseActivity {
 
         binding.btnSignup.setOnClickListener(v -> {
             int error = 0;
-            if (binding.etUsername.getText().toString().isEmpty()) {
-                binding.etUsername.setError("This value is required.");
+            if (binding.etEmail.getText().toString().isEmpty()) {
+                binding.etEmail.setError("This value is required.");
                 error++;
-            } else if (!isValidEmail(binding.etUsername.getText().toString().trim())) {
-                binding.etUsername.setError("Invalid email address.");
+            } else if (!isValidEmail(binding.etEmail.getText().toString().trim())) {
+                binding.etEmail.setError("Invalid email address.");
                 error++;
             }
             if (binding.etPhoneNumber.getText().toString().isEmpty()) {
                 binding.etPhoneNumber.setError("This value is required.");
+                error++;
+            }
+            if (binding.etFullName.getText().toString().isEmpty()) {
+                binding.etFullName.setError("This value is required.");
                 error++;
             }
             if (binding.etPassword.getText().toString().isEmpty()) {
@@ -115,7 +119,8 @@ public class SignUpActivity extends BaseActivity {
                 error++;
             }
             if (error == 0) {
-                username = binding.etUsername.getText().toString().trim();
+                fullName = binding.etFullName.getText().toString().trim();
+                email = binding.etEmail.getText().toString().trim();
                 phoneNumber = binding.etPhoneNumber.getText().toString().trim();
                 password = binding.etPassword.getText().toString().trim();
                 signUp();
@@ -128,7 +133,8 @@ public class SignUpActivity extends BaseActivity {
         openDialogProgress();
         dialog.show();
         SignUp signUp = new SignUp();
-        signUp.setUsername(username);
+        signUp.setUsername(fullName);
+        signUp.setUsername(email);
         signUp.setPhoneNumber(phoneNumber);
         signUp.setPassword(password);
         apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
