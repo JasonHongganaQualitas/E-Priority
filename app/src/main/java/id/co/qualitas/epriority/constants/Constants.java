@@ -19,6 +19,7 @@ public class Constants {
     public static final String BEARER = "bearer ";
     public static final String HTTP_HEADER_CONTENT_TYPE = "application/x-www-form-urlencoded";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
+    public static final String OAUTH_GOOGLE_TOKEN_PATH = "/oauth/google";
     public static final String API_LOG_OUT = "/api/v1/mobile/user/logout";
     public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/mobile/user/getEmployeeDetail";
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";

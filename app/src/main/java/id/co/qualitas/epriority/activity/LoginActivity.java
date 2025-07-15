@@ -208,12 +208,14 @@ public class LoginActivity extends BaseActivity {
 
                 JSONObject payload = decodeJwtPayload(googleIdTokenCredential.getIdToken());
                 if (payload != null) {
-                    String email = payload.optString("email");
-                    String name = payload.optString("name");
-                    String picture = payload.optString("picture");
-                    String sub = payload.optString("sub"); // user ID
+//                    String email = payload.optString("email");
+//                    String name = payload.optString("name");
+//                    String picture = payload.optString("picture");
+//                    String sub = payload.optString("sub"); // user ID
 
-                    Log.d("DecodedJWT", "Email: " + email);
+//                    Log.d("DecodedJWT", "Email: " + email);
+                    getGoogleToken(googleIdTokenCredential.getIdToken());
+                    openDialogProgress();
                 }
             } else {
                 Log.e("SignUp", "Unsupported credential type");
@@ -221,6 +223,44 @@ public class LoginActivity extends BaseActivity {
         } else {
             Log.e("SignUp", "Unexpected credential type");
         }
+    }
+
+    public void getGoogleToken(String googleToken) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("idToken", googleToken);
+        apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
+        Call<LoginResponse> httpRequest = apiInterface.getGoogleToken(request);
+        httpRequest.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    LoginResponse result = response.body();
+                    if (result != null) {
+                        if (result.getStatus() == 200) {
+                            token = result.getAccess_token();
+                            getEmployeeDetail();
+                        } else {
+                            setToast(getString(R.string.wrongUser));
+                            dialog.dismiss();
+                        }
+                    } else {
+                        openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
+                        dialog.dismiss();
+                    }
+                } else {
+                    setToast(getResources().getString(R.string.wrongUser));
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
+            }
+
+        });
     }
 
     private JSONObject decodeJwtPayload(String idToken) {

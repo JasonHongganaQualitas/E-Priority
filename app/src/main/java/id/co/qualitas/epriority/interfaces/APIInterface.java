@@ -1,13 +1,13 @@
 package id.co.qualitas.epriority.interfaces;
 
 
+import java.util.Map;
+
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.model.Employee;
 import id.co.qualitas.epriority.model.LoginResponse;
 import id.co.qualitas.epriority.model.SignUp;
-import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.model.WSMessage;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,6 +22,8 @@ public interface APIInterface {
 
     @POST(Constants.OAUTH_TOKEN_PATH)
     Call<LoginResponse> getToken(@Body SignUp body);
+    @POST(Constants.OAUTH_GOOGLE_TOKEN_PATH)
+    Call<LoginResponse> getGoogleToken(@Body Map<String, Object> body);
 
     @POST(Constants.API_GET_EMPLOYEE_DETAIL)
     Call<WSMessage> getEmployeeDetail(@Body Employee body);
