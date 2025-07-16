@@ -55,9 +55,10 @@ public class PassengerInformationFragment extends Fragment {
         };
         ArrayAdapter<String> adapterNum = new ArrayAdapter<>(
                 getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.spinner_item,
                 numPassenger
         );
+        adapterNum.setDropDownViewResource(R.layout.spinner_dropdown_item);
         numPassengerSpinner.setAdapter(adapterNum);
 
         addPassengerTxt.setOnClickListener(v -> {

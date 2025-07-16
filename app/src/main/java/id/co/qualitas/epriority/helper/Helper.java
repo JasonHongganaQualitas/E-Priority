@@ -80,6 +80,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -137,6 +138,14 @@ public class Helper {
         if (etText.getText().toString() != null && !etText.getText().toString().isEmpty())
             return false;
         return true;
+    }
+
+    public static boolean isEmptyOrNull(Collection<?> collection) {
+        return (collection == null || collection.isEmpty());
+    }
+
+    public static boolean isNotEmptyOrNull(Collection<?> collection) {
+        return !isEmptyOrNull(collection);
     }
 
     public static boolean isEmpty(String etText) {

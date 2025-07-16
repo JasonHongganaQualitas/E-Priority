@@ -13,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface APIInterface {
@@ -38,5 +39,11 @@ public interface APIInterface {
 
     @POST(Constants.API_FORGET_PASSWORD_CONFIRM_CODE)
     Call<WSMessage> forgetPasswordConfirmCode(@Body SignUp body);
+
+    @GET(Constants.API_GET_ONGOING_TRIPS)
+    Call<WSMessage> getOngoingTrips();
+
+    @GET(Constants.API_GET_FLIGHT_INFORMATION)
+    Call<WSMessage> getFlightInformation(@Query("access_key") String access_key, @Query("flight_iata") String flight_iata);
 
 }

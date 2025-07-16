@@ -25,6 +25,8 @@ public class Constants {
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
     public static final String API_FORGET_PASSWORD = "/api/v1/mobile/email/sendCode";//email
     public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
+    public static final String API_GET_ONGOING_TRIPS = "/api/v1/mobile/home/customerTrips";
+    public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";

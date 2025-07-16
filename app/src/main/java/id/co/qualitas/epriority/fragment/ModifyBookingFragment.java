@@ -31,7 +31,7 @@ public class ModifyBookingFragment extends Fragment {
         iniAdapter();
 
         btnConfirm.setOnClickListener(v -> {
-            BookingDetailsFragment fragment = new BookingDetailsFragment();
+            UpdateSubmittedFragment fragment = new UpdateSubmittedFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
