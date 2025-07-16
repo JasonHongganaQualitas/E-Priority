@@ -21,14 +21,21 @@ public class Constants {
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
     public static final String OAUTH_GOOGLE_TOKEN_PATH = "/oauth/google";
     public static final String API_LOG_OUT = "/api/v1/mobile/user/logout";
+    public static final String API_EDIT_PROFILE = "/api/v1/mobile/user/editProfile";
     public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/mobile/user/getEmployeeDetail";
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
     public static final String API_FORGET_PASSWORD = "/api/v1/mobile/email/sendCode";//email
     public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
     public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
+    //customer
     public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/home/ongoingCustomerTrips";
     public static final String API_PENDING_CUSTOMER_TRIPS = "/api/v1/mobile/home/pendingCustomerTrips";
-    public static final String API_EDIT_PROFILE = "/api/v1/mobile/user/editProfile";
+    public static final String API_MODIFY_CUSTOMER_TRIPS = "/api/v1/mobile/home/ModifyCustomerTrips";
+    //agent
+    public static final String API_ON_GOING_AGENT_BOOKINGS = "/api/v1/mobile/home/ongoingAgentBookings";
+    public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/home/pendingAgentBookings";
+    public static final String API_MODIFY_AGENT_BOOKINGS = "/api/v1/mobile/home/ModifyAgentBookings";
+    public static final String API_STATS = "/api/v1/mobile/home/stats";
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -86,6 +93,7 @@ public class Constants {
     public static final String DATE_PATTERN_10 = "MMM dd yyyy hh:mm a";
     public static final String DATE_PATTERN_11 = "dd MMM yy hh:mm a";
     public static final String DATE_PATTERN_12 = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_PATTERN_13 = "HH:mm:ss";
 
 
 }

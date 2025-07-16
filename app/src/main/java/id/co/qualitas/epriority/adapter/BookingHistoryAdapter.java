@@ -52,9 +52,9 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         } else {
             date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, mFilteredList.get(holder.getAdapterPosition()).getTripDate());
         }
-        holder.titleTxt.setText("Booking ID: #" + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getBookingId(), ""));
-        holder.txtLocation.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getRouteTo(), ""));
-        holder.txtPrice.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getFlightNo(), ""));
+        holder.titleTxt.setText("Booking ID: #" + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getBooking_id(), ""));
+        holder.txtLocation.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getRoute_to(), ""));
+        holder.txtPrice.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getFlight_no(), ""));
         holder.txtDate.setText(date);
         holder.statusTxt.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getStatus(), ""));
     }
@@ -72,7 +72,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
                     for (Booking row : mList) {
 
                         /*filter by name*/
-                        if (String.valueOf(row.getBookingId()).toLowerCase().contains(charString.toLowerCase())) {
+                        if (String.valueOf(row.getBooking_id()).toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }

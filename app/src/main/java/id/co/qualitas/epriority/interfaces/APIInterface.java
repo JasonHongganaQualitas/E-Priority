@@ -44,7 +44,7 @@ public interface APIInterface {
 
     @POST(Constants.API_FORGET_PASSWORD_CONFIRM_CODE)
     Call<WSMessage> forgetPasswordConfirmCode(@Body SignUp body);
-
+    //cust
     @GET(Constants.API_GET_FLIGHT_INFORMATION)
     Call<WSMessage> getFlightInformation(@Query("access_key") String access_key, @Query("flight_iata") String flight_iata);
 
@@ -53,5 +53,17 @@ public interface APIInterface {
 
     @GET(Constants.API_PENDING_CUSTOMER_TRIPS)
     Call<WSMessage> getPendingCustomerTrips();
+    //agent
+    @GET(Constants.API_ON_GOING_AGENT_BOOKINGS)
+    Call<WSMessage> getOnGoingAgentBookings();
+
+    @GET(Constants.API_PENDING_AGENT_BOOKINGS)
+    Call<WSMessage> getPendingAgentBookings();
+
+    @GET(Constants.API_MODIFY_AGENT_BOOKINGS)
+    Call<WSMessage> getModifyAgentBookings();
+
+    @GET(Constants.API_STATS)
+    Call<WSMessage> getStats(@Query("date") String date);//2025-07-16
 
 }

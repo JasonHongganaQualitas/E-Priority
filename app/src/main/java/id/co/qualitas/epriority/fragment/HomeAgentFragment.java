@@ -12,107 +12,88 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.HomeAgentAdapter;
+import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
 import id.co.qualitas.epriority.adapter.PendingBookingAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentHomeAgentBinding;
 import id.co.qualitas.epriority.databinding.FragmentHomeCustomerBinding;
 import id.co.qualitas.epriority.helper.Helper;
+import id.co.qualitas.epriority.helper.RetrofitAPIClient;
+import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
 import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.Trips;
+import id.co.qualitas.epriority.model.WSMessage;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
-
     private FragmentHomeAgentBinding binding;
     private HomeAgentAdapter oAdapter, pAdapter;
     View view;
+    private List<Booking> onGoingList = new ArrayList<>(), pendingList = new ArrayList<>();
+    private Booking todayStatus;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeAgentBinding.inflate(inflater, container, false);
         view = binding.getRoot();
         init();
         initialize();
-
         return view;
     }
 
     private void initialize() {
+        getOnGoingTrips();
         binding.tvWelcome.setText("Hello " + user.getName());
         initAdapter();
 
-        binding.imgNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationFragment fragment2 = new NotificationFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, fragment2);
-                fragmentTransaction.addToBackStack("Home Agent");
-                fragmentTransaction.commit();
-            }
+        binding.imgNotif.setOnClickListener(v -> {
+            NotificationFragment fragment2 = new NotificationFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_container, fragment2);
+            fragmentTransaction.addToBackStack("Home Agent");
+            fragmentTransaction.commit();
         });
-        binding.lOngoingBookings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OngoingBookingFragment fragment2 = new OngoingBookingFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, fragment2);
-                fragmentTransaction.addToBackStack("Home Agent");
-                fragmentTransaction.commit();
-            }
+        binding.lOngoingBookings.setOnClickListener(v -> {
+            OngoingBookingFragment fragment2 = new OngoingBookingFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_container, fragment2);
+            fragmentTransaction.addToBackStack("Home Agent");
+            fragmentTransaction.commit();
         });
-        binding.lPendingBookings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PendingBookingFragment fragment2 = new PendingBookingFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, fragment2);
-                fragmentTransaction.addToBackStack("Home Agent");
-                fragmentTransaction.commit();
-            }
+        binding.lPendingBookings.setOnClickListener(v -> {
+            PendingBookingFragment fragment2 = new PendingBookingFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_container, fragment2);
+            fragmentTransaction.addToBackStack("Home Agent");
+            fragmentTransaction.commit();
         });
     }
 
     private void initAdapter() {
-        List<Booking> ongoingBookings = new ArrayList<>();
-        ongoingBookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
-                "Tokyo, Japan – Flight NH782", 5, "Upcoming"));
-        ongoingBookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
-                "Tokyo, Japan – Flight NH782", 5, "Active"));
-        List<Booking> pendingBookings = new ArrayList<>();
-        pendingBookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
-                "Tokyo, Japan – Flight NH782", 5, "Pending"));
-        pendingBookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
-                "Tokyo, Japan – Flight NH782", 5, "Pending"));
+        binding.rvOngoingBookings.setLayoutManager(new LinearLayoutManager(getContext()));
+        oAdapter = new HomeAgentAdapter(this, onGoingList, true, (header, pos) -> {
+        });
+        binding.rvOngoingBookings.setAdapter(oAdapter);
 
-        if(ongoingBookings.size() != 0 || pendingBookings.size() != 0) {
-            oAdapter = new HomeAgentAdapter(this, ongoingBookings);
-            binding.rvOngoingBookings.setLayoutManager(new LinearLayoutManager(getContext()));
-            binding.rvOngoingBookings.setAdapter(oAdapter);
-
-            pAdapter = new HomeAgentAdapter(this, pendingBookings);
-            binding.rvPendingBookings.setLayoutManager(new LinearLayoutManager(getContext()));
-            binding.rvPendingBookings.setAdapter(pAdapter);
-            binding.lEmpty.setVisibility(View.GONE);
-            binding.lOngoingBookings.setVisibility(View.VISIBLE);
-            binding.lPendingBookings.setVisibility(View.VISIBLE);
-            binding.rvPendingBookings.setVisibility(View.VISIBLE);
-            binding.rvOngoingBookings.setVisibility(View.VISIBLE);
-        }else{
-            binding.lEmpty.setVisibility(View.VISIBLE);
-            binding.lOngoingBookings.setVisibility(View.GONE);
-            binding.lPendingBookings.setVisibility(View.GONE);
-            binding.rvPendingBookings.setVisibility(View.GONE);
-            binding.rvOngoingBookings.setVisibility(View.GONE);
-        }
+        binding.rvPendingBookings.setLayoutManager(new LinearLayoutManager(getContext()));
+        pAdapter = new HomeAgentAdapter(this, pendingList, false, (header, pos) -> {
+        });
+        binding.rvPendingBookings.setAdapter(pAdapter);
     }
 
     public void callBookingDetailsFragment(Booking booking) {
@@ -127,6 +108,141 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
 
     public boolean onBackPressed() {
         return true;
+    }
+
+    public void getOnGoingTrips() {
+        openDialogProgress();
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.getOnGoingAgentBookings();
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            String jsonInString = new Gson().toJson(result.getResult());
+                            Type listType = new TypeToken<ArrayList<Booking>>() {
+                            }.getType();
+                            List<Booking> tempList = new Gson().fromJson(jsonInString, listType);
+                            onGoingList = new ArrayList<>();
+                            onGoingList.addAll(tempList);
+                        } else {
+                            setToast(result.getMessage());
+                        }
+                    } else {
+                        setToast(response.message());
+                    }
+                } else {
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
+                }
+                getPendingTrips();
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                setToast(Constants.INTERNAL_SERVER_ERROR);
+                getPendingTrips();
+            }
+        });
+    }
+
+    public void getPendingTrips() {
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.getPendingAgentBookings();
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            String jsonInString = new Gson().toJson(result.getResult());
+                            Type listType = new TypeToken<ArrayList<Booking>>() {
+                            }.getType();
+                            List<Booking> tempList = new Gson().fromJson(jsonInString, listType);
+                            pendingList = new ArrayList<>();
+                            pendingList.addAll(tempList);
+                        } else {
+                            setToast(result.getMessage());
+                        }
+                    } else {
+                        setToast(response.message());
+                    }
+                } else {
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
+                }
+                getTodayStatus();
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                setToast(Constants.INTERNAL_SERVER_ERROR);
+                getTodayStatus();
+            }
+        });
+    }
+
+    private void getTodayStatus() {
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.getStats(Helper.getDateNow(Constants.PATTERN_DATE_3));
+        if (httpRequest != null) {
+            httpRequest.enqueue(new Callback<WSMessage>() {
+                @Override
+                public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                    dialog.dismiss();
+                    if (response.isSuccessful()) {
+                        WSMessage result = response.body();
+                        if (result != null) {
+                            if (result.getIdMessage() == 1) {
+                                String jsonInString = new Gson().toJson(result.getResult());
+                                todayStatus = new Gson().fromJson(jsonInString, Booking.class);
+                            } else {
+                                setToast(result.getMessage());
+                            }
+                        } else {
+                            setToast(response.message());
+                        }
+                    } else {
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
+                    }
+                    setListView();
+                }
+
+                @Override
+                public void onFailure(Call<WSMessage> call, Throwable t) {
+                    dialog.dismiss();
+                    call.cancel();
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
+                    setListView();
+                }
+            });
+        }
+    }
+
+    private void setListView() {
+        binding.tvPendingBookingCount.setText(todayStatus.getPending_count() + "");
+        binding.tvTotalBookingCount.setText(todayStatus.getTotal_count() + "");
+
+        oAdapter.setFilteredList(onGoingList);
+        pAdapter.setFilteredList(pendingList);
+        if (Helper.isNotEmptyOrNull(pendingList)) {
+            binding.rvPendingBookings.setVisibility(View.VISIBLE);
+            binding.lEmptyPending.setVisibility(View.GONE);
+        } else {
+            binding.rvPendingBookings.setVisibility(View.GONE);
+            binding.lEmptyPending.setVisibility(View.VISIBLE);
+        }
+
+        if (Helper.isNotEmptyOrNull(onGoingList)) {
+            binding.rvOngoingBookings.setVisibility(View.VISIBLE);
+            binding.lEmptyOnGoing.setVisibility(View.GONE);
+        } else {
+            binding.rvOngoingBookings.setVisibility(View.GONE);
+            binding.lEmptyOnGoing.setVisibility(View.VISIBLE);
+        }
     }
 
 }

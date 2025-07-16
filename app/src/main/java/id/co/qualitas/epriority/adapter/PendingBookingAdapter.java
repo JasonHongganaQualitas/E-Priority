@@ -14,7 +14,6 @@ import java.util.List;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.databinding.RowViewBookingsBinding;
-import id.co.qualitas.epriority.fragment.NotificationFragment;
 import id.co.qualitas.epriority.fragment.PendingBookingFragment;
 import id.co.qualitas.epriority.model.Booking;
 
@@ -55,7 +54,7 @@ public class PendingBookingAdapter extends RecyclerView.Adapter<PendingBookingAd
         );
         holder.binding.tvStatus.setText(booking.status);
         holder.binding.tvName.setText(booking.name);
-        holder.binding.tvBookingId.setText("Booking ID: " + booking.bookingId);
+        holder.binding.tvBookingId.setText("Booking ID: " + booking.booking_id);
         holder.binding.tvDate.setText(booking.dateTime);
         holder.binding.tvLocation.setText(booking.locationAndFlight);
         holder.binding.tvPeople.setText(booking.peopleCount + " People");

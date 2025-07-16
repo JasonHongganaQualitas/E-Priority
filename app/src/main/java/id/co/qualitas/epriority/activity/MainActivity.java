@@ -93,14 +93,11 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentFabIconId == R.drawable.ic_scan) {
-                    checkCameraPermissionAndStartScanner();
-                } else {
+        binding.fab.setOnClickListener(v -> {
+            if (currentFabIconId == R.drawable.ic_scan) {
+                checkCameraPermissionAndStartScanner();
+            } else {
 
-                }
             }
         });
 

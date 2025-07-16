@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -37,7 +37,6 @@
                 android:src="@drawable/ic_notif"
                 app:tint="@color/white" />
 
-
         </RelativeLayout>
 
         <LinearLayout
@@ -67,37 +66,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <!-- Total Booking -->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_button_border"
                 android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rounded_button_border"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/white"
                 app:cardUseCompatPadding="true">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="30dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="30dp">
 
                     <TextView
                         android:id="@+id/tv_total_booking_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
                         android:text="Total\nBooking"
                         android:textColor="@color/black"
                         android:textSize="18dp"
-                        android:singleLine="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -134,21 +133,21 @@
             <!-- Pending -->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_button_border"
                 android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rounded_button_border"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/white"
                 app:cardUseCompatPadding="true">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="30dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="30dp">
 
                     <TextView
                         android:id="@+id/tv_pending_booking_label"
@@ -196,8 +195,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -219,16 +218,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/row_view_bookings" />
+
+        <LinearLayout
+            android:id="@+id/lEmptyOnGoing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:text="You don't have any trip" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/img_no_trip" />
+
+        </LinearLayout>
 
         <!-- Pending bookings title -->
         <LinearLayout
             android:id="@+id/lPendingBookings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -250,10 +273,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/row_view_bookings" />
 
         <LinearLayout
-            android:id="@+id/lEmpty"
+            android:id="@+id/lEmptyPending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -274,4 +299,4 @@
 
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
