@@ -25,8 +25,10 @@ public class Constants {
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
     public static final String API_FORGET_PASSWORD = "/api/v1/mobile/email/sendCode";//email
     public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
-    public static final String API_GET_ONGOING_TRIPS = "/api/v1/mobile/home/customerTrips";
     public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
+    public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/home/ongoingCustomerTrips";
+    public static final String API_PENDING_CUSTOMER_TRIPS = "/api/v1/mobile/home/pendingCustomerTrips";
+    public static final String API_EDIT_PROFILE = "/api/v1/mobile/user/editProfile";
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -71,6 +73,19 @@ public class Constants {
     public static final String DATA_NOT_FOUND = "Data not found";
     public static final String REGIISTERID = "Register ID";
     public static final String PATTERN_DATE_3 = "yyyy-MM-dd";
+
+    public static final String DATE_PATTERN_1 = "dd.MM.yyyy";
+    public static final String DATE_PATTERN_2 = "yyyy-MM-dd";
+    public static final String DATE_PATTERN_3 = "EEE, dd MMM yyyy";
+    public static final String DATE_PATTERN_4 = "dd MMM yyyy";
+    public static final String DATE_PATTERN_5 = "dd/MM/yyyy HH:mm";//11/12/2020 13:49
+    public static final String DATE_PATTERN_6 = "dd/MM/yyyy HH:mm:ss";//11/12/2020 13:49
+    public static final String DATE_PATTERN_7 = "EEE, dd MMM yyyy HH:mm";//11/12/2020 13:49
+    public static final String DATE_PATTERN_8 = "dd/MM/yyyy";
+    public static final String DATE_PATTERN_9 = "HH:mm";
+    public static final String DATE_PATTERN_10 = "MMM dd yyyy hh:mm a";
+    public static final String DATE_PATTERN_11 = "dd MMM yy hh:mm a";
+    public static final String DATE_PATTERN_12 = "yyyy-MM-dd HH:mm:ss";
 
 
 }

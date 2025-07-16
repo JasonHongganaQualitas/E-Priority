@@ -3,10 +3,19 @@ package id.co.qualitas.epriority.model;
 import java.io.Serializable;
 
 public class SignUp implements Serializable {
+    private String name;
     private String email;
     private String username;
     private String password;
     private String phoneNumber;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getEmail() {
         return email;

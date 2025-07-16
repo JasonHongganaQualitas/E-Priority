@@ -12,16 +12,22 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import id.co.qualitas.epriority.constants.Constants;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.FirebaseApp;
 
 import id.co.qualitas.epriority.databinding.ActivityMainBinding;
@@ -49,6 +55,7 @@ public class MainActivity extends BaseActivity {
     int currentFabIconId = R.drawable.ic_add;
     private ActivityResultLauncher<Intent> qrScannerLauncher;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1001;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -61,28 +68,26 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initialize() {
-        if(user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))){
+        if (user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))) {
             currentFabIconId = R.drawable.ic_scan;
             replaceFragment(new HomeAgentFragment());
-        }else{
+        } else {
             currentFabIconId = R.drawable.ic_add;
             replaceFragment(new HomeCustomerFragment());
         }
         binding.fab.setImageResource(currentFabIconId);
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.action_home){
-                if(user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))){
+            if (item.getItemId() == R.id.action_home) {
+                if (user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))) {
                     currentFabIconId = R.drawable.ic_scan;
                     replaceFragment(new HomeAgentFragment());
-                }else{
+                } else {
                     currentFabIconId = R.drawable.ic_add;
                     replaceFragment(new HomeCustomerFragment());
                 }
-            }
-            else if (item.getItemId() == R.id.action_profile){
+            } else if (item.getItemId() == R.id.action_profile) {
                 replaceFragment(new ProfileFragment());
-            }
-            else {
+            } else {
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
             }
             return true;
@@ -91,9 +96,9 @@ public class MainActivity extends BaseActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentFabIconId == R.drawable.ic_scan){
+                if (currentFabIconId == R.drawable.ic_scan) {
                     checkCameraPermissionAndStartScanner();
-                }else{
+                } else {
 
                 }
             }
@@ -144,7 +149,7 @@ public class MainActivity extends BaseActivity {
         qrScannerLauncher.launch(intent); // using ActivityResultLauncher
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_container, fragment);
@@ -181,16 +186,8 @@ public class MainActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to logout?")
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        logOut();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setPositiveButton("Yes", (dialog, id) -> logOut())
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
         AlertDialog alert = builder.create();
         alert.show();
 
@@ -208,6 +205,9 @@ public class MainActivity extends BaseActivity {
                     WSMessage result = response.body();
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
+                            if (user.isFromGoogle()) {
+                                signOutFromGoogle(getApplicationContext(), false);
+                            }
                             session.logoutUser();
                             NotificationManagerCompat.from(getApplicationContext()).cancelAll();
                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -232,5 +232,39 @@ public class MainActivity extends BaseActivity {
                 openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
             }
         });
+    }
+
+    public void signOutFromGoogle(Context context, boolean revokeAccess) {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, gso);
+
+        if (revokeAccess) {
+            googleSignInClient.revokeAccess()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("GoogleSignOut", "Access revoked successfully.");
+                        } else {
+                            Log.e("GoogleSignOut", "Failed to revoke access.");
+                        }
+                    });
+        } else {
+            googleSignInClient.signOut()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("GoogleSignOut", "User signed out successfully.");
+                        } else {
+                            Log.e("GoogleSignOut", "Sign out failed.");
+                        }
+                    });
+        }
+
+//        // Just sign out (keep access)
+//        signOutFromGoogle(this, false);
+//
+//// Or revoke access (logout + disconnect account)
+//        signOutFromGoogle(this, true);
     }
 }

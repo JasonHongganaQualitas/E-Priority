@@ -94,7 +94,7 @@ public class SignUpActivity extends BaseActivity {
             if (binding.etEmail.getText().toString().isEmpty()) {
                 binding.etEmail.setError("This value is required.");
                 error++;
-            } else if (!isValidEmail(binding.etEmail.getText().toString().trim())) {
+            } else if (!Helper.isValidEmail(binding.etEmail.getText().toString().trim())) {
                 binding.etEmail.setError("Invalid email address.");
                 error++;
             }
@@ -133,7 +133,7 @@ public class SignUpActivity extends BaseActivity {
         openDialogProgress();
         dialog.show();
         SignUp signUp = new SignUp();
-        signUp.setUsername(fullName);
+        signUp.setName(fullName);
         signUp.setUsername(email);
         signUp.setPhoneNumber(phoneNumber);
         signUp.setPassword(password);
@@ -148,7 +148,6 @@ public class SignUpActivity extends BaseActivity {
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
                             openDialog("Success", result.getMessage());
-                            onBackPressed();
                         } else {
                             setToast(result.getMessage());
                         }
@@ -192,12 +191,5 @@ public class SignUpActivity extends BaseActivity {
             onBackPressed();
         });
         dialog.show();
-    }
-
-    private boolean isValidEmail(CharSequence email) {
-        if (email == null) {
-            return false;
-        }
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

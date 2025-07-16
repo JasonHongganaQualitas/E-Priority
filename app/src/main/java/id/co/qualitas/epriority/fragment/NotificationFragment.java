@@ -24,8 +24,7 @@ public class NotificationFragment extends Fragment implements IOnBackPressed{
     private NotificationAdapter adapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

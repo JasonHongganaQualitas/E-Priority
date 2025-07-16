@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -67,12 +67,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@color/blue1"
             app:tabIndicatorHeight="3dp"
-            app:tabTextColor="@color/gray4"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="@color/blue1"
-            app:tabGravity="fill"
-            app:tabMode="fixed"/>
+            app:tabTextColor="@color/gray4" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +83,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:background="@drawable/bg_rounded_button_border"
                 android:orientation="vertical"
                 android:padding="12dp">
@@ -94,7 +93,7 @@
                     android:text="Create your trip"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_reg1"/>
+                    android:textSize="@dimen/text_reg1" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -108,8 +107,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Flight Information"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -165,7 +164,8 @@
                     android:layout_marginTop="16dp"
                     android:background="@drawable/bg_rounded_button_border"
                     android:orientation="vertical"
-                    android:padding="12dp">
+                    android:padding="12dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -302,39 +302,40 @@
                             android:text="05/07/25 at 14:30"
                             android:textColor="@color/gray4" />
                     </LinearLayout>
-                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/btnContinue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/bg_rounded_blue"
-                    android:elevation="4dp"
-                    android:paddingLeft="24dp"
-                    android:paddingTop="12dp"
-                    android:paddingRight="24dp"
-                    android:paddingBottom="12dp"
-                    android:text="Continue with this flight"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/btnContinue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/bg_rounded_blue"
+                        android:elevation="4dp"
+                        android:paddingLeft="24dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="24dp"
+                        android:paddingBottom="12dp"
+                        android:text="Continue with this flight"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llOngoingTrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="12dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Ongoing trips"
@@ -352,8 +353,9 @@
             android:id="@+id/noTripLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -369,10 +371,13 @@
                 android:src="@drawable/img_no_trip" />
 
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ongoingTripRV"
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            tools:listitem="@layout/card_ongoing_trip" />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

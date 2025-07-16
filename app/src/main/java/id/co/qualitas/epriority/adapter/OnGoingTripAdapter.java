@@ -19,12 +19,13 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.model.Booking;
 
-public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAdapter.ViewHolder> implements Filterable {
+
+public class OnGoingTripAdapter extends RecyclerView.Adapter<OnGoingTripAdapter.ViewHolder> implements Filterable {
     private List<Booking> mList, mFilteredList;
     private Fragment mContext;
     private OnAdapterListener onAdapterListener;
 
-    public BookingHistoryAdapter(Fragment mContext, List<Booking> mList, OnAdapterListener onAdapterListener) {
+    public OnGoingTripAdapter(Fragment mContext, List<Booking> mList, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
         this.mFilteredList = mList;
@@ -40,22 +41,22 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_booking_history, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_ongoing_trip, parent, false);
         return new ViewHolder(view, onAdapterListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BookingHistoryAdapter.ViewHolder holder, int posi) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int posi) {
         String date = null;
         if (Helper.isNullOrEmpty(mFilteredList.get(holder.getAdapterPosition()).getTripDate())) {
             date = "-";
         } else {
             date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, mFilteredList.get(holder.getAdapterPosition()).getTripDate());
         }
-        holder.titleTxt.setText("Booking ID: #" + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getBookingId(), ""));
-        holder.txtLocation.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getRouteTo(), ""));
-        holder.txtPrice.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getFlightNo(), ""));
-        holder.txtDate.setText(date);
+        holder.bookingIdTxt.setText("Booking ID: #" + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getBookingId(), ""));
+        holder.destinationTxt.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getRouteTo(), ""));
+        holder.flightTxt.setText("flightTxt: " + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getFlightNo(), ""));
+        holder.dateTxt.setText(date);
         holder.statusTxt.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getStatus(), ""));
     }
 
@@ -99,20 +100,19 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView titleTxt, txtLocation, txtDate, txtPrice, statusTxt;
+        TextView bookingIdTxt, destinationTxt, dateTxt, flightTxt, statusTxt;
         OnAdapterListener onAdapterListener;
 
         public ViewHolder(@NonNull View itemView, OnAdapterListener onAdapterListener) {
             super(itemView);
             statusTxt = itemView.findViewById(R.id.statusTxt);
-            txtLocation = itemView.findViewById(R.id.txtLocation);
-            titleTxt = itemView.findViewById(R.id.titleTxt);
-            txtDate = itemView.findViewById(R.id.txtDate);
-            txtPrice = itemView.findViewById(R.id.txtPrice);
+            destinationTxt = itemView.findViewById(R.id.destinationTxt);
+            bookingIdTxt = itemView.findViewById(R.id.bookingIdTxt);
+            dateTxt = itemView.findViewById(R.id.dateTxt);
+            flightTxt = itemView.findViewById(R.id.flightTxt);
             this.onAdapterListener = onAdapterListener;
             itemView.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View v) {
             onAdapterListener.onAdapterClick(mFilteredList.get(getAdapterPosition()), getAdapterPosition());

@@ -1,6 +1,9 @@
 package id.co.qualitas.epriority.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Trips implements Serializable {
     public String id;
@@ -15,6 +18,26 @@ public class Trips implements Serializable {
     public String dateFrom;
     public String dateTo;
     public String tripType;
+    @SerializedName("departureTrips")
+    List<Booking> departureTrips;
+    @SerializedName("arrivalTrips")
+    List<Booking> arrivalTrips;
+
+    public List<Booking> getDepartureTrips() {
+        return departureTrips;
+    }
+
+    public void setDepartureTrips(List<Booking> departureTrips) {
+        this.departureTrips = departureTrips;
+    }
+
+    public List<Booking> getArrivalTrips() {
+        return arrivalTrips;
+    }
+
+    public void setArrivalTrips(List<Booking> arrivalTrips) {
+        this.arrivalTrips = arrivalTrips;
+    }
 
     public String getId() {
         return id;

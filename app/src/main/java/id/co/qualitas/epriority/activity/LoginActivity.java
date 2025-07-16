@@ -10,17 +10,26 @@ import androidx.credentials.GetCredentialRequest;
 import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.GetCredentialException;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import id.co.qualitas.epriority.R;
@@ -160,6 +169,10 @@ public class LoginActivity extends BaseActivity {
             googleSignIn();
         });
 
+        binding.txtForgotPassword.setOnClickListener(view -> {
+            openDialogForgotPassword();
+        });
+
     }
 
     private void googleSignIn() {
@@ -238,7 +251,7 @@ public class LoginActivity extends BaseActivity {
                     if (result != null) {
                         if (result.getStatus() == 200) {
                             token = result.getAccess_token();
-                            getEmployeeDetail();
+                            getEmployeeDetail(true);//getGoogleToken
                         } else {
                             setToast(getString(R.string.wrongUser));
                             dialog.dismiss();
@@ -288,7 +301,7 @@ public class LoginActivity extends BaseActivity {
                     if (result != null) {
                         if (result.getStatus() == 200) {
                             token = result.getAccess_token();
-                            getEmployeeDetail();
+                            getEmployeeDetail(false);//getToken
                         } else {
                             setToast(getString(R.string.wrongUser));
                             dialog.dismiss();
@@ -313,7 +326,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void getEmployeeDetail() {
+    private void getEmployeeDetail(boolean fromGoogle) {
         Helper.setItemParam(Constants.TOKEN, token);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         Call<WSMessage> httpRequest = apiInterface.getEmployeeDetail(new Employee(registerID));
@@ -328,6 +341,7 @@ public class LoginActivity extends BaseActivity {
                         User user = new Gson().fromJson(jsonInString, User.class);
                         if (user != null) {
                             user.setDateLogin(Helper.getDateNow(Constants.PATTERN_DATE_3));
+                            user.setFromGoogle(fromGoogle);
 //                            if(employee.getGroup_id().equals(Constants.ROLE_ATTENDANCE) || employee.getGroup_id().equals(Constants.ROLE_REGISTER)) {
                             if (binding.rememberMeCB.isChecked()) {
                                 new SessionManager(getApplicationContext()).createRememberMeSession(binding.etEmail.getText().toString(), binding.etPassword.getText().toString());
@@ -393,38 +407,102 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    public void signOutFromGoogle(Context context, boolean revokeAccess) {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+    private void openDialogForgotPassword() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
 
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, gso);
+        LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
+        View dialogview;
+        final Dialog alertDialog = new Dialog(LoginActivity.this);
+        dialogview = inflater.inflate(R.layout.dialog_forgot_password, null);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(dialogview);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);//height => (4 * height) / 5
+        alertDialog.setCanceledOnTouchOutside(false);
 
-        if (revokeAccess) {
-            googleSignInClient.revokeAccess()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Log.d("GoogleSignOut", "Access revoked successfully.");
+        EditText edtEmail = alertDialog.findViewById(R.id.edtEmail);
+        Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
+        Button btnSave = alertDialog.findViewById(R.id.btnForgotpassword);
+
+        btnSave.setOnClickListener(v -> {
+            int error = 0;
+            if (edtEmail.getText().toString().isEmpty()) {
+                edtEmail.setError("This value is required.");
+                error++;
+            }
+            if (error == 0) {
+                email = edtEmail.getText().toString().trim();
+                alertDialog.dismiss();
+                openDialogProgress();//reset password
+                forgotPassword();
+            }
+        });
+
+        btnCancel.setOnClickListener(v -> alertDialog.dismiss());
+
+        alertDialog.show();
+    }
+
+    public void forgotPassword() {
+        openDialogProgress();
+        dialog.show();
+        SignUp signUp = new SignUp();
+        signUp.setEmail(email);
+        apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.forgetPassword(signUp);
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            openDialog("Success", result.getMessage());
                         } else {
-                            Log.e("GoogleSignOut", "Failed to revoke access.");
+                            setToast(result.getMessage());
                         }
-                    });
-        } else {
-            googleSignInClient.signOut()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Log.d("GoogleSignOut", "User signed out successfully.");
-                        } else {
-                            Log.e("GoogleSignOut", "Sign out failed.");
-                        }
-                    });
-        }
+                    } else {
+                        setToast("Failed");
+                    }
+                } else {
+                    setToast("Failed");
+                }
+            }
 
-//        // Just sign out (keep access)
-//        signOutFromGoogle(this, false);
-//
-//// Or revoke access (logout + disconnect account)
-//        signOutFromGoogle(this, true);
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
+            }
 
+        });
+    }
+
+    public void openDialog(String title, String msg) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        Dialog dialog = new Dialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_information);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button btnClose = dialog.findViewById(R.id.btnClose);
+        TextView txtTitle = dialog.findViewById(R.id.txtTitle);
+        TextView txtMsg = dialog.findViewById(R.id.txtMsg);
+        txtTitle.setVisibility(View.GONE);
+        txtTitle.setText(title);
+        txtMsg.setText(msg);
+
+        btnClose.setOnClickListener(view -> {
+            dialog.dismiss();
+            onBackPressed();
+        });
+        dialog.show();
     }
 }

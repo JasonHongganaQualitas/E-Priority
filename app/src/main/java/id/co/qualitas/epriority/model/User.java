@@ -22,7 +22,15 @@ public class User implements Serializable {
 	String zip;
 	String country;
 	String dateLogin;
+	boolean fromGoogle;
 
+	public boolean isFromGoogle() {
+		return fromGoogle;
+	}
+
+	public void setFromGoogle(boolean fromGoogle) {
+		this.fromGoogle = fromGoogle;
+	}
 
 	public int getId() {
 		return id;

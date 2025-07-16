@@ -12,9 +12,21 @@ public class Employee implements Serializable {
     private int username;
     private int id_employee;
     private String employee_name;
+    private String phoneNumber;
+
+    public Employee() {
+    }
 
     public Employee(String regis_id) {
         this.regis_id = regis_id;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getRegis_id() {

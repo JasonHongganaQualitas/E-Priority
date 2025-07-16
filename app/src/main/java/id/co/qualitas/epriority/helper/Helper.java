@@ -127,6 +127,14 @@ public class Helper {
 //        return input != null ? input : placeHolder;
     }
 
+    public static boolean isEmptyOrNull(Collection<?> collection) {
+        return (collection == null || collection.isEmpty());
+    }
+
+    public static boolean isNotEmptyOrNull(Collection<?> collection) {
+        return !isEmptyOrNull(collection);
+    }
+
     public static boolean isEmpty(EditText etText) {
         if (etText.getText().toString().trim().length() > 0)
             return false;
@@ -138,14 +146,6 @@ public class Helper {
         if (etText.getText().toString() != null && !etText.getText().toString().isEmpty())
             return false;
         return true;
-    }
-
-    public static boolean isEmptyOrNull(Collection<?> collection) {
-        return (collection == null || collection.isEmpty());
-    }
-
-    public static boolean isNotEmptyOrNull(Collection<?> collection) {
-        return !isEmptyOrNull(collection);
     }
 
     public static boolean isEmpty(String etText) {

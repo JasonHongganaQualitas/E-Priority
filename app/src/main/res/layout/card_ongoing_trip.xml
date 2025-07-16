@@ -2,26 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_rounded_border_gray"
-    android:padding="16dp"
-    android:orientation="vertical"
     android:layout_marginHorizontal="6dp"
-    android:layout_marginVertical="8dp">
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_rounded_border_gray"
+    android:orientation="vertical"
+    android:padding="16dp">
+
     <TextView
         android:id="@+id/statusTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upcoming"
+        android:background="@drawable/bg_upcoming_status"
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
-        android:background="@drawable/bg_upcoming_status"
+        android:text="Upcoming"
         android:textColor="@color/blue1"
         android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/destinationTxt"
@@ -30,8 +32,8 @@
             android:layout_weight="1"
             android:text="Tokyo, Japan"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_reg1" />
+            android:textSize="@dimen/text_reg1"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/bookingIdTxt"
@@ -41,11 +43,12 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_reg2" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -56,17 +59,17 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/ic_calendar"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_calendar" />
 
             <TextView
                 android:id="@+id/dateTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:text="05/07/25 at 14:30"
                 android:textColor="@color/gray4"
-                android:textSize="@dimen/text_reg2"
-                android:layout_marginStart="4dp" />
+                android:textSize="@dimen/text_reg2" />
         </LinearLayout>
 
         <TextView

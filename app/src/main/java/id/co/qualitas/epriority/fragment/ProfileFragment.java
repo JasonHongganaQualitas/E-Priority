@@ -1,54 +1,66 @@
 package id.co.qualitas.epriority.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import id.co.qualitas.epriority.R;
-import id.co.qualitas.epriority.activity.LoginActivity;
 import id.co.qualitas.epriority.activity.MainActivity;
 import id.co.qualitas.epriority.adapter.BookingHistoryAdapter;
-import id.co.qualitas.epriority.databinding.FragmentHomeAgentBinding;
-import id.co.qualitas.epriority.databinding.FragmentOngoingBookingBinding;
+import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
 import id.co.qualitas.epriority.databinding.FragmentProfileBinding;
 import id.co.qualitas.epriority.helper.Helper;
-import id.co.qualitas.epriority.session.SessionManager;
+import id.co.qualitas.epriority.model.Booking;
 
-public class ProfileFragment extends Fragment {
-
+public class ProfileFragment extends BaseFragment {
     private FragmentProfileBinding binding;
     View view;
-    BookingHistoryAdapter adapter;
+    OnGoingTripAdapter adapter;
+    private List<Booking> mList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+        init();
         initialize();
-        iniAdapter();
+        initAdapter();
+        setData();
+
+        binding.btnEditProfile.setOnClickListener(v -> {
+            ProfileEditFragment fragment = new ProfileEditFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+        });
         return binding.getRoot();
     }
 
-    private void iniAdapter() {
+    private void setData() {
+        binding.txtName.setText(Helper.isEmpty(user.getName(), ""));
+        binding.txtEmail.setText(Helper.isEmpty(user.getEmail(), ""));
+    }
+
+    private void initAdapter() {
         binding.bookingHistoryRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new BookingHistoryAdapter();
+        adapter = new OnGoingTripAdapter(ProfileFragment.this, mList, (header, pos) -> {
+        });
         binding.bookingHistoryRV.setAdapter(adapter);
+
+        if (Helper.isNotEmptyOrNull(mList)) {
+            binding.bookingHistoryRV.setVisibility(View.VISIBLE);
+            binding.noTripLL.setVisibility(View.GONE);
+        } else {
+            binding.bookingHistoryRV.setVisibility(View.GONE);
+            binding.noTripLL.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initialize() {
-        binding.lLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).callLogout();
-            }
-        });
+        binding.lLogout.setOnClickListener(v -> ((MainActivity) getActivity()).callLogout());
     }
 }
