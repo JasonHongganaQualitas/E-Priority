@@ -7,6 +7,7 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.model.Employee;
 import id.co.qualitas.epriority.model.LoginResponse;
 import id.co.qualitas.epriority.model.SignUp;
+import id.co.qualitas.epriority.model.Trips;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -33,6 +34,12 @@ public interface APIInterface {
     @POST(Constants.API_EDIT_PROFILE)
     Call<WSMessage> editProfile(@Body Employee body);
 
+    @GET(Constants.API_GET_APK)
+    Call<WSMessage> getAPK();
+
+    @GET(Constants.API_CHECK_VERSION)
+    Call<WSMessage> getVersion();
+
     @GET(Constants.API_LOG_OUT)
     Call<WSMessage> logOut();
 
@@ -48,8 +55,8 @@ public interface APIInterface {
     @GET(Constants.API_GET_FLIGHT_INFORMATION)
     Call<WSMessage> getFlightInformation(@Query("access_key") String access_key, @Query("flight_iata") String flight_iata);
 
-    @GET(Constants.API_ON_GOING_CUSTOMER_TRIPS)
-    Call<WSMessage> getOnGoingCustomerTrips(@Query("offset") String offset, @Query("limit") String limit, @Query("tripType") String tripType);
+    @POST(Constants.API_ON_GOING_CUSTOMER_TRIPS)
+    Call<WSMessage> getOnGoingCustomerTrips(@Body Trips tripsRequest);
 
     @GET(Constants.API_PENDING_CUSTOMER_TRIPS)
     Call<WSMessage> getPendingCustomerTrips();
@@ -65,5 +72,8 @@ public interface APIInterface {
 
     @GET(Constants.API_STATS)
     Call<WSMessage> getStats(@Query("date") String date);//2025-07-16
+
+     @GET(Constants.API_LIST_PACKAGE)
+    Call<WSMessage> getListPackage(@Query("tripType") String tripType);//?tripType=arrival
 
 }

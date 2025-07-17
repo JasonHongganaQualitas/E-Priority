@@ -24,6 +24,8 @@ public class Constants {
     public static final String API_EDIT_PROFILE = "/api/v1/mobile/user/editProfile";
     public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/mobile/user/getEmployeeDetail";
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
+    public static final String API_GET_APK = "/api/v1/mobile/user/getAPK";
+    public static final String API_CHECK_VERSION = "/api/v1/mobile/user/getAPKVersion";
     public static final String API_FORGET_PASSWORD = "/api/v1/mobile/email/sendCode";//email
     public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
     public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
@@ -36,6 +38,7 @@ public class Constants {
     public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/pending";
     public static final String API_MODIFY_AGENT_BOOKINGS = "/api/v1/mobile/home/ModifyAgentBookings";
     public static final String API_STATS = "/api/v1/mobile/home/stats";
+    public static final String API_LIST_PACKAGE = "/api/v1/mobile/package/details";
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";

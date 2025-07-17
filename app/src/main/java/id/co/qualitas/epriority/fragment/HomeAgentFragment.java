@@ -31,7 +31,6 @@ import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
 import id.co.qualitas.epriority.model.Booking;
-import id.co.qualitas.epriority.model.Trips;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;

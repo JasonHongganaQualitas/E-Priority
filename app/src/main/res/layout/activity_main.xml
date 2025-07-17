@@ -10,7 +10,7 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="100dp"/>
+        android:layout_marginBottom="100dp" />
 
     <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -33,25 +33,26 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@android:color/transparent"
+        app:elevation="8dp"
+        app:fabAlignmentMode="center"
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="32dp"
         app:fabCradleVerticalOffset="10dp"
-        app:fabAlignmentMode="center"
-        app:hideOnScroll="false"
-        app:elevation="8dp" >
+        app:hideOnScroll="false">
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
             android:id="@+id/bottom_navigation"
+            style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
-            app:menu="@menu/menu_navigation"
-            app:itemRippleColor="@android:color/transparent"
             app:itemIconTint="@color/bottom_nav_selector"
-            app:itemTextColor="@color/bottom_nav_selector" />
+            app:itemRippleColor="@android:color/transparent"
+            app:itemTextColor="@color/bottom_nav_selector"
+            app:menu="@menu/menu_navigation" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

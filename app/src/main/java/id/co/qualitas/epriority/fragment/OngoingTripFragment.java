@@ -25,6 +25,7 @@ import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.Trips;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,7 +66,12 @@ public class OngoingTripFragment extends BaseFragment {
     public void getOnGoingCustomerTrips() {
         binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(Constants.DEFAULT_OFFSET, Constants.DEFAULT_LIMIT, (arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
+        Trips trips = new Trips();
+        trips.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
+        trips.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        trips.setTripType((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
+//        trips.setSearch(search);
+        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(trips);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {

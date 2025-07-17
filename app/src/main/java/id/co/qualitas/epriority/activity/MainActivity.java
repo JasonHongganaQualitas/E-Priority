@@ -12,15 +12,24 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import id.co.qualitas.epriority.constants.Constants;
@@ -34,10 +43,12 @@ import id.co.qualitas.epriority.databinding.ActivityMainBinding;
 
 import id.co.qualitas.epriority.R;
 
+import id.co.qualitas.epriority.databinding.DialogCreateNewTripBinding;
 import id.co.qualitas.epriority.fragment.BookingDetailsAgentFragment;
 import id.co.qualitas.epriority.fragment.BookingDetailsFragment;
 import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeCustomerFragment;
+import id.co.qualitas.epriority.fragment.PassengerInformationFragment;
 import id.co.qualitas.epriority.fragment.ProfileFragment;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
@@ -97,7 +108,7 @@ public class MainActivity extends BaseActivity {
             if (currentFabIconId == R.drawable.ic_scan) {
                 checkCameraPermissionAndStartScanner();
             } else {
-
+                openDialogCreateNewTrip();
             }
         });
 
@@ -112,6 +123,32 @@ public class MainActivity extends BaseActivity {
                     }
                 }
         );
+    }
+
+    private void openDialogCreateNewTrip() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+
+        DialogCreateNewTripBinding dialogBinding = DialogCreateNewTripBinding.inflate(LayoutInflater.from(this));
+        alertDialog = new Dialog(this);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(dialogBinding.getRoot());
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);//height => (4 * height) / 5
+//        alertDialog.setCanceledOnTouchOutside(false);
+
+        dialogBinding.btnSearchFlight.setOnClickListener(v -> {
+            dialogBinding.flightDetailsLL.setVisibility(View.VISIBLE);
+            dialogBinding.btnContinue.setVisibility(View.VISIBLE);
+        });
+
+        dialogBinding.btnContinue.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            replaceFragment(new PassengerInformationFragment());
+        });
+
+        alertDialog.show();
     }
 
     private void checkCameraPermissionAndStartScanner() {

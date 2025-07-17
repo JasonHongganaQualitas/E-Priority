@@ -1,10 +1,18 @@
 package id.co.qualitas.epriority.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,7 +32,6 @@ import id.co.qualitas.epriority.databinding.FragmentHomeCustomerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Arrival;
 import id.co.qualitas.epriority.model.Booking;
 import id.co.qualitas.epriority.model.FlightInformation;
 import id.co.qualitas.epriority.model.Trips;
@@ -39,6 +46,7 @@ public class HomeCustomerFragment extends BaseFragment {
     OnGoingTripAdapter adapter;
     private List<Booking> mList = new ArrayList<>(), arrivalList = new ArrayList<>(), departureList = new ArrayList<>();
     private FlightInformation information;
+    private String searchText;
 
 
     @Override
@@ -49,13 +57,14 @@ public class HomeCustomerFragment extends BaseFragment {
         initialize();
         arrival = true;
         initAdapter();
+        setupKeyboardSearchActionListener();
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Arrival"));
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Departure"));
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 arrival = tab.getPosition() == 0;
-                getOnGoingCustomerTrips(arrival);
+                getOnGoingCustomerTrips(searchText);
             }
 
             @Override
@@ -68,22 +77,13 @@ public class HomeCustomerFragment extends BaseFragment {
             }
         });
 
-        binding.btnSearchFlight.setOnClickListener(v -> {
-            binding.flightDetailsLL.setVisibility(View.VISIBLE);
-            binding.btnContinue.setVisibility(View.VISIBLE);
-        });
-
-        binding.btnContinue.setOnClickListener(v -> {
-            PassengerInformationFragment fragment = new PassengerInformationFragment();
-            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
-        });
-
         binding.moreTripsImgView.setOnClickListener(v -> {
             Helper.setItemParam(Constants.TYPE_TAB, arrival ? Constants.ARRIVAL : Constants.DEPARTURE);
             OngoingTripFragment fragment = new OngoingTripFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
-        getOnGoingCustomerTrips(arrival);
+
+        getOnGoingCustomerTrips(searchText);
         return binding.getRoot();
     }
 
@@ -98,10 +98,15 @@ public class HomeCustomerFragment extends BaseFragment {
         binding.tvWelcome.setText("Hello " + user.getName());
     }
 
-    public void getOnGoingCustomerTrips(boolean arrival) {
+    public void getOnGoingCustomerTrips(String search) {
         binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(Constants.DEFAULT_OFFSET, Constants.DEFAULT_LIMIT, (arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
+        Trips trips = new Trips();
+        trips.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
+        trips.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        trips.setTripType((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
+        trips.setSearch(search);
+        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(trips);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -137,39 +142,39 @@ public class HomeCustomerFragment extends BaseFragment {
         });
     }
 
-    public void getFlightInformation() {
-        openDialogProgress();
-        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getFlightInformation("3354642b13de213ea1b4d32469d8686d", "GA404");
-        httpRequest.enqueue(new Callback<WSMessage>() {
-            @Override
-            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                dialog.dismiss();
-                if (response.isSuccessful()) {
-                    WSMessage result = response.body();
-                    if (result != null) {
-                        String jsonInString = new Gson().toJson(result.getResult());
-                        FlightInformation flightInformation = new Gson().fromJson(jsonInString, FlightInformation.class);
-                        if (flightInformation != null) {
-                            information = flightInformation;
-                            binding.flightTxt.setText(information.getFlight().getIata());
-                        }
-                    } else {
-                        openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
-                    }
-                } else {
-                    openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WSMessage> call, Throwable t) {
-                call.cancel();
-                dialog.dismiss();
-                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
-            }
-        });
-    }
+//    public void getFlightInformation() {
+//        openDialogProgress();
+//        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+//        Call<WSMessage> httpRequest = apiInterface.getFlightInformation("3354642b13de213ea1b4d32469d8686d", "GA404");
+//        httpRequest.enqueue(new Callback<WSMessage>() {
+//            @Override
+//            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+//                dialog.dismiss();
+//                if (response.isSuccessful()) {
+//                    WSMessage result = response.body();
+//                    if (result != null) {
+//                        String jsonInString = new Gson().toJson(result.getResult());
+//                        FlightInformation flightInformation = new Gson().fromJson(jsonInString, FlightInformation.class);
+//                        if (flightInformation != null) {
+//                            information = flightInformation;
+//                            binding.flightTxt.setText(information.getFlight().getIata());
+//                        }
+//                    } else {
+//                        openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
+//                    }
+//                } else {
+//                    openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<WSMessage> call, Throwable t) {
+//                call.cancel();
+//                dialog.dismiss();
+//                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
+//            }
+//        });
+//    }
 
     private void setListView() {
         mList = new ArrayList<>();
@@ -185,6 +190,30 @@ public class HomeCustomerFragment extends BaseFragment {
         } else {
             binding.ongoingTripRV.setVisibility(View.GONE);
             binding.noTripLL.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setupKeyboardSearchActionListener() {
+        if (binding.etSearchTrips != null) {
+            binding.etSearchTrips.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchText = v.getText().toString().trim();
+                    getOnGoingCustomerTrips(searchText);
+                    hideKeyboard(v);
+                    return true; // Consume the event
+                }
+                return false; // Let the system handle other actions
+            });
+        }
+    }
+
+    // Helper method to hide keyboard
+    private void hideKeyboard(View view) {
+        if (getActivity() != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 }
