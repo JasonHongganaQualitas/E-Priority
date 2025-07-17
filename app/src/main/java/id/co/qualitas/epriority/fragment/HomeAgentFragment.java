@@ -113,7 +113,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
     public void getOnGoingTrips() {
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getOnGoingAgentBookings();
+        Call<WSMessage> httpRequest = apiInterface.getOnGoingAgentBookings(Constants.DEFAULT_OFFSET, Constants.DEFAULT_LIMIT);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -150,7 +150,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
 
     public void getPendingTrips() {
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getPendingAgentBookings();
+        Call<WSMessage> httpRequest = apiInterface.getPendingAgentBookings(Constants.DEFAULT_OFFSET, Constants.DEFAULT_LIMIT);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {

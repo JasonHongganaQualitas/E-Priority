@@ -54,11 +54,11 @@ public interface APIInterface {
     @GET(Constants.API_PENDING_CUSTOMER_TRIPS)
     Call<WSMessage> getPendingCustomerTrips();
     //agent
-    @GET(Constants.API_ON_GOING_AGENT_BOOKINGS)
-    Call<WSMessage> getOnGoingAgentBookings();
+    @GET(Constants.API_ON_GOING_AGENT_BOOKINGS)//?offset=0&limit=10
+    Call<WSMessage> getOnGoingAgentBookings(@Query("offset") String offset, @Query("limit") String limit);
 
-    @GET(Constants.API_PENDING_AGENT_BOOKINGS)
-    Call<WSMessage> getPendingAgentBookings();
+    @GET(Constants.API_PENDING_AGENT_BOOKINGS)//?offset=0&limit=10
+    Call<WSMessage> getPendingAgentBookings(@Query("offset") String offset, @Query("limit") String limit);
 
     @GET(Constants.API_MODIFY_AGENT_BOOKINGS)
     Call<WSMessage> getModifyAgentBookings();

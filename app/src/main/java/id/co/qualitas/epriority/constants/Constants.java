@@ -32,8 +32,8 @@ public class Constants {
     public static final String API_PENDING_CUSTOMER_TRIPS = "/api/v1/mobile/home/pendingCustomerTrips";
     public static final String API_MODIFY_CUSTOMER_TRIPS = "/api/v1/mobile/home/ModifyCustomerTrips";
     //agent
-    public static final String API_ON_GOING_AGENT_BOOKINGS = "/api/v1/mobile/home/ongoingAgentBookings";
-    public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/home/pendingAgentBookings";
+    public static final String API_ON_GOING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/ongoing";
+    public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/pending";
     public static final String API_MODIFY_AGENT_BOOKINGS = "/api/v1/mobile/home/ModifyAgentBookings";
     public static final String API_STATS = "/api/v1/mobile/home/stats";
 
@@ -69,6 +69,8 @@ public class Constants {
     public static final String KEY_URL = "key_url";
     public static final String IS_URL = "IsUrl";
     public static final String BOOKING_DETAIL = "Booking detail";
+    public static final String DEFAULT_OFFSET = "0";
+    public static final String DEFAULT_LIMIT = "10";
 
     //PRD
 //    public static String BASE_URL = "http://192.168.137.202:3443";
