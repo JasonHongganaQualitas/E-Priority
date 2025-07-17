@@ -47,19 +47,19 @@ public class PassengerInformationFragment extends Fragment {
         );
         travelClassSpinner.setAdapter(adapter);
 
-        String[] numPassenger = {
-                "1 Passenger",
-                "2 Passengers",
-                "3 Passengers",
-                "4 Passengers",
-        };
-        ArrayAdapter<String> adapterNum = new ArrayAdapter<>(
-                getContext(),
-                R.layout.spinner_item,
-                numPassenger
-        );
-        adapterNum.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        numPassengerSpinner.setAdapter(adapterNum);
+//        String[] numPassenger = {
+//                "1 Passenger",
+//                "2 Passengers",
+//                "3 Passengers",
+//                "4 Passengers",
+//        };
+//        ArrayAdapter<String> adapterNum = new ArrayAdapter<>(
+//                getContext(),
+//                R.layout.spinner_item,
+//                numPassenger
+//        );
+//        adapterNum.setDropDownViewResource(R.layout.spinner_dropdown_item);
+//        numPassengerSpinner.setAdapter(adapterNum);
 
         addPassengerTxt.setOnClickListener(v -> {
             AdditionalPassengerFragment fragment = new AdditionalPassengerFragment();
@@ -74,6 +74,6 @@ public class PassengerInformationFragment extends Fragment {
         btnChoose = view.findViewById(R.id.btnChoose);
         travelClassSpinner = view.findViewById(R.id.travelClassSpinner);
         addPassengerTxt = view.findViewById(R.id.addPassengerTxt);
-        numPassengerSpinner = view.findViewById(R.id.numPassengerSpinner);
+//        numPassengerSpinner = view.findViewById(R.id.numPassengerSpinner);
     }
 }
