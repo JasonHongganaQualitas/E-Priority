@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import id.co.qualitas.epriority.R;
@@ -19,6 +20,7 @@ public class BookingDetailsFragment extends Fragment {
     TextView btnViewQR, btnModifyTrip;
     RecyclerView agentRV;
     AgentAdapter adapter;
+    ImageView backBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +40,10 @@ public class BookingDetailsFragment extends Fragment {
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
+        backBtn.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
+
         return view;
     }
 
@@ -51,5 +57,6 @@ public class BookingDetailsFragment extends Fragment {
         btnViewQR = view.findViewById(R.id.btnViewQR);
         btnModifyTrip = view.findViewById(R.id.btnModifyTrip);
         agentRV = view.findViewById(R.id.agentRV);
+        backBtn = view.findViewById(R.id.backBtn);
     }
 }

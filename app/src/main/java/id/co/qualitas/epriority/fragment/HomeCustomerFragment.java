@@ -76,6 +76,11 @@ public class HomeCustomerFragment extends BaseFragment {
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
+        binding.moreTripsImgView.setOnClickListener(v -> {
+            OngoingTripFragment fragment = new OngoingTripFragment();
+            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+        });
+
         initAdapter();
         getOnGoingCustomerTrips();
         return binding.getRoot();
