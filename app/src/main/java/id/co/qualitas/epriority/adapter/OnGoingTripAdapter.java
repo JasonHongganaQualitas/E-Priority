@@ -47,17 +47,25 @@ public class OnGoingTripAdapter extends RecyclerView.Adapter<OnGoingTripAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int posi) {
-        String date = null;
-        if (Helper.isNullOrEmpty(mFilteredList.get(holder.getAdapterPosition()).getTripDate())) {
+        Booking booking = mFilteredList.get(holder.getAdapterPosition());
+        String date = null, time = null;
+        if (Helper.isNullOrEmpty(booking.getFlight_date())) {
             date = "-";
         } else {
-            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, mFilteredList.get(holder.getAdapterPosition()).getTripDate());
+            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, booking.getFlight_date());
         }
-        holder.bookingIdTxt.setText("Booking ID: #" + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getBooking_id(), ""));
-        holder.destinationTxt.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getRoute_to(), ""));
-        holder.flightTxt.setText("flightTxt: " + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getFlight_no(), ""));
-        holder.dateTxt.setText(date);
-        holder.statusTxt.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getStatus(), ""));
+
+        if (Helper.isNullOrEmpty(booking.getFlight_time())) {
+            time = "-";
+        } else {
+            time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, booking.getFlight_time());
+        }
+
+        holder.bookingIdTxt.setText("Booking ID: #" + Helper.isEmpty(booking.getBooking_id(), ""));
+        holder.destinationTxt.setText(Helper.isEmpty(booking.getRoute_to(), ""));
+        holder.flightTxt.setText("Flight " + Helper.isEmpty(booking.getFlight_no(), ""));
+        holder.dateTxt.setText(date + " at " + time);
+        holder.statusTxt.setText(Helper.isEmpty(booking.getStatus(), ""));
     }
 
     @Override

@@ -49,7 +49,7 @@ public interface APIInterface {
     Call<WSMessage> getFlightInformation(@Query("access_key") String access_key, @Query("flight_iata") String flight_iata);
 
     @GET(Constants.API_ON_GOING_CUSTOMER_TRIPS)
-    Call<WSMessage> getOnGoingCustomerTrips();
+    Call<WSMessage> getOnGoingCustomerTrips(@Query("offset") String offset, @Query("limit") String limit, @Query("tripType") String tripType);
 
     @GET(Constants.API_PENDING_CUSTOMER_TRIPS)
     Call<WSMessage> getPendingCustomerTrips();

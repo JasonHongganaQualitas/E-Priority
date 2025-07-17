@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="SQ 953, AF 953, etc"
-                        android:paddingStart="8dp" />
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
 
                 <TextView
@@ -350,6 +350,16 @@
                 android:src="@drawable/ic_arrow_right" />
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            tools:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/noTripLL"
             android:layout_width="match_parent"
@@ -377,8 +387,7 @@
             android:id="@+id/ongoingTripRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_margin="5dp"
             tools:listitem="@layout/card_ongoing_trip" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

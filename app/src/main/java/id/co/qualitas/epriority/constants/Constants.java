@@ -28,7 +28,7 @@ public class Constants {
     public static final String API_FORGET_PASSWORD_CONFIRM_CODE = "/api/v1/mobile/email/confirmationCode";//email, code
     public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
     //customer
-    public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/home/ongoingCustomerTrips";
+    public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/customer/trips/ongoing";
     public static final String API_PENDING_CUSTOMER_TRIPS = "/api/v1/mobile/home/pendingCustomerTrips";
     public static final String API_MODIFY_CUSTOMER_TRIPS = "/api/v1/mobile/home/ModifyCustomerTrips";
     //agent
@@ -71,6 +71,9 @@ public class Constants {
     public static final String BOOKING_DETAIL = "Booking detail";
     public static final String DEFAULT_OFFSET = "0";
     public static final String DEFAULT_LIMIT = "10";
+    public static final String ARRIVAL = "arrival";
+    public static final String DEPARTURE = "departure";
+    public static final String TYPE_TAB = "type tab";
 
     //PRD
 //    public static String BASE_URL = "http://192.168.137.202:3443";

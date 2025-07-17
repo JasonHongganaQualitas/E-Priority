@@ -24,6 +24,7 @@ import id.co.qualitas.epriority.databinding.FragmentHomeCustomerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
+import id.co.qualitas.epriority.model.Arrival;
 import id.co.qualitas.epriority.model.Booking;
 import id.co.qualitas.epriority.model.FlightInformation;
 import id.co.qualitas.epriority.model.Trips;
@@ -47,13 +48,14 @@ public class HomeCustomerFragment extends BaseFragment {
         init();
         initialize();
         arrival = true;
+        initAdapter();
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Arrival"));
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Departure"));
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 arrival = tab.getPosition() == 0;
-                setListView();
+                getOnGoingCustomerTrips(arrival);
             }
 
             @Override
@@ -77,12 +79,11 @@ public class HomeCustomerFragment extends BaseFragment {
         });
 
         binding.moreTripsImgView.setOnClickListener(v -> {
+            Helper.setItemParam(Constants.TYPE_TAB, arrival ? Constants.ARRIVAL : Constants.DEPARTURE);
             OngoingTripFragment fragment = new OngoingTripFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
-
-        initAdapter();
-        getOnGoingCustomerTrips();
+        getOnGoingCustomerTrips(arrival);
         return binding.getRoot();
     }
 
@@ -97,51 +98,43 @@ public class HomeCustomerFragment extends BaseFragment {
         binding.tvWelcome.setText("Hello " + user.getName());
     }
 
-    public void getOnGoingCustomerTrips() {
-        openDialogProgress();
+    public void getOnGoingCustomerTrips(boolean arrival) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips();
+        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(Constants.DEFAULT_OFFSET, Constants.DEFAULT_LIMIT, (arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                dialog.dismiss();
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     WSMessage result = response.body();
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
                             String jsonInString = new Gson().toJson(result.getResult());
-                            Trips trips = new Gson().fromJson(jsonInString, Trips.class);
-                            if (trips != null) {
+                            Type listType = new TypeToken<ArrayList<Booking>>() {
+                            }.getType();
+                            List<Booking> tempList = new Gson().fromJson(jsonInString, listType);
+                            if (arrival) {
                                 arrivalList = new ArrayList<>();
+                                arrivalList.addAll(tempList);
+                            } else {
                                 departureList = new ArrayList<>();
-                                if (trips.getArrivalTrips() != null) {
-                                    arrivalList.addAll(trips.getArrivalTrips());
-                                }
-                                if (trips.getDepartureTrips() != null) {
-                                    departureList.addAll(trips.getDepartureTrips());
-                                }
+                                departureList.addAll(tempList);
+
                             }
-                        } else {
-                            openDialogInformation(Constants.DATA_NOT_FOUND, response.message(), null);
                         }
-                    } else {
-                        openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
                     }
-                } else {
-                    openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
                 }
-                setListView();
+                setListView();//onResponse
             }
 
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
-                dialog.dismiss();
-                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
-                setListView();
+                binding.progressBar.setVisibility(View.GONE);
+                setListView();//onFailure
             }
         });
-
     }
 
     public void getFlightInformation() {
