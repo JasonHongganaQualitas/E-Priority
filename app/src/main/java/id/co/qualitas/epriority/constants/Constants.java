@@ -22,7 +22,7 @@ public class Constants {
     public static final String OAUTH_GOOGLE_TOKEN_PATH = "/oauth/google";
     public static final String API_LOG_OUT = "/api/v1/mobile/user/logout";
     public static final String API_EDIT_PROFILE = "/api/v1/mobile/user/editProfile";
-    public static final String API_CHANGE_PASSWORD = "api/v1/mobile/user/resetPassword";
+    public static final String API_CHANGE_PASSWORD = "api/v1/mobile/user/changePassword";
     public static final String API_GET_EMPLOYEE_DETAIL = "/api/v1/mobile/user/getEmployeeDetail";
     public static final String API_SIGN_UP = "/api/v1/mobile/user/createUserCustomer";
     public static final String API_GET_APK = "/api/v1/mobile/user/getAPK";

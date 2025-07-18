@@ -27,9 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import id.co.qualitas.epriority.constants.Constants;
@@ -37,7 +34,6 @@ import id.co.qualitas.epriority.constants.Constants;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.FirebaseApp;
 
 import id.co.qualitas.epriority.databinding.ActivityMainBinding;
 
@@ -45,17 +41,14 @@ import id.co.qualitas.epriority.R;
 
 import id.co.qualitas.epriority.databinding.DialogCreateNewTripBinding;
 import id.co.qualitas.epriority.fragment.BookingDetailsAgentFragment;
-import id.co.qualitas.epriority.fragment.BookingDetailsFragment;
 import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeCustomerFragment;
 import id.co.qualitas.epriority.fragment.PassengerInformationFragment;
 import id.co.qualitas.epriority.fragment.ProfileFragment;
-import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
 import id.co.qualitas.epriority.model.WSMessage;
-import id.co.qualitas.epriority.session.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,7 +72,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initialize() {
-        if (user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))) {
+        if (user.getType().toUpperCase().equals(getResources().getString(R.string.employee))) {
             currentFabIconId = R.drawable.ic_scan;
             replaceFragment(new HomeAgentFragment());
         } else {
@@ -89,7 +82,7 @@ public class MainActivity extends BaseActivity {
         binding.fab.setImageResource(currentFabIconId);
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.action_home) {
-                if (user.getTipe().toUpperCase().equals(getResources().getString(R.string.employee))) {
+                if (user.getType().toUpperCase().equals(getResources().getString(R.string.employee))) {
                     currentFabIconId = R.drawable.ic_scan;
                     replaceFragment(new HomeAgentFragment());
                 } else {

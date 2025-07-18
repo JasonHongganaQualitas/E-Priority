@@ -7,6 +7,8 @@ public class Employee implements Serializable {
     private String regis_id;
     private String dateLogin;
     private String password;
+    private String newPassword;
+    private String oldPassword;
     private String name;
     private String full_name;
     private String email;
@@ -100,5 +102,21 @@ public class Employee implements Serializable {
 
     public void setEmployee_name(String employee_name) {
         this.employee_name = employee_name;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 }
