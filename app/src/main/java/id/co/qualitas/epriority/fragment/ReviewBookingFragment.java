@@ -1,11 +1,13 @@
 package id.co.qualitas.epriority.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +35,7 @@ public class ReviewBookingFragment extends BaseFragment {
         initAdapter();
 
         btnCreate.setOnClickListener(v -> {
-            BookingCreatedFragment fragment = new BookingCreatedFragment();
-            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+            dialogBookingCreated();
         });
 
         backBtn.setOnClickListener(v -> {
@@ -42,6 +43,25 @@ public class ReviewBookingFragment extends BaseFragment {
         });
 
         return view;
+    }
+
+    private void dialogBookingCreated() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_booking_created, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BookingDetailsFragment fragment = new BookingDetailsFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+            }
+        }, 500);
     }
 
     private void initAdapter() {
