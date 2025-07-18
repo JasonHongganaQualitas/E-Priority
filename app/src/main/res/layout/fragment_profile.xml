@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -96,19 +97,11 @@
         android:paddingVertical="8dp"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="5dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_languange" />
-
-        </LinearLayout>
+            android:src="@drawable/ic_languange" />
 
         <TextView
             android:layout_width="0dp"
@@ -130,25 +123,45 @@
         android:orientation="horizontal"
         android:paddingVertical="8dp">
 
-        <LinearLayout
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="5dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_bell" />
-
-        </LinearLayout>
+            android:src="@drawable/ic_bell" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Notification"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llChangePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_lock"
+            app:tint="@color/blue1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Change Password"
             android:textColor="@color/black" />
 
         <ImageView
@@ -165,19 +178,11 @@
         android:orientation="horizontal"
         android:paddingVertical="8dp">
 
-        <LinearLayout
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="5dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_logout" />
-
-        </LinearLayout>
+            android:src="@drawable/ic_logout" />
 
         <TextView
             android:layout_width="0dp"
@@ -207,8 +212,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_help" />
 
         </LinearLayout>

@@ -34,6 +34,9 @@ public interface APIInterface {
     @POST(Constants.API_EDIT_PROFILE)
     Call<WSMessage> editProfile(@Body Employee body);
 
+   @POST(Constants.API_CHANGE_PASSWORD)
+    Call<WSMessage> changePassword(@Body Employee body);
+
     @GET(Constants.API_GET_APK)
     Call<WSMessage> getAPK();
 

@@ -6,6 +6,7 @@ import java.util.List;
 public class Employee implements Serializable {
     private String regis_id;
     private String dateLogin;
+    private String password;
     private String name;
     private String full_name;
     private String email;
@@ -15,6 +16,14 @@ public class Employee implements Serializable {
     private String phoneNumber;
 
     public Employee() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Employee(String regis_id) {
