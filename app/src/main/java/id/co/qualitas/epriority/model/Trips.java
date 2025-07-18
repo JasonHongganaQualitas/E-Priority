@@ -6,22 +6,46 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Trips implements Serializable {
-    public String id;
-    public String customerId;
-    public String tripId;
-    public String tripDate;
-    public String bookingId;
-    public String flightNo;
-    public String status;
-    public String routeTo;
-    public String routeFrom;
-    public String dateFrom;
-    public String dateTo;
+    public int offset;
+    public int limit;
     public String tripType;
+    public String search;
     @SerializedName("departureTrips")
     List<Booking> departureTrips;
     @SerializedName("arrivalTrips")
     List<Booking> arrivalTrips;
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public String getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(String tripType) {
+        this.tripType = tripType;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
 
     public List<Booking> getDepartureTrips() {
         return departureTrips;
@@ -37,101 +61,5 @@ public class Trips implements Serializable {
 
     public void setArrivalTrips(List<Booking> arrivalTrips) {
         this.arrivalTrips = arrivalTrips;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getTripId() {
-        return tripId;
-    }
-
-    public void setTripId(String tripId) {
-        this.tripId = tripId;
-    }
-
-    public String getTripDate() {
-        return tripDate;
-    }
-
-    public void setTripDate(String tripDate) {
-        this.tripDate = tripDate;
-    }
-
-    public String getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public String getFlightNo() {
-        return flightNo;
-    }
-
-    public void setFlightNo(String flightNo) {
-        this.flightNo = flightNo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getRouteTo() {
-        return routeTo;
-    }
-
-    public void setRouteTo(String routeTo) {
-        this.routeTo = routeTo;
-    }
-
-    public String getRouteFrom() {
-        return routeFrom;
-    }
-
-    public void setRouteFrom(String routeFrom) {
-        this.routeFrom = routeFrom;
-    }
-
-    public String getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(String dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public String getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(String dateTo) {
-        this.dateTo = dateTo;
-    }
-
-    public String getTripType() {
-        return tripType;
-    }
-
-    public void setTripType(String tripType) {
-        this.tripType = tripType;
     }
 }
