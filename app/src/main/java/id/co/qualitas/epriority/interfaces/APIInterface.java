@@ -54,6 +54,8 @@ public interface APIInterface {
 
     @POST(Constants.API_FORGET_PASSWORD_CONFIRM_CODE)
     Call<WSMessage> forgetPasswordConfirmCode(@Body SignUp body);
+    @POST(Constants.API_RESET_PASSWORD)
+    Call<WSMessage> resetPassword(@Body SignUp body);
     //cust
     @GET(Constants.API_GET_FLIGHT_INFORMATION)
     Call<WSMessage> getFlightInformation(@Query("access_key") String access_key, @Query("flight_iata") String flight_iata);

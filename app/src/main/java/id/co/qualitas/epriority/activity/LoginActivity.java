@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity {
 
         getRegisterID();
         binding.txtSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
 
@@ -170,7 +170,8 @@ public class LoginActivity extends BaseActivity {
         });
 
         binding.txtForgotPassword.setOnClickListener(view -> {
-            openDialogForgotPassword();
+            intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
         });
 
     }
@@ -407,80 +408,80 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void openDialogForgotPassword() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-
-        LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
-        View dialogview;
-        final Dialog alertDialog = new Dialog(LoginActivity.this);
-        dialogview = inflater.inflate(R.layout.dialog_forgot_password, null);
-        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertDialog.setContentView(dialogview);
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);//height => (4 * height) / 5
-        alertDialog.setCanceledOnTouchOutside(false);
-
-        EditText edtEmail = alertDialog.findViewById(R.id.edtEmail);
-        Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
-        Button btnSave = alertDialog.findViewById(R.id.btnForgotpassword);
-
-        btnSave.setOnClickListener(v -> {
-            int error = 0;
-            if (edtEmail.getText().toString().isEmpty()) {
-                edtEmail.setError("This value is required.");
-                error++;
-            }
-            if (error == 0) {
-                email = edtEmail.getText().toString().trim();
-                alertDialog.dismiss();
-                openDialogProgress();//reset password
-                forgotPassword();
-            }
-        });
-
-        btnCancel.setOnClickListener(v -> alertDialog.dismiss());
-
-        alertDialog.show();
-    }
-
-    public void forgotPassword() {
-        openDialogProgress();
-        dialog.show();
-        SignUp signUp = new SignUp();
-        signUp.setEmail(email);
-        apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.forgetPassword(signUp);
-        httpRequest.enqueue(new Callback<WSMessage>() {
-            @Override
-            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                dialog.dismiss();
-                if (response.isSuccessful()) {
-                    WSMessage result = response.body();
-                    if (result != null) {
-                        if (result.getIdMessage() == 1) {
-                            openDialog("Success", result.getMessage());
-                        } else {
-                            setToast(result.getMessage());
-                        }
-                    } else {
-                        setToast("Failed");
-                    }
-                } else {
-                    setToast("Failed");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WSMessage> call, Throwable t) {
-                call.cancel();
-                dialog.dismiss();
-                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
-            }
-
-        });
-    }
+//    private void openDialogForgotPassword() {
+//        DisplayMetrics metrics = getResources().getDisplayMetrics();
+//        int width = metrics.widthPixels;
+//        int height = metrics.heightPixels;
+//
+//        LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
+//        View dialogview;
+//        final Dialog alertDialog = new Dialog(LoginActivity.this);
+//        dialogview = inflater.inflate(R.layout.dialog_forgot_password, null);
+//        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        alertDialog.setContentView(dialogview);
+//        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        alertDialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);//height => (4 * height) / 5
+//        alertDialog.setCanceledOnTouchOutside(false);
+//
+//        EditText edtEmail = alertDialog.findViewById(R.id.edtEmail);
+//        Button btnCancel = alertDialog.findViewById(R.id.btnCancel);
+//        Button btnSave = alertDialog.findViewById(R.id.btnForgotpassword);
+//
+//        btnSave.setOnClickListener(v -> {
+//            int error = 0;
+//            if (edtEmail.getText().toString().isEmpty()) {
+//                edtEmail.setError("This value is required.");
+//                error++;
+//            }
+//            if (error == 0) {
+//                email = edtEmail.getText().toString().trim();
+//                alertDialog.dismiss();
+//                openDialogProgress();//reset password
+//                forgotPassword();
+//            }
+//        });
+//
+//        btnCancel.setOnClickListener(v -> alertDialog.dismiss());
+//
+//        alertDialog.show();
+//    }
+//
+//    public void forgotPassword() {
+//        openDialogProgress();
+//        dialog.show();
+//        SignUp signUp = new SignUp();
+//        signUp.setEmail(email);
+//        apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
+//        Call<WSMessage> httpRequest = apiInterface.forgetPassword(signUp);
+//        httpRequest.enqueue(new Callback<WSMessage>() {
+//            @Override
+//            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+//                dialog.dismiss();
+//                if (response.isSuccessful()) {
+//                    WSMessage result = response.body();
+//                    if (result != null) {
+//                        if (result.getIdMessage() == 1) {
+//                            openDialog("Success", result.getMessage());
+//                        } else {
+//                            setToast(result.getMessage());
+//                        }
+//                    } else {
+//                        setToast("Failed");
+//                    }
+//                } else {
+//                    setToast("Failed");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<WSMessage> call, Throwable t) {
+//                call.cancel();
+//                dialog.dismiss();
+//                openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
+//            }
+//
+//        });
+//    }
 
     public void openDialog(String title, String msg) {
         DisplayMetrics metrics = getResources().getDisplayMetrics();

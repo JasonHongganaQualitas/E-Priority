@@ -32,6 +32,15 @@
             android:name="id.co.qualitas.epriority.activity.CameraActivity"
             android:exported="false" />
         <activity
+            android:name="id.co.qualitas.epriority.activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.ForgotPasswordVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.ForgotPasswordResetActivity"
+            android:exported="false" />
+        <activity
             android:name="id.co.qualitas.epriority.activity.SignUpActivity"
             android:exported="false" />
         <activity

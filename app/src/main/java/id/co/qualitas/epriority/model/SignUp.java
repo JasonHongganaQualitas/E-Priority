@@ -5,9 +5,36 @@ import java.io.Serializable;
 public class SignUp implements Serializable {
     private String name;
     private String email;
+    private String code;
     private String username;
     private String password;
     private String phoneNumber;
+    private String newPassword;
+    private String confirmPassword;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
     public String getName() {
         return name;

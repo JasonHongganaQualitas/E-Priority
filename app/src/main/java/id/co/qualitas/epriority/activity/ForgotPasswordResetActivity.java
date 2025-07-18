@@ -16,36 +16,37 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.ActivityForgotPasswordResetBinding;
 import id.co.qualitas.epriority.databinding.ActivitySignUpBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Employee;
-import id.co.qualitas.epriority.model.LoginResponse;
 import id.co.qualitas.epriority.model.SignUp;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpActivity extends BaseActivity {
-    private ActivitySignUpBinding binding;
+public class ForgotPasswordResetActivity extends BaseActivity {
+    private ActivityForgotPasswordResetBinding binding;
     boolean showPassword = false, showConfirmPassword = false;
-    private String email, phoneNumber, password, fullName;
+    private String email, password, confirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        binding = ActivityForgotPasswordResetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        if (Helper.getItemParam(Constants.EMAIL_FORGOT_PASSWORD) != null) {
+            email = Helper.getItemParam(Constants.EMAIL_FORGOT_PASSWORD).toString();
+            binding.etEmail.setText(email);
+        }
         initialize();
     }
 
@@ -53,33 +54,20 @@ public class SignUpActivity extends BaseActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-//                finish();
-                intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
+                finish();
             }
-        });
-
-        binding.btnBack.setOnClickListener(v -> {
-//            getOnBackPressedDispatcher().onBackPressed();
-            intent = new Intent(SignUpActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
-
-        binding.txtSignIn.setOnClickListener(v -> {
-            intent = new Intent(SignUpActivity.this, LoginActivity.class);
-            startActivity(intent);
         });
 
         binding.imgShowPassword.setOnClickListener(view -> {
             if (!showPassword) {
                 //show password
                 binding.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(ForgotPasswordResetActivity.this, R.drawable.ic_pass_hide));
                 showPassword = true;
             } else {
                 // hide password
                 binding.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(ForgotPasswordResetActivity.this, R.drawable.ic_pass_show));
                 showPassword = false;
             }
             binding.etPassword.setSelection(Helper.isEmpty(binding.etPassword) ? 0 : binding.etPassword.getText().length());
@@ -89,34 +77,19 @@ public class SignUpActivity extends BaseActivity {
             if (!showConfirmPassword) {
                 //show password
                 binding.etConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
+                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(ForgotPasswordResetActivity.this, R.drawable.ic_pass_hide));
                 showConfirmPassword = true;
             } else {
                 // hide password
                 binding.etConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
+                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(ForgotPasswordResetActivity.this, R.drawable.ic_pass_show));
                 showConfirmPassword = false;
             }
             binding.etConfirmPassword.setSelection(Helper.isEmpty(binding.etConfirmPassword) ? 0 : binding.etConfirmPassword.getText().length());
         });
 
-        binding.btnSignup.setOnClickListener(v -> {
+        binding.btnSend.setOnClickListener(v -> {
             int error = 0;
-            if (binding.etEmail.getText().toString().isEmpty()) {
-                binding.etEmail.setError("This value is required.");
-                error++;
-            } else if (!Helper.isValidEmail(binding.etEmail.getText().toString().trim())) {
-                binding.etEmail.setError("Invalid email address.");
-                error++;
-            }
-            if (binding.etPhoneNumber.getText().toString().isEmpty()) {
-                binding.etPhoneNumber.setError("This value is required.");
-                error++;
-            }
-            if (binding.etFullName.getText().toString().isEmpty()) {
-                binding.etFullName.setError("This value is required.");
-                error++;
-            }
             if (binding.etPassword.getText().toString().isEmpty()) {
                 binding.etPassword.setError("This value is required.");
                 error++;
@@ -130,10 +103,9 @@ public class SignUpActivity extends BaseActivity {
                 error++;
             }
             if (error == 0) {
-                fullName = binding.etFullName.getText().toString().trim();
                 email = binding.etEmail.getText().toString().trim();
-                phoneNumber = binding.etPhoneNumber.getText().toString().trim();
                 password = binding.etPassword.getText().toString().trim();
+                confirmPassword = binding.etConfirmPassword.getText().toString().trim();
                 signUp();
             }
         });
@@ -144,12 +116,11 @@ public class SignUpActivity extends BaseActivity {
         openDialogProgress();
         dialog.show();
         SignUp signUp = new SignUp();
-        signUp.setName(fullName);
-        signUp.setUsername(email);
-        signUp.setPhoneNumber(phoneNumber);
-        signUp.setPassword(password);
+        signUp.setEmail(email);
+        signUp.setNewPassword(password);
+        signUp.setConfirmPassword(confirmPassword);
         apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.signUp(signUp);
+        Call<WSMessage> httpRequest = apiInterface.resetPassword(signUp);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -199,7 +170,8 @@ public class SignUpActivity extends BaseActivity {
 
         btnClose.setOnClickListener(view -> {
             dialog.dismiss();
-            onBackPressed();
+            intent = new Intent(ForgotPasswordResetActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
         dialog.show();
     }

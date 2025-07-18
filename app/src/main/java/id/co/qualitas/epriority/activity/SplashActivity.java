@@ -127,7 +127,6 @@ public class SplashActivity extends BaseActivity {
             Thread background = new Thread() {
                 public void run() {
                     try {
-                        sleep(1000);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
@@ -143,6 +142,7 @@ public class SplashActivity extends BaseActivity {
             };
             background.start();
         } else {
+            binding.loadingIcon.setVisibility(View.GONE);
             binding.btnGetStarted.setOnClickListener(v -> {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
