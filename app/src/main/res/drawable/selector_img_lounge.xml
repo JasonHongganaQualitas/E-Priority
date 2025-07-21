@@ -1,0 +1,8 @@
+<!-- res/drawable/checkbox_image_state.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when Checkbox is checked -->
+    <item android:drawable="@drawable/ic_lounge_checked" android:state_checked="true"/>
+
+    <!-- State when Checkbox is unchecked -->
+    <item android:drawable="@drawable/ic_lounge_unchecked" android:state_checked="false"/>
+</selector>

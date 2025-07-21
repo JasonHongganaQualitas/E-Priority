@@ -36,7 +36,7 @@
                     android:textSize="@dimen/text_reg1"
                     android:textStyle="bold"/>
                 <TextView
-                    android:text="Modify your booking trip"
+                    android:text="Modify your tripsResponse trip"
                     android:textSize="@dimen/text_small1"
                     android:layout_marginTop="2dp"
                     android:layout_width="wrap_content"

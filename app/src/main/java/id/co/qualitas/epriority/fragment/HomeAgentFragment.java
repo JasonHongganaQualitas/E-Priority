@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,16 +18,13 @@ import java.util.List;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.HomeAgentAdapter;
-import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
-import id.co.qualitas.epriority.adapter.PendingBookingAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentHomeAgentBinding;
-import id.co.qualitas.epriority.databinding.FragmentHomeCustomerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,8 +34,8 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
     private FragmentHomeAgentBinding binding;
     private HomeAgentAdapter oAdapter, pAdapter;
     View view;
-    private List<Booking> onGoingList = new ArrayList<>(), pendingList = new ArrayList<>();
-    private Booking todayStatus;
+    private List<TripsResponse> onGoingList = new ArrayList<>(), pendingList = new ArrayList<>();
+    private TripsResponse todayStatus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,8 +89,8 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
         binding.rvPendingBookings.setAdapter(pAdapter);
     }
 
-    public void callBookingDetailsFragment(Booking booking) {
-        Helper.setItemParam(Constants.BOOKING_DETAIL, booking);
+    public void callBookingDetailsFragment(TripsResponse tripsResponse) {
+        Helper.setItemParam(Constants.BOOKING_DETAIL, tripsResponse);
         BookingDetailsAgentFragment fragment2 = new BookingDetailsAgentFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -121,9 +115,9 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
                             String jsonInString = new Gson().toJson(result.getResult());
-                            Type listType = new TypeToken<ArrayList<Booking>>() {
+                            Type listType = new TypeToken<ArrayList<TripsResponse>>() {
                             }.getType();
-                            List<Booking> tempList = new Gson().fromJson(jsonInString, listType);
+                            List<TripsResponse> tempList = new Gson().fromJson(jsonInString, listType);
                             onGoingList = new ArrayList<>();
                             onGoingList.addAll(tempList);
                         } else {
@@ -158,9 +152,9 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
                             String jsonInString = new Gson().toJson(result.getResult());
-                            Type listType = new TypeToken<ArrayList<Booking>>() {
+                            Type listType = new TypeToken<ArrayList<TripsResponse>>() {
                             }.getType();
-                            List<Booking> tempList = new Gson().fromJson(jsonInString, listType);
+                            List<TripsResponse> tempList = new Gson().fromJson(jsonInString, listType);
                             pendingList = new ArrayList<>();
                             pendingList.addAll(tempList);
                         } else {
@@ -197,7 +191,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                         if (result != null) {
                             if (result.getIdMessage() == 1) {
                                 String jsonInString = new Gson().toJson(result.getResult());
-                                todayStatus = new Gson().fromJson(jsonInString, Booking.class);
+                                todayStatus = new Gson().fromJson(jsonInString, TripsResponse.class);
                             } else {
                                 setToast(result.getMessage());
                             }

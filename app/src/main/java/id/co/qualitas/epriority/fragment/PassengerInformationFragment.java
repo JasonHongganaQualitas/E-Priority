@@ -13,31 +13,32 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import id.co.qualitas.epriority.R;
+import id.co.qualitas.epriority.databinding.FragmentChoosePackageBinding;
+import id.co.qualitas.epriority.databinding.FragmentPassengerInformationBinding;
 
-public class PassengerInformationFragment extends Fragment {
+public class PassengerInformationFragment extends BaseFragment {
     View view;
-    ImageView backBtn;
-    TextView btnChoose, addPassengerTxt;
-    Spinner travelClassSpinner, numPassengerSpinner;
+    FragmentPassengerInformationBinding binding;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_passenger_information, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentPassengerInformationBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
 
-        initialize();
+        init();
 
-        backBtn.setOnClickListener(v -> {
+        binding.backBtn.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        btnChoose.setOnClickListener(v -> {
+        binding.btnChoose.setOnClickListener(v -> {
             ChoosePackageFragment fragment = new ChoosePackageFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
         String[] travelClasses = {
                 "Economy Class",
+                "Business Class",
                 "First Class"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -45,7 +46,7 @@ public class PassengerInformationFragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item,
                 travelClasses
         );
-        travelClassSpinner.setAdapter(adapter);
+        binding.spnTravelClass.setAdapter(adapter);
 
 //        String[] numPassenger = {
 //                "1 Passenger",
@@ -61,19 +62,11 @@ public class PassengerInformationFragment extends Fragment {
 //        adapterNum.setDropDownViewResource(R.layout.spinner_dropdown_item);
 //        numPassengerSpinner.setAdapter(adapterNum);
 
-        addPassengerTxt.setOnClickListener(v -> {
+        binding.llAddPassenger.setOnClickListener(v -> {
             AdditionalPassengerFragment fragment = new AdditionalPassengerFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
 
         return view;
-    }
-
-    private void initialize() {
-        backBtn = view.findViewById(R.id.backBtn);
-        btnChoose = view.findViewById(R.id.btnChoose);
-        travelClassSpinner = view.findViewById(R.id.travelClassSpinner);
-        addPassengerTxt = view.findViewById(R.id.addPassengerTxt);
-//        numPassengerSpinner = view.findViewById(R.id.numPassengerSpinner);
     }
 }

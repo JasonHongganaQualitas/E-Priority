@@ -17,23 +17,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.activity.MainActivity;
-import id.co.qualitas.epriority.activity.SignUpActivity;
-import id.co.qualitas.epriority.adapter.BookingHistoryAdapter;
 import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
-import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentProfileBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Booking;
-import id.co.qualitas.epriority.model.Employee;
+import id.co.qualitas.epriority.model.TripsResponse;
 import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.model.WSMessage;
-import id.co.qualitas.epriority.session.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +36,7 @@ public class ProfileFragment extends BaseFragment {
     private FragmentProfileBinding binding;
     View view;
     OnGoingTripAdapter adapter;
-    private List<Booking> mList = new ArrayList<>();
+    private List<TripsResponse> mList = new ArrayList<>();
     boolean showPassword = false, showConfirmPassword = false;
 
     @Override
@@ -52,7 +46,7 @@ public class ProfileFragment extends BaseFragment {
         initialize();
         initAdapter();
         setData();
-        if (user.isFromGoogle()){
+        if (user.isFromGoogle()) {
             binding.llChangePassword.setVisibility(View.GONE);
         }
         binding.btnEditProfile.setOnClickListener(v -> {
@@ -128,46 +122,44 @@ public class ProfileFragment extends BaseFragment {
         });
 
         btnSave.setOnClickListener(v -> {
-            Employee employee = new Employee();
-            employee.setOldPassword(oldPassEdit.getText().toString());
-            employee.setNewPassword(newPassEdit.getText().toString());
+            User param = new User();
+            param.setOldPassword(oldPassEdit.getText().toString());
+            param.setNewPassword(newPassEdit.getText().toString());
 
-            if (oldPassEdit.getText().toString().equals(newPassEdit.getText().toString())){
+            if (oldPassEdit.getText().toString().equals(newPassEdit.getText().toString())) {
                 setToast("New password cannot be the same with old password");
                 dialog.dismiss();
                 return;
             }
-            if (!newPassEdit.getText().toString().equals(confPassEdit.getText().toString())){
+            if (!newPassEdit.getText().toString().equals(confPassEdit.getText().toString())) {
                 setToast("Confirm password and new password must be the same");
                 dialog.dismiss();
                 return;
             }
-            if (user.isFromGoogle()){
+            if (user.isFromGoogle()) {
                 setToast("Cannot change password with google sign in");
                 dialog.dismiss();
                 return;
             }
 
             apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-            Call<WSMessage> httpRequest = apiInterface.changePassword(employee);
+            Call<WSMessage> httpRequest = apiInterface.changePassword(param);
             httpRequest.enqueue(new Callback<WSMessage>() {
                 @Override
                 public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         WSMessage result = response.body();
-                        if (result != null){
+                        if (result != null) {
                             if (result.getIdMessage() == 1) {
                                 setToast(result.getMessage());
                                 ((MainActivity) getActivity()).logOut();
                             } else {
                                 setToast(result.getMessage());
                             }
-                        }
-                        else {
+                        } else {
                             setToast("Failed");
                         }
-                    }
-                    else {
+                    } else {
                         setToast("Failed");
                     }
                 }

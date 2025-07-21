@@ -4,16 +4,18 @@ package id.co.qualitas.epriority.interfaces;
 import java.util.Map;
 
 import id.co.qualitas.epriority.constants.Constants;
-import id.co.qualitas.epriority.model.Employee;
 import id.co.qualitas.epriority.model.LoginResponse;
 import id.co.qualitas.epriority.model.SignUp;
-import id.co.qualitas.epriority.model.Trips;
+import id.co.qualitas.epriority.model.TripRequest;
+import id.co.qualitas.epriority.model.TripsResponse;
+import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -29,13 +31,13 @@ public interface APIInterface {
     Call<LoginResponse> getGoogleToken(@Body Map<String, Object> body);
 
     @POST(Constants.API_GET_EMPLOYEE_DETAIL)
-    Call<WSMessage> getEmployeeDetail(@Body Employee body);
+    Call<WSMessage> getEmployeeDetail(@Body User body);
 
     @POST(Constants.API_EDIT_PROFILE)
-    Call<WSMessage> editProfile(@Body Employee body);
+    Call<WSMessage> editProfile(@Body User body);
 
-   @POST(Constants.API_CHANGE_PASSWORD)
-    Call<WSMessage> changePassword(@Body Employee body);
+    @POST(Constants.API_CHANGE_PASSWORD)
+    Call<WSMessage> changePassword(@Body User body);
 
     @GET(Constants.API_GET_APK)
     Call<WSMessage> getAPK();
@@ -54,31 +56,35 @@ public interface APIInterface {
 
     @POST(Constants.API_FORGET_PASSWORD_CONFIRM_CODE)
     Call<WSMessage> forgetPasswordConfirmCode(@Body SignUp body);
+
     @POST(Constants.API_RESET_PASSWORD)
     Call<WSMessage> resetPassword(@Body SignUp body);
+
     //cust
     @GET(Constants.API_GET_FLIGHT_INFORMATION)
     Call<WSMessage> getFlightInformation(@Query("access_key") String access_key, @Query("flight_iata") String flight_iata);
 
     @POST(Constants.API_ON_GOING_CUSTOMER_TRIPS)
-    Call<WSMessage> getOnGoingCustomerTrips(@Body Trips tripsRequest);
+    Call<WSMessage> getOnGoingCustomerTrips(@Body TripRequest tripRequestRequest);
 
-    @GET(Constants.API_PENDING_CUSTOMER_TRIPS)
-    Call<WSMessage> getPendingCustomerTrips();
-    //agent
-    @GET(Constants.API_ON_GOING_AGENT_BOOKINGS)//?offset=0&limit=10
+    @GET(Constants.API_ON_GOING_AGENT_BOOKINGS)
     Call<WSMessage> getOnGoingAgentBookings(@Query("offset") String offset, @Query("limit") String limit);
 
-    @GET(Constants.API_PENDING_AGENT_BOOKINGS)//?offset=0&limit=10
+    @GET(Constants.API_PENDING_AGENT_BOOKINGS)
     Call<WSMessage> getPendingAgentBookings(@Query("offset") String offset, @Query("limit") String limit);
-
-    @GET(Constants.API_MODIFY_AGENT_BOOKINGS)
-    Call<WSMessage> getModifyAgentBookings();
 
     @GET(Constants.API_STATS)
     Call<WSMessage> getStats(@Query("date") String date);//2025-07-16
 
-     @GET(Constants.API_LIST_PACKAGE)
+    @GET(Constants.API_LIST_PACKAGE)
     Call<WSMessage> getListPackage(@Query("tripType") String tripType);//?tripType=arrival
 
+    @GET(Constants.API_LIST_AGENT)
+    Call<WSMessage> getListAgent(@Query("date") String date, @Query("offset") String offset, @Query("limit") String limit);//?date=2025-07-18&offset=0&limit=10
+
+    @POST(Constants.API_CREATE_TRIPS)
+    Call<WSMessage> createTrips(@Body TripsResponse tripRequestRequest);
+
+    @GET(Constants.API_CREATE_TRIPS + "{id}")
+    Call<WSMessage> getDetailTrips(@Path("id") String id);
 }

@@ -4,49 +4,133 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import id.co.qualitas.epriority.R;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> {
+import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.CardAgentBinding;
+import id.co.qualitas.epriority.helper.Helper;
+import id.co.qualitas.epriority.model.Agent;
+
+public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> implements Filterable {
+    private List<Agent> mList, mFilteredList;
+    private Fragment mContext;
+    private OnAdapterListener onAdapterListener;
+    protected DecimalFormatSymbols otherSymbols;
+    protected DecimalFormat format;
+
+    public AgentAdapter(Fragment mContext, List<Agent> mList, OnAdapterListener onAdapterListener) {
+        this.mContext = mContext;
+        this.mList = mList;
+        this.mFilteredList = mList;
+        this.onAdapterListener = onAdapterListener;
+    }
+
+    public void setFilteredList(List<Agent> filteredList) {
+        this.mList = filteredList;
+        this.mFilteredList = filteredList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
-    public AgentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_agent, parent, false);
-        return new AgentAdapter.ViewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        CardAgentBinding binding = CardAgentBinding.inflate(inflater, parent, false);
+        return new ViewHolder(binding, onAdapterListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AgentAdapter.ViewHolder holder, int position) {
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            holder.itemView.setSelected(isChecked);
-            if (isChecked){
-                holder.agentLL.setBackgroundResource(R.drawable.bg_blue_card);
-            }
-            else {
-                holder.agentLL.setBackgroundResource(R.drawable.bg_rounded_border_gray);
-            }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        setFormatSeparator();
+        Agent agent = mFilteredList.get(holder.getAdapterPosition());
+        String reviewCount = format.format(agent.getReview_count());
+        String average = format.format(agent.getRating_average());
+        holder.binding.nameText.setText(Helper.isEmpty(agent.getName(), ""));
+        holder.binding.ratingText.setText(average + " (" + reviewCount + ") reviews");
+        holder.binding.languagesText.setText("Language : " + Helper.isEmpty(agent.getLanguages(), ""));
+        holder.binding.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            agent.setChecked(isChecked);
         });
     }
 
     @Override
-    public int getItemCount() {
-        return 2;
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    mFilteredList = mList;
+                } else {
+                    List<Agent> filteredList = new ArrayList<>();
+                    for (Agent row : mList) {
+
+                        /*filter by name*/
+                        if (String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase()) ||
+                                String.valueOf(row.getName()).toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    mFilteredList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredList = (ArrayList<Agent>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        LinearLayout agentLL;
-        TextView nameTxt;
-        CheckBox checkBox;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            nameTxt = itemView.findViewById(R.id.nameTxt);
-            checkBox = itemView.findViewById(R.id.checkBox);
-            agentLL = itemView.findViewById(R.id.agentLL);
+    @Override
+    public int getItemCount() {
+        return mFilteredList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        OnAdapterListener onAdapterListener;
+        CardAgentBinding binding;
+
+        public ViewHolder(@NonNull CardAgentBinding binding, OnAdapterListener onAdapterListener) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.onAdapterListener = onAdapterListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onAdapterListener.onAdapterClick(mFilteredList.get(getAdapterPosition()), getAdapterPosition());
+        }
+    }
+
+    public interface OnAdapterListener {
+        void onAdapterClick(Agent detail, int pos);
+    }
+
+    private void setFormatSeparator() {
+        otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator(',');
+        otherSymbols.setGroupingSeparator('.');
+        format = new DecimalFormat(Constants.DECIMAL_PATTERN, otherSymbols);
     }
 }

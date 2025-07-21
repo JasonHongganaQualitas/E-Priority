@@ -6,6 +6,7 @@ public class Constants {
     public static final long LONG_400 = 1000;
     public static final long LONG_3000 = 2000;
     public static final long MAX_NON_MOVEMENT = 1720976400000L;
+    public static final String DECIMAL_PATTERN = "#,###,###,###,###,###.#";
     public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
     public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
     public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
@@ -33,15 +34,13 @@ public class Constants {
     public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
     //customer
     public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/customer/trips/ongoing";
-    public static final String API_PENDING_CUSTOMER_TRIPS = "/api/v1/mobile/home/pendingCustomerTrips";
-    public static final String API_MODIFY_CUSTOMER_TRIPS = "/api/v1/mobile/home/ModifyCustomerTrips";
+    public static final String API_LIST_AGENT = "/api/v1/mobile/customer/available-agents";
+    public static final String API_CREATE_TRIPS = "/api/v1/mobile/customer/trips";
     //agent
     public static final String API_ON_GOING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/ongoing";
     public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/pending";
-    public static final String API_MODIFY_AGENT_BOOKINGS = "/api/v1/mobile/home/ModifyAgentBookings";
     public static final String API_STATS = "/api/v1/mobile/home/stats";
     public static final String API_LIST_PACKAGE = "/api/v1/mobile/package/details";
-
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String CLIENT_ID = "|000";
@@ -63,10 +62,10 @@ public class Constants {
     public static final String KEY_BOARDING = "keyBoarding";
     public static final String IS_MOVEMENT = "isMovement";
     public static final String KEY_MOVEMENT = "keyMovement";
-    public static final String IS_CART= "isCart";
+    public static final String IS_CART = "isCart";
     public static final String KEY_CART = "keyCart";
-    public static final String KEY_USER_ID= "key_userid";
-    public static final String KEY_PASSWORD= "key_password";
+    public static final String KEY_USER_ID = "key_userid";
+    public static final String KEY_PASSWORD = "key_password";
     public static final String IS_REMEMBER_ME = "IsRememberMe";
     public static final String BACKGROUND_EXCEPTION = "BACKGROUND_EXCEPTION";
     public static final String FOLDER_NAME = "/ZECatalog";

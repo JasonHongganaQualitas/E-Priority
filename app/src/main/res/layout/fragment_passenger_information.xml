@@ -18,11 +18,11 @@
 
             <ImageView
                 android:id="@+id/backBtn"
-                android:src="@drawable/ic_arrow_left_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingRight="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:src="@drawable/ic_arrow_left_blue" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -30,18 +30,18 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Passenger Information"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="@dimen/text_reg1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:text="Enter passenger information to get started"
-                    android:textColor="@color/gray4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="Enter passenger information to get started"
+                    android:textColor="@color/gray4" />
 
             </LinearLayout>
 
@@ -50,9 +50,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <TextView
@@ -66,15 +66,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:layout_marginEnd="8dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -84,20 +84,23 @@
                         android:textStyle="bold" />
 
                     <EditText
+                        android:id="@+id/edtFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="John"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/bg_rounded_edittext_gray"
-                        android:padding="8dp"/>
+                        android:hint="John"
+                        android:inputType="textPersonName"
+                        android:padding="8dp"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="8dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -107,91 +110,104 @@
                         android:textStyle="bold" />
 
                     <EditText
+                        android:id="@+id/edtlastname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Smith"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/bg_rounded_edittext_gray"
-                        android:padding="8dp"/>
+                        android:hint="Smith"
+                        android:inputType="textPersonName"
+                        android:padding="8dp"
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Email Address"
-                android:layout_marginTop="16dp"
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
                 android:hint="email@gmail.com"
-                android:textColor="@color/black"
-                android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="8dp" />
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Phone Address"
-                android:layout_marginTop="16dp"
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="+62 82312 12312"
-                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="8dp" />
+                android:hint="+62 82312 12312"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date of Birth"
                 android:layout_marginTop="16dp"
+                android:text="Date of Birth"
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/edtDateBirth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="20/07/2005"
-                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="8dp" />
+                android:hint="20/07/2005"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nationality"
                 android:layout_marginTop="16dp"
+                android:text="Nationality"
                 android:textStyle="bold" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Select Nationality"
-                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="8dp" />
+                android:hint="Select Nationality"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
             <!-- Travel Class -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Travel Class"
                 android:layout_marginTop="16dp"
+                android:text="Travel Class"
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/travelClassSpinner"
+                android:id="@+id/spnTravelClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Economy Class"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="Economy Class"
                 android:padding="8dp" />
 
         </LinearLayout>
@@ -199,173 +215,181 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Passport Information"
                 android:textSize="@dimen/text_reg1"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
                 android:paddingVertical="8dp"
-                android:background="@drawable/bg_rounded_qr_border_blue">
+                android:visibility="gone">
 
                 <ImageView
-                    android:src="@drawable/ic_camera_blue"
-                    android:layout_gravity="center"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight=".8"
-                    android:layout_height="wrap_content"/>
+                    android:src="@drawable/ic_camera_blue" />
+
                 <TextView
-                    android:text="Scan Passport"
-                    android:textColor="@color/blue1"
-                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:text="Scan Passport"
+                    android:textColor="@color/blue1"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
 
             <TextView
-                android:text="Passport Number"
-                android:textStyle="bold"
-                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_reg1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:hint="000000"
-                android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="@dimen/text_small1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text="Issuing Country"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:hint="Country"
-                android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="@dimen/text_small1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text="Passport Expiry Date"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="Passport Number"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="20/07/2005"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="000000"
+                android:padding="@dimen/text_small1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Issuing Country"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="Country"
+                android:padding="@dimen/text_small1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Passport Expiry Date"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="20/07/2005"
                 android:padding="8dp" />
 
         </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/bg_rounded_button_border"
-        android:padding="16dp">
-
-        <TextView
-            android:text="Additional Passenger Information"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_reg1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:text="Number of Passenger"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_reg2"
-            android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="1"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
-                android:padding="8dp" />
-        <Spinner
-            android:visibility="gone"
-            android:id="@+id/numPassengerSpinner"
-            android:background="@drawable/bg_rounded_edittext_gray"
-            android:layout_marginTop="4dp"
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="12dp"
-            android:paddingHorizontal="8dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/bg_rounded_qr_border_blue">
-            <TextView
-                android:id="@+id/addPassengerTxt"
-                android:text="Add List Passenger"
-                android:textColor="@color/blue1"
-                android:textSize="@dimen/text_reg1"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:src="@drawable/ic_plus_blue"
-                android:layout_gravity="center"
-                android:layout_width="20dp"
-                android:layout_height="20dp"/>
-        </LinearLayout>
+            android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Additional Passenger Information"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Number of Passenger"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="1"
+                android:padding="8dp" />
+
+            <Spinner
+                android:id="@+id/numPassengerSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:padding="8dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/llAddPassenger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:id="@+id/addPassengerTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add List Passenger"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/text_reg1" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_plus_blue" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/btnChoose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose Package Details"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:background="@drawable/bg_rounded_button_blue"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:layout_marginRight="5dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
-            android:layout_gravity="center"/>
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bg_rounded_button_blue"
+            android:paddingLeft="24dp"
+            android:paddingTop="12dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="12dp"
+            android:text="Choose Package Details"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </ScrollView>

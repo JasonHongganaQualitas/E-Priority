@@ -15,8 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
+import id.co.qualitas.epriority.model.Agent;
 
 public class ModifyBookingFragment extends BaseFragment {
     View view;
@@ -24,6 +28,7 @@ public class ModifyBookingFragment extends BaseFragment {
     RecyclerView agentRV;
     AgentAdapter adapter;
     ImageView backBtn;
+    List<Agent> mList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +75,8 @@ public class ModifyBookingFragment extends BaseFragment {
 
     private void iniAdapter() {
         agentRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AgentAdapter();
+        adapter = new AgentAdapter(this, mList, (header, pos) -> {
+        });
         agentRV.setAdapter(adapter);
     }
 

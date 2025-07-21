@@ -202,7 +202,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ongoing bookings"
+                android:text="Ongoing tripsResponses"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -244,7 +244,7 @@
 
         </LinearLayout>
 
-        <!-- Pending bookings title -->
+        <!-- Pending tripsResponses title -->
         <LinearLayout
             android:id="@+id/lPendingBookings"
             android:layout_width="match_parent"
@@ -257,7 +257,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Pending bookings"
+                android:text="Pending tripsResponses"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />

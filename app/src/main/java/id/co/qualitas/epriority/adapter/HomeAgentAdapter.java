@@ -19,16 +19,16 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.RowViewBookingsBinding;
 import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.helper.Helper;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 
 public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.ViewHolder> implements Filterable {
-    private List<Booking> mList;
-    private List<Booking> mFilteredList;
+    private List<TripsResponse> mList;
+    private List<TripsResponse> mFilteredList;
     private boolean onGoing = false;
     private HomeAgentFragment mContext;
     private OnAdapterListener onAdapterListener;
 
-    public HomeAgentAdapter(HomeAgentFragment mContext, List<Booking> mList, boolean onGoing, OnAdapterListener onAdapterListener) {
+    public HomeAgentAdapter(HomeAgentFragment mContext, List<TripsResponse> mList, boolean onGoing, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
         this.onGoing = onGoing;
@@ -36,7 +36,7 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
         this.onAdapterListener = onAdapterListener;
     }
 
-    public void setFilteredList(List<Booking> filteredList) {
+    public void setFilteredList(List<TripsResponse> filteredList) {
         this.mList = filteredList;
         this.mFilteredList = filteredList;
         notifyDataSetChanged();
@@ -69,38 +69,38 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull HomeAgentAdapter.ViewHolder holder, int position) {
-        Booking booking = mFilteredList.get(position);
+        TripsResponse tripsResponse = mFilteredList.get(position);
         String date = null, time = null;
-        if (Helper.isNullOrEmpty(booking.getFlight_date())) {
+        if (Helper.isNullOrEmpty(tripsResponse.getFlight_date())) {
             date = "-";
         } else {
-            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, booking.getFlight_date());
+            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, tripsResponse.getFlight_date());
         }
 
-        if (Helper.isNullOrEmpty(booking.getFlight_time())) {
+        if (Helper.isNullOrEmpty(tripsResponse.getFlight_time())) {
             time = "-";
         } else {
-            time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, booking.getFlight_time());
+            time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, tripsResponse.getFlight_time());
         }
         String flightInfo = "";
-        if (Helper.isNullOrEmpty(booking.getCity())) {
+        if (Helper.isNullOrEmpty(tripsResponse.getCity())) {
             flightInfo = "";
         } else {
-            flightInfo = booking.getCity();
+            flightInfo = tripsResponse.getCity();
         }
 
-        if (Helper.isNullOrEmpty(booking.getFlight_no())) {
+        if (Helper.isNullOrEmpty(tripsResponse.getFlight_no())) {
             flightInfo = flightInfo + "";
         } else {
-            flightInfo = flightInfo + " - Flight "  + booking.getFlight_no();
+            flightInfo = flightInfo + " - Flight "  + tripsResponse.getFlight_no();
         }
 
-        holder.binding.tvName.setText(Helper.isEmpty(booking.getCustomer_name(), ""));
-        holder.binding.tvBookingId.setText("Booking ID: #" + Helper.isEmpty(booking.getBooking_id(), ""));
+        holder.binding.tvName.setText(Helper.isEmpty(tripsResponse.getCustomer_name(), ""));
+        holder.binding.tvBookingId.setText("Booking ID: #" + Helper.isEmpty(tripsResponse.getBooking_id(), ""));
         holder.binding.tvLocation.setText(flightInfo);
-        holder.binding.tvPeople.setText(booking.getPassenger_count() + " People");
+        holder.binding.tvPeople.setText(tripsResponse.getPassenger_count() + " People");
         holder.binding.tvDate.setText(date + " at " + time);
-        holder.binding.tvStatus.setText(Helper.isEmpty(booking.getStatus(), ""));
+        holder.binding.tvStatus.setText(Helper.isEmpty(tripsResponse.getStatus(), ""));
 
         Context context = holder.itemView.getContext();
         if (!onGoing) {
@@ -116,7 +116,7 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
             holder.binding.actionButtons.setVisibility(ViewGroup.GONE);
             holder.binding.btnAccept.setVisibility(View.GONE);
             holder.binding.btnDecline.setVisibility(View.GONE);
-            if (booking.status.equals(mContext.getString(R.string.upcoming))) {
+            if (tripsResponse.status.equals(mContext.getString(R.string.upcoming))) {
                 holder.binding.tvStatus.setTextColor(context.getColor(R.color.textUpcoming));
                 holder.binding.tvStatus.setBackgroundTintList(
                         ContextCompat.getColorStateList(context, R.color.badgeUpcoming)
@@ -137,7 +137,7 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
         holder.binding.btnAccept.setOnClickListener(v -> {
             // TODO: handle accept
         });
-        holder.binding.cvBooking.setOnClickListener(v -> mContext.callBookingDetailsFragment(booking));
+        holder.binding.cvBooking.setOnClickListener(v -> mContext.callBookingDetailsFragment(tripsResponse));
     }
 
     @Override
@@ -154,8 +154,8 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
                 if (charString.isEmpty()) {
                     mFilteredList = mList;
                 } else {
-                    List<Booking> filteredList = new ArrayList<>();
-                    for (Booking row : mList) {
+                    List<TripsResponse> filteredList = new ArrayList<>();
+                    for (TripsResponse row : mList) {
 
                         /*filter by name*/
                         if (String.valueOf(row.getBooking_id()).toLowerCase().contains(charString.toLowerCase())) {
@@ -173,13 +173,13 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<Booking>) filterResults.values;
+                mFilteredList = (ArrayList<TripsResponse>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
     }
 
     public interface OnAdapterListener {
-        void onAdapterClick(Booking detail, int pos);
+        void onAdapterClick(TripsResponse detail, int pos);
     }
 }

@@ -24,7 +24,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:text="Thank you! Your booking has been submitted. We're processing it and will confirm shortly."
+            android:text="Thank you! Your tripsResponse has been submitted. We're processing it and will confirm shortly."
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="@dimen/text_reg3"

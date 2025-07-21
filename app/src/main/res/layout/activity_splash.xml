@@ -71,6 +71,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:visibility="invisible"
             android:background="@drawable/bg_rounded_button"
             android:elevation="4dp"
             android:text="Get Started"

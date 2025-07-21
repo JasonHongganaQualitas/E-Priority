@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +31,7 @@ import android.util.Base64OutputStream;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -1277,6 +1279,14 @@ public class Helper {
 
             return seen.putIfAbsent(keys, Boolean.TRUE) == null;
         };
+    }
+
+    public static int dpsToPixels(float dip, Resources resources) {
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip, resources.getDisplayMetrics()
+        );
+        return (int) px;
     }
 
 }

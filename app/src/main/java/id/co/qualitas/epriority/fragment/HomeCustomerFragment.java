@@ -3,18 +3,12 @@ package id.co.qualitas.epriority.fragment;
 import android.content.Context;
 import android.os.Bundle;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -32,9 +26,9 @@ import id.co.qualitas.epriority.databinding.FragmentHomeCustomerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 import id.co.qualitas.epriority.model.FlightInformation;
-import id.co.qualitas.epriority.model.Trips;
+import id.co.qualitas.epriority.model.TripRequest;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +38,7 @@ public class HomeCustomerFragment extends BaseFragment {
     private FragmentHomeCustomerBinding binding;
     boolean arrival = true;
     OnGoingTripAdapter adapter;
-    private List<Booking> mList = new ArrayList<>(), arrivalList = new ArrayList<>(), departureList = new ArrayList<>();
+    private List<TripsResponse> mList = new ArrayList<>(), arrivalList = new ArrayList<>(), departureList = new ArrayList<>();
     private FlightInformation information;
     private String searchText;
 
@@ -101,12 +95,12 @@ public class HomeCustomerFragment extends BaseFragment {
     public void getOnGoingCustomerTrips(String search) {
         binding.progressBar.setVisibility(View.VISIBLE);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Trips trips = new Trips();
-        trips.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
-        trips.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
-        trips.setTripType((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
-        trips.setSearch(search);
-        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(trips);
+        TripRequest tripRequest = new TripRequest();
+        tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
+        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        tripRequest.setTripType((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
+        tripRequest.setSearch(search);
+        Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(tripRequest);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -116,9 +110,9 @@ public class HomeCustomerFragment extends BaseFragment {
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
                             String jsonInString = new Gson().toJson(result.getResult());
-                            Type listType = new TypeToken<ArrayList<Booking>>() {
+                            Type listType = new TypeToken<ArrayList<TripsResponse>>() {
                             }.getType();
-                            List<Booking> tempList = new Gson().fromJson(jsonInString, listType);
+                            List<TripsResponse> tempList = new Gson().fromJson(jsonInString, listType);
                             if (arrival) {
                                 arrivalList = new ArrayList<>();
                                 arrivalList.addAll(tempList);

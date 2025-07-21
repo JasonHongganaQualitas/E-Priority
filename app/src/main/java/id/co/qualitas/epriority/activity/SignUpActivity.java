@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import id.co.qualitas.epriority.R;
@@ -25,8 +24,6 @@ import id.co.qualitas.epriority.databinding.ActivitySignUpBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Employee;
-import id.co.qualitas.epriority.model.LoginResponse;
 import id.co.qualitas.epriority.model.SignUp;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;

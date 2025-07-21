@@ -7,21 +7,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentAirportTransferBinding;
-import id.co.qualitas.epriority.databinding.FragmentBookingDetailsAgentBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 
 public class AirportTransferFragment extends BaseFragment implements IOnBackPressed {
 
     private FragmentAirportTransferBinding binding;
-    private Booking booking;
+    private TripsResponse tripsResponse;
     View view;
 
     @Override
@@ -37,8 +34,8 @@ public class AirportTransferFragment extends BaseFragment implements IOnBackPres
     }
 
     private void initialize() {
-        booking = (Booking) Helper.getItemParam(Constants.BOOKING_DETAIL);
-        if(booking.getStatus().equals(getString(R.string.pending))){
+        tripsResponse = (TripsResponse) Helper.getItemParam(Constants.BOOKING_DETAIL);
+        if(tripsResponse.getStatus().equals(getString(R.string.pending))){
             binding.btnCheckIn.setVisibility(View.GONE);
             binding.btnCheckOut.setVisibility(View.GONE);
         }else{

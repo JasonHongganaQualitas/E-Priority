@@ -14,15 +14,14 @@ import java.util.List;
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.databinding.RowViewBookingsBinding;
 import id.co.qualitas.epriority.fragment.OngoingBookingFragment;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 
 public class OngoingBookingAdapter extends RecyclerView.Adapter<OngoingBookingAdapter.ViewHolder> {
-
-    private final List<Booking> bookings;
+    private final List<TripsResponse> tripsResponses;
     private OngoingBookingFragment mContext;
 
-    public OngoingBookingAdapter(OngoingBookingFragment mContext, List<Booking> bookings) {
-        this.bookings = bookings;
+    public OngoingBookingAdapter(OngoingBookingFragment mContext, List<TripsResponse> tripsResponses) {
+        this.tripsResponses = tripsResponses;
         this.mContext= mContext;
     }
 
@@ -45,9 +44,9 @@ public class OngoingBookingAdapter extends RecyclerView.Adapter<OngoingBookingAd
 
     @Override
     public void onBindViewHolder(@NonNull OngoingBookingAdapter.ViewHolder holder, int position) {
-        Booking booking = bookings.get(position);
+        TripsResponse tripsResponse = tripsResponses.get(position);
         Context context = holder.itemView.getContext();
-        if(booking.status.equals(mContext.getString(R.string.upcoming))) {
+        if(tripsResponse.status.equals(mContext.getString(R.string.upcoming))) {
             holder.binding.tvStatus.setTextColor(context.getColor(R.color.textUpcoming));
             holder.binding.tvStatus.setBackgroundTintList(
                     ContextCompat.getColorStateList(context, R.color.badgeUpcoming)
@@ -58,15 +57,15 @@ public class OngoingBookingAdapter extends RecyclerView.Adapter<OngoingBookingAd
                     ContextCompat.getColorStateList(context, R.color.badgeActive)
             );
         }
-        holder.binding.tvStatus.setText(booking.status);
-        holder.binding.tvName.setText(booking.name);
-        holder.binding.tvBookingId.setText("Booking ID: " + booking.booking_id);
-        holder.binding.tvDate.setText(booking.dateTime);
-        holder.binding.tvLocation.setText(booking.locationAndFlight);
-        holder.binding.tvPeople.setText(booking.peopleCount + " People");
+        holder.binding.tvStatus.setText(tripsResponse.status);
+        holder.binding.tvName.setText(tripsResponse.name);
+        holder.binding.tvBookingId.setText("Booking ID: " + tripsResponse.booking_id);
+        holder.binding.tvDate.setText(tripsResponse.dateTime);
+        holder.binding.tvLocation.setText(tripsResponse.locationAndFlight);
+        holder.binding.tvPeople.setText(tripsResponse.peopleCount + " People");
 
         // Show buttons only if status is "Pending"
-        if ("Pending".equalsIgnoreCase(booking.status)) {
+        if ("Pending".equalsIgnoreCase(tripsResponse.status)) {
             holder.binding.actionButtons.setVisibility(ViewGroup.VISIBLE);
         } else {
             holder.binding.actionButtons.setVisibility(ViewGroup.GONE);
@@ -83,13 +82,13 @@ public class OngoingBookingAdapter extends RecyclerView.Adapter<OngoingBookingAd
         holder.binding.cvBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.callBookingDetailsFragment(booking);
+                mContext.callBookingDetailsFragment(tripsResponse);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return bookings.size();
+        return tripsResponses.size();
     }
 }

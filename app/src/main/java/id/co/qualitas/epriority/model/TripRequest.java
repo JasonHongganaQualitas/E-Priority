@@ -5,15 +5,15 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Trips implements Serializable {
+public class TripRequest implements Serializable {
     public int offset;
     public int limit;
     public String tripType;
     public String search;
     @SerializedName("departureTrips")
-    List<Booking> departureTrips;
+    List<TripsResponse> departureTrips;
     @SerializedName("arrivalTrips")
-    List<Booking> arrivalTrips;
+    List<TripsResponse> arrivalTrips;
 
     public int getOffset() {
         return offset;
@@ -47,19 +47,19 @@ public class Trips implements Serializable {
         this.search = search;
     }
 
-    public List<Booking> getDepartureTrips() {
+    public List<TripsResponse> getDepartureTrips() {
         return departureTrips;
     }
 
-    public void setDepartureTrips(List<Booking> departureTrips) {
+    public void setDepartureTrips(List<TripsResponse> departureTrips) {
         this.departureTrips = departureTrips;
     }
 
-    public List<Booking> getArrivalTrips() {
+    public List<TripsResponse> getArrivalTrips() {
         return arrivalTrips;
     }
 
-    public void setArrivalTrips(List<Booking> arrivalTrips) {
+    public void setArrivalTrips(List<TripsResponse> arrivalTrips) {
         this.arrivalTrips = arrivalTrips;
     }
 }

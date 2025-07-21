@@ -1,6 +1,10 @@
 package id.co.qualitas.epriority.model;
 
-public class Booking {
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+public class TripsResponse {
     public int total_count;//status today
     public int pending_count;//status today
     public String name;
@@ -9,13 +13,14 @@ public class Booking {
     public String locationAndFlight;
     public int peopleCount;
     public String status;
-    //on going trip customer
     public int id;
     public int passenger_count;
-    public String customerId;
+    public int agent_id;
+    public int customer_id;
     public String customer_name;
     public String tripId;
-    public String tripDate;
+    public String trip_date;
+    public String trip_type;
     public String flight_date;
     public String flight_time;
     public String flight_no;
@@ -24,45 +29,63 @@ public class Booking {
     public String route_from;
     public String date_from;
     public String date_to;
-    public String trip_type;
+    public String airline;
+    public String aircraft;
+    public List<Passenger> passengers;
+    @SerializedName("package")
+    public Packages packages;
     public String city;
 
-//     "id": 1001,
-//             "customerId": "1",
-//             "tripId": "2001",
-//             "tripDate": "2025-07-20",
-//             "bookingId": "3001",
-//             "flightNo": "GA123",
-//             "status": "ASSIGNED",
-//             "routeTo": "DPS",
-//             "routeFrom": "CGK",
-//             "dateFrom": "2025-07-20",
-//             "dateTo": "2025-07-20",
-//             "tripType": "DEPARTURE"
+    public TripsResponse() {
+    }
 
-//     "id": 1,
-//             "trip_type": "ARRIVAL",
-//             "booking_id": "TIKET0001",
-//             "customer_name": "Billy",
-//             "route_from": "JAKARTA",
-//             "route_to": "SINGAPORE",
-//             "city": "SINGAPORE",
-//             "flight_no": "SQ01",
-//             "passenger_count": 1,
-//             "status": "Active",
-//             "flight_date": "2025-07-17",
-//             "flight_time": "14:20:00",
-//             "date_from": "2025-07-17 13:00:00",
-//             "date_to": "2025-07-17 14:20:00"
-
-    public Booking(String name, String booking_id, String dateTime,
-                   String locationAndFlight, int peopleCount, String status) {
+    public TripsResponse(String name, String booking_id, String dateTime, String locationAndFlight, int peopleCount, String status) {
         this.name = name;
         this.booking_id = booking_id;
         this.dateTime = dateTime;
         this.locationAndFlight = locationAndFlight;
         this.peopleCount = peopleCount;
         this.status = status;
+    }
+
+    public int getAgent_id() {
+        return agent_id;
+    }
+
+    public void setAgent_id(int agent_id) {
+        this.agent_id = agent_id;
+    }
+
+    public String getAirline() {
+        return airline;
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
+    }
+
+    public String getAircraft() {
+        return aircraft;
+    }
+
+    public void setAircraft(String aircraft) {
+        this.aircraft = aircraft;
+    }
+
+    public List<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
+    }
+
+    public Packages getPackages() {
+        return packages;
+    }
+
+    public void setPackages(Packages packages) {
+        this.packages = packages;
     }
 
     public int getTotal_count() {
@@ -145,12 +168,12 @@ public class Booking {
         this.id = id;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public int getCustomer_id() {
+        return customer_id;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
     }
 
     public String getTripId() {
@@ -161,12 +184,12 @@ public class Booking {
         this.tripId = tripId;
     }
 
-    public String getTripDate() {
-        return tripDate;
+    public String getTrip_date() {
+        return trip_date;
     }
 
-    public void setTripDate(String tripDate) {
-        this.tripDate = tripDate;
+    public void setTrip_date(String trip_date) {
+        this.trip_date = trip_date;
     }
 
     public String getFlight_no() {

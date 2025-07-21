@@ -1,33 +1,17 @@
 package id.co.qualitas.epriority.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.core.app.NotificationManagerCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import id.co.qualitas.epriority.activity.LoginActivity;
-import id.co.qualitas.epriority.activity.MainActivity;
-import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentEditProfileBinding;
-import id.co.qualitas.epriority.databinding.FragmentProfileBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Booking;
-import id.co.qualitas.epriority.model.Employee;
 import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.model.WSMessage;
-import id.co.qualitas.epriority.session.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,11 +54,11 @@ public class ProfileEditFragment extends BaseFragment {
 
     private void editProfile() {
         openDialogProgress();
-        Employee employee = new Employee();
-        employee.setName(fullName);
-        employee.setPhoneNumber(phoneNumber);
+        User param = new User();
+        param.setName(fullName);
+        param.setPhoneNumber(phoneNumber);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.editProfile(employee);
+        Call<WSMessage> httpRequest = apiInterface.editProfile(param);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {

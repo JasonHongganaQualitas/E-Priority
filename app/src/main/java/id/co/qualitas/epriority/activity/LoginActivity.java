@@ -11,7 +11,6 @@ import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.GetCredentialException;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,13 +21,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +35,6 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
-import id.co.qualitas.epriority.model.Employee;
 import id.co.qualitas.epriority.model.LoginResponse;
 import id.co.qualitas.epriority.model.SignUp;
 import id.co.qualitas.epriority.model.User;
@@ -50,18 +46,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
@@ -70,7 +59,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 
 public class LoginActivity extends BaseActivity {
     private ActivityLoginBinding binding;
@@ -323,14 +311,13 @@ public class LoginActivity extends BaseActivity {
                 dialog.dismiss();
                 openDialogInformation(Constants.INTERNAL_SERVER_ERROR, t.getMessage(), null);
             }
-
         });
     }
 
     private void getEmployeeDetail(boolean fromGoogle) {
         Helper.setItemParam(Constants.TOKEN, token);
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getEmployeeDetail(new Employee(registerID));
+        Call<WSMessage> httpRequest = apiInterface.getEmployeeDetail(new User(registerID));
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {

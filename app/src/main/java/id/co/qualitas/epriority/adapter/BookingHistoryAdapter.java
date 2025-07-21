@@ -17,21 +17,21 @@ import java.util.List;
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.helper.Helper;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 
 public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAdapter.ViewHolder> implements Filterable {
-    private List<Booking> mList, mFilteredList;
+    private List<TripsResponse> mList, mFilteredList;
     private Fragment mContext;
     private OnAdapterListener onAdapterListener;
 
-    public BookingHistoryAdapter(Fragment mContext, List<Booking> mList, OnAdapterListener onAdapterListener) {
+    public BookingHistoryAdapter(Fragment mContext, List<TripsResponse> mList, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
         this.mFilteredList = mList;
         this.onAdapterListener = onAdapterListener;
     }
 
-    public void setFilteredList(List<Booking> filteredList) {
+    public void setFilteredList(List<TripsResponse> filteredList) {
         this.mList = filteredList;
         this.mFilteredList = filteredList;
         notifyDataSetChanged();
@@ -47,10 +47,10 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     @Override
     public void onBindViewHolder(@NonNull BookingHistoryAdapter.ViewHolder holder, int posi) {
         String date = null;
-        if (Helper.isNullOrEmpty(mFilteredList.get(holder.getAdapterPosition()).getTripDate())) {
+        if (Helper.isNullOrEmpty(mFilteredList.get(holder.getAdapterPosition()).getTrip_date())) {
             date = "-";
         } else {
-            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, mFilteredList.get(holder.getAdapterPosition()).getTripDate());
+            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, mFilteredList.get(holder.getAdapterPosition()).getTrip_date());
         }
         holder.titleTxt.setText("Booking ID: #" + Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getBooking_id(), ""));
         holder.txtLocation.setText(Helper.isEmpty(mFilteredList.get(holder.getAdapterPosition()).getRoute_to(), ""));
@@ -68,8 +68,8 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
                 if (charString.isEmpty()) {
                     mFilteredList = mList;
                 } else {
-                    List<Booking> filteredList = new ArrayList<>();
-                    for (Booking row : mList) {
+                    List<TripsResponse> filteredList = new ArrayList<>();
+                    for (TripsResponse row : mList) {
 
                         /*filter by name*/
                         if (String.valueOf(row.getBooking_id()).toLowerCase().contains(charString.toLowerCase())) {
@@ -87,7 +87,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<Booking>) filterResults.values;
+                mFilteredList = (ArrayList<TripsResponse>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -120,6 +120,6 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     }
 
     public interface OnAdapterListener {
-        void onAdapterClick(Booking detail, int pos);
+        void onAdapterClick(TripsResponse detail, int pos);
     }
 }

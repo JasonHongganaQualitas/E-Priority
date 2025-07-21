@@ -142,6 +142,7 @@ public class SplashActivity extends BaseActivity {
             };
             background.start();
         } else {
+            binding.btnGetStarted.setVisibility(View.VISIBLE);
             binding.loadingIcon.setVisibility(View.GONE);
             binding.btnGetStarted.setOnClickListener(v -> {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);

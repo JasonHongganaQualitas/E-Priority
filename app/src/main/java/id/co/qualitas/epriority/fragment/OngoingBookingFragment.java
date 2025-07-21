@@ -18,13 +18,11 @@ import java.util.List;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.OngoingBookingAdapter;
-import id.co.qualitas.epriority.adapter.PendingBookingAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentOngoingBookingBinding;
-import id.co.qualitas.epriority.databinding.FragmentPendingBookingBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
-import id.co.qualitas.epriority.model.Booking;
+import id.co.qualitas.epriority.model.TripsResponse;
 
 public class OngoingBookingFragment extends Fragment implements IOnBackPressed{
 
@@ -51,17 +49,17 @@ public class OngoingBookingFragment extends Fragment implements IOnBackPressed{
     }
 
     private void initAdapter() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
+        List<TripsResponse> tripsResponses = new ArrayList<>();
+        tripsResponses.add(new TripsResponse("John Smith", "#129-B012", "05/07/25 at 14:30",
                 "Tokyo, Japan – Flight NH782", 5, "Upcoming"));
-        bookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
+        tripsResponses.add(new TripsResponse("John Smith", "#129-B012", "05/07/25 at 14:30",
                 "Tokyo, Japan – Flight NH782", 5, "Active"));
-        bookings.add(new Booking("John Smith", "#129-B012", "05/07/25 at 14:30",
+        tripsResponses.add(new TripsResponse("John Smith", "#129-B012", "05/07/25 at 14:30",
                 "Tokyo, Japan – Flight NH782", 5, "Active"));
 
 
-        if(bookings.size() != 0) {
-            adapter = new OngoingBookingAdapter(this, bookings);
+        if(tripsResponses.size() != 0) {
+            adapter = new OngoingBookingAdapter(this, tripsResponses);
             binding.recyclerViewOngoingBooking.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.recyclerViewOngoingBooking.setAdapter(adapter);
             binding.recyclerViewOngoingBooking.setVisibility(View.VISIBLE);
@@ -82,8 +80,8 @@ public class OngoingBookingFragment extends Fragment implements IOnBackPressed{
         return false;
     }
 
-    public void callBookingDetailsFragment(Booking booking) {
-        Helper.setItemParam(Constants.BOOKING_DETAIL, booking);
+    public void callBookingDetailsFragment(TripsResponse tripsResponse) {
+        Helper.setItemParam(Constants.BOOKING_DETAIL, tripsResponse);
         BookingDetailsAgentFragment fragment2 = new BookingDetailsAgentFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
