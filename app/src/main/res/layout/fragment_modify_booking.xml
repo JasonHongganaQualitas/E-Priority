@@ -335,7 +335,7 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
                 <TextView
@@ -472,7 +472,7 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
                 <TextView
@@ -580,7 +580,7 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
                 <TextView
@@ -689,7 +689,7 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
                 <TextView
@@ -798,7 +798,7 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
                 <TextView

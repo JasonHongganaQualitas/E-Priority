@@ -1,19 +1,20 @@
-package id.co.qualitas.epriority.fragment;
+package id.co.qualitas.epriority.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,22 +29,22 @@ import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
 import id.co.qualitas.epriority.databinding.FragmentChoosePackageBinding;
+import id.co.qualitas.epriority.databinding.FragmentPassengerInformationBinding;
+import id.co.qualitas.epriority.fragment.BaseFragment;
+import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.Agent;
 import id.co.qualitas.epriority.model.Dropdown;
 import id.co.qualitas.epriority.model.Packages;
-import id.co.qualitas.epriority.model.TripRequest;
 import id.co.qualitas.epriority.model.TripsResponse;
-import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChoosePackageFragment extends BaseFragment implements TimePickerFragment.TimeSelectedListener {
-    View view;
+public class ChoosePackageActivity extends BaseActivity implements TimePickerFragment.TimeSelectedListener {
     AgentAdapter adapter;
     List<Agent> mList = new ArrayList<>(), mChoosenAgentList = new ArrayList<>();
     private FragmentChoosePackageBinding binding;
@@ -55,15 +56,25 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
     private TripsResponse createTrips;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentChoosePackageBinding.inflate(inflater, container, false);
-        view = binding.getRoot();
-        init();
-        initAdapter();
-        getPackages();
+    protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
+        binding = FragmentChoosePackageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        initBase();
+
+        if (Helper.getItemParam(Constants.DATA_CREATE_TRIPS) != null) {
+            createTrips = (TripsResponse) Helper.getItemParam(Constants.DATA_CREATE_TRIPS);
+            initAdapter();
+            getPackages();
+        } else {
+            setToast("Data Flight not found");
+            onBackPressed();
+        }
 
         binding.backBtn.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
+            onBackPressed();
         });
 
         binding.btnChooseAgent.setOnClickListener(v -> {
@@ -74,9 +85,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             if (airportSelected) {
                 airportSelected = false;
                 binding.llAirportDetail.setVisibility(View.GONE);
-                binding.cbAirport.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_unchecked));
+                binding.cbAirport.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
                 binding.imgAirport.setImageResource(R.drawable.ic_airport_unchecked);
-                binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_rounded_border_gray));
+                binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
                 binding.arrowAirport.setImageResource(R.drawable.ic_arrow_down_gray);
 
                 binding.edtPickUpTime.setText(null);
@@ -86,9 +97,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             } else {
                 airportSelected = true;
                 binding.llAirportDetail.setVisibility(View.VISIBLE);
-                binding.cbAirport.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checked));
+                binding.cbAirport.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
                 binding.imgAirport.setImageResource(R.drawable.ic_airport_checked);
-                binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_blue_card));
+                binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
                 binding.arrowAirport.setImageResource(R.drawable.ic_arrow_up_gray);
             }
         });
@@ -97,9 +108,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             if (loungeSelected) {
                 loungeSelected = false;
                 binding.llLoungeDetail.setVisibility(View.GONE);
-                binding.cbLounge.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_unchecked));
+                binding.cbLounge.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
                 binding.imgLounge.setImageResource(R.drawable.ic_lounge_unchecked);
-                binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_rounded_border_gray));
+                binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
                 binding.arrowLounge.setImageResource(R.drawable.ic_arrow_down_gray);
 
                 binding.spnLoungeType.setSelection(0);
@@ -107,9 +118,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             } else {
                 loungeSelected = true;
                 binding.llLoungeDetail.setVisibility(View.VISIBLE);
-                binding.cbLounge.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checked));
+                binding.cbLounge.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
                 binding.imgLounge.setImageResource(R.drawable.ic_lounge_checked);
-                binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_blue_card));
+                binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
                 binding.arrowLounge.setImageResource(R.drawable.ic_arrow_up_gray);
             }
         });
@@ -118,9 +129,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             if (flightSelected) {
                 flightSelected = false;
                 binding.llFlightDetail.setVisibility(View.GONE);
-                binding.cbFlight.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_unchecked));
+                binding.cbFlight.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
                 binding.imgFlight.setImageResource(R.drawable.ic_flight_unchecked);
-                binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_rounded_border_gray));
+                binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
                 binding.arrowFlight.setImageResource(R.drawable.ic_arrow_down_gray);
 
                 binding.spnFLightClass.setSelection(0);
@@ -128,9 +139,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             } else {
                 flightSelected = true;
                 binding.llFlightDetail.setVisibility(View.VISIBLE);
-                binding.cbFlight.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checked));
+                binding.cbFlight.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
                 binding.imgFlight.setImageResource(R.drawable.ic_flight_checked);
-                binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_blue_card));
+                binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
                 binding.arrowFlight.setImageResource(R.drawable.ic_arrow_up_gray);
             }
         });
@@ -139,9 +150,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             if (fastLaneSelected) {
                 fastLaneSelected = false;
                 binding.llFastLaneDetail.setVisibility(View.GONE);
-                binding.cbFastLane.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_unchecked));
+                binding.cbFastLane.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
                 binding.imgFastLane.setImageResource(R.drawable.ic_fast_unchecked);
-                binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_rounded_border_gray));
+                binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
                 binding.arrowFastLane.setImageResource(R.drawable.ic_arrow_down_gray);
 
                 binding.spnFastType.setSelection(0);
@@ -149,9 +160,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             } else {
                 fastLaneSelected = true;
                 binding.llFastLaneDetail.setVisibility(View.VISIBLE);
-                binding.cbFastLane.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checked));
+                binding.cbFastLane.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
                 binding.imgFastLane.setImageResource(R.drawable.ic_fast_checked);
-                binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_blue_card));
+                binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
                 binding.arrowFastLane.setImageResource(R.drawable.ic_arrow_up_gray);
             }
         });
@@ -160,9 +171,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             if (baggageSelected) {
                 baggageSelected = false;
                 binding.llBaggageDetail.setVisibility(View.GONE);
-                binding.cbBaggage.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_unchecked));
+                binding.cbBaggage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
                 binding.imgBaggage.setImageResource(R.drawable.ic_baggage_unchecked);
-                binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_rounded_border_gray));
+                binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
                 binding.arrowBaggage.setImageResource(R.drawable.ic_arrow_down_gray);
 
                 binding.spnBaggage.setSelection(0);
@@ -170,9 +181,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             } else {
                 baggageSelected = true;
                 binding.llBaggageDetail.setVisibility(View.VISIBLE);
-                binding.cbBaggage.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checked));
+                binding.cbBaggage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
                 binding.imgBaggage.setImageResource(R.drawable.ic_baggage_checked);
-                binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.bg_blue_card));
+                binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
                 binding.arrowBaggage.setImageResource(R.drawable.ic_arrow_up_gray);
             }
         });
@@ -182,28 +193,26 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
 //            ReviewBookingFragment fragment = new ReviewBookingFragment();
 //            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
-
-        return view;
     }
 
     private void openDialogTimePicker() {
         TimePickerFragment timePicker = TimePickerFragment.newInstance(this);
-        timePicker.show(getChildFragmentManager(), "timePicker");
+        timePicker.show(getSupportFragmentManager(), "timePicker");
     }
 
     private void openDialogChooseAgent() {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         offset = 0;
-        DialogChooseAgentBinding dialogBinding = DialogChooseAgentBinding.inflate(LayoutInflater.from(getContext()));
-        dialog = new Dialog(getActivity());
+        DialogChooseAgentBinding dialogBinding = DialogChooseAgentBinding.inflate(LayoutInflater.from(ChoosePackageActivity.this));
+        dialog = new Dialog(ChoosePackageActivity.this);
         dialog.setContentView(dialogBinding.getRoot());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
 
-        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        AgentAdapter adapterDialog = new AgentAdapter(this, mList, (header, pos) -> {
+        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ChoosePackageActivity.this));
+        AgentAdapter adapterDialog = new AgentAdapter(ChoosePackageActivity.this, mList, (header, pos) -> {
             mChoosenAgentList = new ArrayList<>();
             mChoosenAgentList.add(header);
             adapter.setFilteredList(mChoosenAgentList);
@@ -213,8 +222,8 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
     }
 
     private void initAdapter() {
-        binding.agentRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AgentAdapter(this, mChoosenAgentList, (header, pos) -> {
+        binding.agentRV.setLayoutManager(new LinearLayoutManager(ChoosePackageActivity.this));
+        adapter = new AgentAdapter(ChoosePackageActivity.this, mChoosenAgentList, (header, pos) -> {
         });
         binding.agentRV.setAdapter(adapter);
     }
@@ -268,7 +277,7 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
     public void getPackages() {
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getListPackage("departure");
+        Call<WSMessage> httpRequest = apiInterface.getListPackage(createTrips.getTrip_type().toLowerCase());
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -357,7 +366,7 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             masterPackage.getVehicleTypes().add(new Dropdown());
         }
         masterPackage.getVehicleTypes().add(0, hintItem);
-        vehicleTypeAdapter = new SpinnerDropDownAdapter(getContext(), masterPackage.getVehicleTypes());
+        vehicleTypeAdapter = new SpinnerDropDownAdapter(getApplicationContext(), masterPackage.getVehicleTypes());
         binding.spnVehicleType.setAdapter(vehicleTypeAdapter);
 
         binding.spnVehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -384,7 +393,7 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             masterPackage.getLoungeTypes().add(new Dropdown());
         }
         masterPackage.getLoungeTypes().add(0, hintItem);
-        loungeTypeAdapter = new SpinnerDropDownAdapter(getContext(), masterPackage.getLoungeTypes());
+        loungeTypeAdapter = new SpinnerDropDownAdapter(getApplicationContext(), masterPackage.getLoungeTypes());
         binding.spnLoungeType.setAdapter(loungeTypeAdapter);
 
         binding.spnLoungeType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -411,7 +420,7 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             masterPackage.getFlightClasses().add(new Dropdown());
         }
         masterPackage.getFlightClasses().add(0, hintItem);
-        flightClassesAdapter = new SpinnerDropDownAdapter(getContext(), masterPackage.getFlightClasses());
+        flightClassesAdapter = new SpinnerDropDownAdapter(getApplicationContext(), masterPackage.getFlightClasses());
         binding.spnFLightClass.setAdapter(flightClassesAdapter);
 
         binding.spnFLightClass.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -438,7 +447,7 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             masterPackage.getFastlaneTypes().add(new Dropdown());
         }
         masterPackage.getFastlaneTypes().add(0, hintItem);
-        fastLaneAdapter = new SpinnerDropDownAdapter(getContext(), masterPackage.getFastlaneTypes());
+        fastLaneAdapter = new SpinnerDropDownAdapter(getApplicationContext(), masterPackage.getFastlaneTypes());
         binding.spnFastType.setAdapter(fastLaneAdapter);
 
         binding.spnFastType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -465,7 +474,7 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             masterPackage.getBaggageTypes().add(new Dropdown());
         }
         masterPackage.getBaggageTypes().add(0, hintItem);
-        baggageHandlingAdapter = new SpinnerDropDownAdapter(getContext(), masterPackage.getBaggageTypes());
+        baggageHandlingAdapter = new SpinnerDropDownAdapter(getApplicationContext(), masterPackage.getBaggageTypes());
         binding.spnBaggage.setAdapter(baggageHandlingAdapter);
 
         binding.spnBaggage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -497,8 +506,9 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
                     if (result != null) {
                         if (result.getIdMessage() == 1) {
                             setToast(result.getMessage());
-                            requireActivity().getSupportFragmentManager().popBackStack();
-                            requireActivity().getSupportFragmentManager().popBackStack();
+                            intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent);
                         } else {
                             setToast(result.getMessage());
                         }
@@ -521,8 +531,6 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
 
     private void prepareDataTrips() {
         Packages header = new Packages(), detail = new Packages();
-        createTrips = new TripsResponse();
-
         if (airportSelected) {
             detail = new Packages();
             detail.setVehicle_type(selectedVehicleType.getId());
@@ -530,6 +538,8 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             detail.setContact_no(binding.edtContact.getText().toString());
             detail.setRequest_note(binding.edtOtherAirport.getText().toString());
             header.setAirport_transfer(detail);
+        } else {
+            header.setAirport_transfer(null);
         }
 
         if (loungeSelected) {
@@ -537,6 +547,8 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             detail.setLounge_type(selectedLoungeType.getId());
             detail.setRequest_note(binding.edtOtherLounge.getText().toString());
             header.setLounge_access(detail);
+        } else {
+            header.setLounge_access(null);
         }
 
         if (flightSelected) {
@@ -544,6 +556,8 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             detail.setFlight_class(selectedFLightClass.getId());
             detail.setRequest_note(binding.edtOtherFlight.getText().toString());
             header.setFlight_detail(detail);
+        } else {
+            header.setFlight_detail(null);
         }
 
         if (fastLaneSelected) {
@@ -551,6 +565,8 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             detail.setType_lane(selectedFastType.getId());
             detail.setRequest_note(binding.edtOtherFast.getText().toString());
             header.setFast_lane(detail);
+        } else {
+            header.setFast_lane(null);
         }
 
         if (baggageSelected) {
@@ -558,38 +574,14 @@ public class ChoosePackageFragment extends BaseFragment implements TimePickerFra
             detail.setType_baggage(selectedBaggage.getId());
             detail.setRequest_note(binding.edtOtherLounge.getText().toString());
             header.setBaggage_service(detail);
+        } else {
+            header.setBaggage_service(null);
         }
 
         createTrips.setPackages(header);
-        createTrips.setTrip_date("2025-07-19");
-        createTrips.setTrip_type("DEPARTURE");
-        createTrips.setCustomer_id(15);
-        createTrips.setBooking_id("BOOK20250810");
-        createTrips.setFlight_no("NH856");
-        createTrips.setAirline("All Nippon Airways");
-        createTrips.setAircraft("Boeing 787-9");
-        createTrips.setRoute_from("JAKARTA");
-        createTrips.setRoute_to("KYOTO");
-        createTrips.setPassenger_count(1);
         if (Helper.isNotEmptyOrNull(mChoosenAgentList)) {
             createTrips.setAgent_id(mChoosenAgentList.get(0).getId());
         }
-        createTrips.setPassengers(new ArrayList<>());
 
-//        "passengers": [
-//            {
-//                "item_no": 1, //ini apa?
-//                    "first_name": "Kaoruko",
-//                    "last_name": "Waguri",
-//                    "email": "kaorukowaguri@qualitas.co.id",
-//                    "phone_no": "+81-90-1234-5678",
-//                    "birth_date": "1994-07-10",
-//                    "nationality": 2,
-//                    "flight_class": 1,
-//                    "passport_no": "JP556677",
-//                    "passport_country": 2,
-//                    "passport_expdate": "2030-12-31"
-//            }
-//        ],
     }
 }

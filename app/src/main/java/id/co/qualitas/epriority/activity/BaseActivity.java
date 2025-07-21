@@ -513,7 +513,7 @@ public class BaseActivity extends AppCompatActivity {
         Button btnClose = dialog.findViewById(R.id.btnClose);
         TextView txtTitle = dialog.findViewById(R.id.txtTitle);
         TextView txtMsg = dialog.findViewById(R.id.txtMsg);
-        txtTitle.setVisibility(View.GONE);
+//        txtTitle.setVisibility(View.GONE);
         txtTitle.setText(title);
         txtMsg.setText(msg);
 

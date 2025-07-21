@@ -8,7 +8,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -19,24 +18,26 @@ import java.util.Locale;
 
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.CardAgentBinding;
+import id.co.qualitas.epriority.databinding.SpinnerFilteredItemBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.model.Agent;
+import id.co.qualitas.epriority.model.Dropdown;
 
-public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> implements Filterable {
-    private List<Agent> mList, mFilteredList;
+public class NationalityAdapter extends RecyclerView.Adapter<NationalityAdapter.ViewHolder> implements Filterable {
+    private List<Dropdown> mList, mFilteredList;
     private Context mContext;
     private OnAdapterListener onAdapterListener;
     protected DecimalFormatSymbols otherSymbols;
     protected DecimalFormat format;
 
-    public AgentAdapter(Context mContext, List<Agent> mList, OnAdapterListener onAdapterListener) {
+    public NationalityAdapter(Context mContext, List<Dropdown> mList, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
         this.mFilteredList = mList;
         this.onAdapterListener = onAdapterListener;
     }
 
-    public void setFilteredList(List<Agent> filteredList) {
+    public void setFilteredList(List<Dropdown> filteredList) {
         this.mList = filteredList;
         this.mFilteredList = filteredList;
         notifyDataSetChanged();
@@ -46,22 +47,17 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        CardAgentBinding binding = CardAgentBinding.inflate(inflater, parent, false);
+        SpinnerFilteredItemBinding binding = SpinnerFilteredItemBinding.inflate(inflater, parent, false);
         return new ViewHolder(binding, onAdapterListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         setFormatSeparator();
-        Agent agent = mFilteredList.get(holder.getAdapterPosition());
-        String reviewCount = format.format(agent.getReview_count());
-        String average = format.format(agent.getRating_average());
-        holder.binding.nameText.setText(Helper.isEmpty(agent.getName(), ""));
-        holder.binding.ratingText.setText(average + " (" + reviewCount + ") reviews");
-        holder.binding.languagesText.setText("Language : " + Helper.isEmpty(agent.getLanguages(), ""));
-        holder.binding.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            agent.setChecked(isChecked);
-        });
+        Dropdown currentItem = mFilteredList.get(holder.getAdapterPosition());
+        String id = currentItem.getId() + " - ";
+        String name = Helper.isEmpty(currentItem.getName(), "");
+        holder.binding.text1.setText(name);
     }
 
     @Override
@@ -73,8 +69,8 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                 if (charString.isEmpty()) {
                     mFilteredList = mList;
                 } else {
-                    List<Agent> filteredList = new ArrayList<>();
-                    for (Agent row : mList) {
+                    List<Dropdown> filteredList = new ArrayList<>();
+                    for (Dropdown row : mList) {
 
                         /*filter by name*/
                         if (String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase()) ||
@@ -93,7 +89,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<Agent>) filterResults.values;
+                mFilteredList = (ArrayList<Dropdown>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -106,9 +102,9 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnAdapterListener onAdapterListener;
-        CardAgentBinding binding;
+        SpinnerFilteredItemBinding binding;
 
-        public ViewHolder(@NonNull CardAgentBinding binding, OnAdapterListener onAdapterListener) {
+        public ViewHolder(@NonNull SpinnerFilteredItemBinding binding, OnAdapterListener onAdapterListener) {
             super(binding.getRoot());
             this.binding = binding;
             this.onAdapterListener = onAdapterListener;
@@ -122,7 +118,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
     }
 
     public interface OnAdapterListener {
-        void onAdapterClick(Agent detail, int pos);
+        void onAdapterClick(Dropdown detail, int pos);
     }
 
     private void setFormatSeparator() {

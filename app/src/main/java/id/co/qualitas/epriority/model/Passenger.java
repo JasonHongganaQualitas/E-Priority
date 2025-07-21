@@ -11,11 +11,38 @@ public class Passenger implements Serializable {
     private String birth_date;
     private String passport_no;
     private String passport_expdate;
+    private int inflight_meal;
     private int nationality;
     private int flight_class;
     private int passport_country;
+    private int cabin;
+    private int baggage;
 
     public Passenger() {
+    }
+
+    public int getInflight_meal() {
+        return inflight_meal;
+    }
+
+    public void setInflight_meal(int inflight_meal) {
+        this.inflight_meal = inflight_meal;
+    }
+
+    public int getCabin() {
+        return cabin;
+    }
+
+    public void setCabin(int cabin) {
+        this.cabin = cabin;
+    }
+
+    public int getBaggage() {
+        return baggage;
+    }
+
+    public void setBaggage(int baggage) {
+        this.baggage = baggage;
     }
 
     public int getItem_no() {

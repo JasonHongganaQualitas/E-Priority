@@ -17,7 +17,7 @@ public class Constants {
     public static final String UNKNOWN_RESOURCE = "Unknown Resource";
     public static final String NO_CONNECTION = "no connection";
     public static final String AUTHORIZATION_LOGIN = "Basic V0VCX0NMSUVOVDpXRUJfQ0xJRU5U";
-    public static final String BEARER = "bearer ";
+    public static final String BEARER = "Bearer ";
     public static final String HTTP_HEADER_CONTENT_TYPE = "application/x-www-form-urlencoded";
     public static final String OAUTH_TOKEN_PATH = "/oauth/token";
     public static final String OAUTH_GOOGLE_TOKEN_PATH = "/oauth/google";
@@ -41,6 +41,8 @@ public class Constants {
     public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/pending";
     public static final String API_STATS = "/api/v1/mobile/home/stats";
     public static final String API_LIST_PACKAGE = "/api/v1/mobile/package/details";
+    public static final String API_LIST_COUNTRIES = "/api/v1/dropdown/country";
+    public static final String API_LIST_FLIGHT_CLASS = "/api/v1/dropdown/flight-class";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String CLIENT_ID = "|000";
@@ -79,6 +81,8 @@ public class Constants {
     public static final String DEPARTURE = "departure";
     public static final String TYPE_TAB = "type tab";
     public static final String EMAIL_FORGOT_PASSWORD = "email forgot password";
+    public static final String DATA_CREATE_TRIPS = "data create trips";
+    public static final String DATA_PASSENGER = "data passenger";
 
     //PRD
 //    public static String BASE_URL = "http://192.168.137.202:3443";

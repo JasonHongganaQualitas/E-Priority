@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="16dp"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".AdditionalPassengerFragment">
 
     <LinearLayout
@@ -15,19 +15,19 @@
 
         <ImageView
             android:id="@+id/backBtn"
-            android:src="@drawable/ic_arrow_left_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingRight="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/ic_arrow_left_blue" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Additional Passenger List"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:textSize="@dimen/text_reg1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -36,47 +36,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:paddingVertical="8dp"
-        android:background="@drawable/bg_rounded_qr_border_blue">
+        android:background="@drawable/bg_rounded_qr_border_blue"
+        android:paddingVertical="8dp">
 
         <ImageView
-            android:src="@drawable/ic_new_list"
-            android:layout_gravity="center"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight=".8"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/ic_new_list" />
+
         <TextView
-            android:text="Create New List"
-            android:textColor="@color/blue1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:text="Create New List"
+            android:textColor="@color/blue1" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="16dp"
         android:id="@+id/passengerRV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add List"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:background="@drawable/bg_rounded_button_blue"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:layout_marginRight="5dp"
+        android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="12dp"
-        android:layout_gravity="center"/>
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_rounded_button_blue"
+        android:paddingLeft="24dp"
+        android:paddingTop="12dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="12dp"
+        android:text="Add List"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </LinearLayout>

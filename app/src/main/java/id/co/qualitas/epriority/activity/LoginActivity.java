@@ -191,6 +191,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(@NonNull GetCredentialException e) {
+                        setToast(e.getMessage());
                         Log.e("SignUp", "Credential error: " + e.getMessage());
 
                     }
@@ -220,9 +221,11 @@ public class LoginActivity extends BaseActivity {
                     openDialogProgress();
                 }
             } else {
+                setToast("Unsupported credential type");
                 Log.e("SignUp", "Unsupported credential type");
             }
         } else {
+            setToast("Unsupported credential type");
             Log.e("SignUp", "Unexpected credential type");
         }
     }
@@ -288,17 +291,17 @@ public class LoginActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     LoginResponse result = response.body();
                     if (result != null) {
-                        if (result.getStatus() == 200) {
+//                        if (result.getStatus() == 200) {
                             token = result.getAccess_token();
                             getEmployeeDetail(false);//getToken
                         } else {
                             setToast(getString(R.string.wrongUser));
                             dialog.dismiss();
                         }
-                    } else {
-                        openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
-                        dialog.dismiss();
-                    }
+//                    } else {
+//                        openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
+//                        dialog.dismiss();
+//                    }
                 } else {
                     setToast(getResources().getString(R.string.wrongUser));
                     dialog.dismiss();
@@ -350,7 +353,7 @@ public class LoginActivity extends BaseActivity {
                         openDialogInformation(Constants.DATA_NOT_FOUND, response.message(), null);
                     }
                 } else {
-                    openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.message(), null);
+                    openDialogInformation(Constants.INTERNAL_SERVER_ERROR, response.raw().message(), null);
                 }
             }
 

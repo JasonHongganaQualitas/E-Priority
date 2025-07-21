@@ -29,6 +29,21 @@
             android:value="true" />
 
         <activity
+            android:name="id.co.qualitas.epriority.activity.CreateFlightDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.AdditionalPassengerActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.ChoosePackageActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.PassengerInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.CreatePassengerActivity"
+            android:exported="false" />
+        <activity
             android:name="id.co.qualitas.epriority.activity.CameraActivity"
             android:exported="false" />
         <activity

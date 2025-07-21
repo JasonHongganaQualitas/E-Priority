@@ -82,6 +82,12 @@ public interface APIInterface {
     @GET(Constants.API_LIST_AGENT)
     Call<WSMessage> getListAgent(@Query("date") String date, @Query("offset") String offset, @Query("limit") String limit);//?date=2025-07-18&offset=0&limit=10
 
+    @POST(Constants.API_LIST_COUNTRIES)
+    Call<WSMessage> getListCountries(@Body TripRequest tripRequestRequest);
+
+    @POST(Constants.API_LIST_FLIGHT_CLASS)
+    Call<WSMessage> getListFlightClass(@Body TripRequest tripRequestRequest);
+
     @POST(Constants.API_CREATE_TRIPS)
     Call<WSMessage> createTrips(@Body TripsResponse tripRequestRequest);
 

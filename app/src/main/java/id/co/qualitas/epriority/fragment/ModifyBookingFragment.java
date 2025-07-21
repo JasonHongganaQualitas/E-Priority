@@ -31,8 +31,7 @@ public class ModifyBookingFragment extends BaseFragment {
     List<Agent> mList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_modify_booking, container, false);
 
@@ -75,7 +74,7 @@ public class ModifyBookingFragment extends BaseFragment {
 
     private void iniAdapter() {
         agentRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AgentAdapter(this, mList, (header, pos) -> {
+        adapter = new AgentAdapter(getContext(), mList, (header, pos) -> {
         });
         agentRV.setAdapter(adapter);
     }

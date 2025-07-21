@@ -43,7 +43,6 @@ import id.co.qualitas.epriority.databinding.DialogCreateNewTripBinding;
 import id.co.qualitas.epriority.fragment.BookingDetailsAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeCustomerFragment;
-import id.co.qualitas.epriority.fragment.PassengerInformationFragment;
 import id.co.qualitas.epriority.fragment.ProfileFragment;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
@@ -54,7 +53,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
-
     private ActivityMainBinding binding;
     int currentFabIconId = R.drawable.ic_add;
     private ActivityResultLauncher<Intent> qrScannerLauncher;
@@ -101,7 +99,10 @@ public class MainActivity extends BaseActivity {
             if (currentFabIconId == R.drawable.ic_scan) {
                 checkCameraPermissionAndStartScanner();
             } else {
-                openDialogCreateNewTrip();
+                intent = new Intent(getApplicationContext(), CreateFlightDetailsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+//                openDialogCreateNewTrip();
             }
         });
 
@@ -138,7 +139,9 @@ public class MainActivity extends BaseActivity {
 
         dialogBinding.btnContinue.setOnClickListener(v -> {
             alertDialog.dismiss();
-            replaceFragment(new PassengerInformationFragment());
+            intent = new Intent(getApplicationContext(), PassengerInformationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
         });
 
         alertDialog.show();

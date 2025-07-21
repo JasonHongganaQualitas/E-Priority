@@ -8,7 +8,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -19,24 +18,24 @@ import java.util.Locale;
 
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.CardAgentBinding;
+import id.co.qualitas.epriority.databinding.RowViewPassengerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.model.Agent;
+import id.co.qualitas.epriority.model.Passenger;
 
-public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> implements Filterable {
-    private List<Agent> mList, mFilteredList;
+public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAdapter.ViewHolder> implements Filterable {
+    private List<Passenger> mList, mFilteredList;
     private Context mContext;
     private OnAdapterListener onAdapterListener;
-    protected DecimalFormatSymbols otherSymbols;
-    protected DecimalFormat format;
 
-    public AgentAdapter(Context mContext, List<Agent> mList, OnAdapterListener onAdapterListener) {
+    public PassengerTripsAdapter(Context mContext, List<Passenger> mList, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
         this.mFilteredList = mList;
         this.onAdapterListener = onAdapterListener;
     }
 
-    public void setFilteredList(List<Agent> filteredList) {
+    public void setFilteredList(List<Passenger> filteredList) {
         this.mList = filteredList;
         this.mFilteredList = filteredList;
         notifyDataSetChanged();
@@ -46,21 +45,20 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        CardAgentBinding binding = CardAgentBinding.inflate(inflater, parent, false);
+        RowViewPassengerBinding binding = RowViewPassengerBinding.inflate(inflater, parent, false);
         return new ViewHolder(binding, onAdapterListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        setFormatSeparator();
-        Agent agent = mFilteredList.get(holder.getAdapterPosition());
-        String reviewCount = format.format(agent.getReview_count());
-        String average = format.format(agent.getRating_average());
-        holder.binding.nameText.setText(Helper.isEmpty(agent.getName(), ""));
-        holder.binding.ratingText.setText(average + " (" + reviewCount + ") reviews");
-        holder.binding.languagesText.setText("Language : " + Helper.isEmpty(agent.getLanguages(), ""));
-        holder.binding.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            agent.setChecked(isChecked);
+        Passenger agent = mFilteredList.get(holder.getAdapterPosition());
+        String firstName = Helper.isEmpty(agent.getFirst_name(), "");
+        String lastName = Helper.isEmpty(agent.getLast_name(), "");
+        holder.binding.nameTxt.setText(firstName + " " + lastName);
+        holder.binding.imgDelete.setOnClickListener(v -> {
+            mList.remove(holder.getAdapterPosition());
+            notifyItemRemoved(holder.getAdapterPosition());
+            notifyItemRangeChanged(holder.getAdapterPosition(), mList.size());
         });
     }
 
@@ -73,12 +71,12 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                 if (charString.isEmpty()) {
                     mFilteredList = mList;
                 } else {
-                    List<Agent> filteredList = new ArrayList<>();
-                    for (Agent row : mList) {
+                    List<Passenger> filteredList = new ArrayList<>();
+                    for (Passenger row : mList) {
 
                         /*filter by name*/
-                        if (String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase()) ||
-                                String.valueOf(row.getName()).toLowerCase().contains(charString.toLowerCase())) {
+                        if (String.valueOf(row.getFirst_name()).toLowerCase().contains(charString.toLowerCase()) ||
+                                String.valueOf(row.getLast_name()).toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -93,7 +91,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<Agent>) filterResults.values;
+                mFilteredList = (ArrayList<Passenger>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -106,9 +104,9 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnAdapterListener onAdapterListener;
-        CardAgentBinding binding;
+        RowViewPassengerBinding binding;
 
-        public ViewHolder(@NonNull CardAgentBinding binding, OnAdapterListener onAdapterListener) {
+        public ViewHolder(@NonNull RowViewPassengerBinding binding, OnAdapterListener onAdapterListener) {
             super(binding.getRoot());
             this.binding = binding;
             this.onAdapterListener = onAdapterListener;
@@ -122,13 +120,6 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
     }
 
     public interface OnAdapterListener {
-        void onAdapterClick(Agent detail, int pos);
-    }
-
-    private void setFormatSeparator() {
-        otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
-        otherSymbols.setDecimalSeparator(',');
-        otherSymbols.setGroupingSeparator('.');
-        format = new DecimalFormat(Constants.DECIMAL_PATTERN, otherSymbols);
+        void onAdapterClick(Passenger detail, int pos);
     }
 }

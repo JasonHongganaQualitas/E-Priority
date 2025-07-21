@@ -54,7 +54,7 @@ public class BookingDetailsFragment extends Fragment {
 
     private void initAdapter() {
         agentRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AgentAdapter(this,mList, (header, pos) -> {
+        adapter = new AgentAdapter(getContext(),mList, (header, pos) -> {
         });
         agentRV.setAdapter(adapter);
     }
