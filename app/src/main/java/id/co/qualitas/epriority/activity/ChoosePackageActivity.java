@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 
 import androidx.core.content.ContextCompat;
@@ -22,15 +22,16 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.DialogBookingCreatedBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
 import id.co.qualitas.epriority.databinding.FragmentChoosePackageBinding;
-import id.co.qualitas.epriority.databinding.FragmentPassengerInformationBinding;
-import id.co.qualitas.epriority.fragment.BaseFragment;
+import id.co.qualitas.epriority.fragment.DatePickerFragment;
 import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
@@ -44,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChoosePackageActivity extends BaseActivity implements TimePickerFragment.TimeSelectedListener {
+public class ChoosePackageActivity extends BaseActivity implements TimePickerFragment.TimeSelectedListener, DatePickerFragment.DateSelectedListener {
     AgentAdapter adapter;
     List<Agent> mList = new ArrayList<>(), mChoosenAgentList = new ArrayList<>();
     private FragmentChoosePackageBinding binding;
@@ -90,7 +91,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         });
 
         binding.llFlightHeader.setOnClickListener(v -> {
-           selectFlight();
+            selectFlight();
         });
 
         binding.llFastLaneHeader.setOnClickListener(v -> {
@@ -110,7 +111,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         });
 
         binding.cbFlight.setOnClickListener(v -> {
-           selectFlight();
+            selectFlight();
         });
 
         binding.cbFastLane.setOnClickListener(v -> {
@@ -122,9 +123,12 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         });
 
         binding.btnReview.setOnClickListener(v -> {
-            createTrips();
-//            ReviewBookingFragment fragment = new ReviewBookingFragment();
-//            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+            if (validationTrips()) {
+                prepareDataTrips();
+                intent = new Intent(getApplicationContext(), ReviewBookingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
         });
     }
 
@@ -222,6 +226,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             binding.arrowAirport.setImageResource(R.drawable.ic_arrow_down_gray);
 
             binding.edtPickUpTime.setText(null);
+            binding.edtPickUpDate.setText(null);
             binding.edtContact.setText(null);
             binding.edtOtherAirport.setText(null);
             binding.spnVehicleType.setSelection(0);
@@ -398,6 +403,10 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         binding.edtPickUpTime.setOnClickListener(v -> {
             openDialogTimePicker();
         });
+
+        binding.edtPickUpDate.setOnClickListener(v -> {
+            showDatePickerDialog();
+        });
         Dropdown hintItem = new Dropdown();
         hintItem.setId(0);
         hintItem.setName("Select vehicle type...");
@@ -532,41 +541,55 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         });
     }
 
-    public void createTrips() {
-        openDialogProgress();
-        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        prepareDataTrips();
-        Call<WSMessage> httpRequest = apiInterface.createTrips(createTrips);
-        httpRequest.enqueue(new Callback<WSMessage>() {
-            @Override
-            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                dialog.dismiss();
-                if (response.isSuccessful()) {
-                    WSMessage result = response.body();
-                    if (result != null) {
-                        if (result.getIdMessage() == 1) {
-                            setToast(result.getMessage());
-                            intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            startActivity(intent);
-                        } else {
-                            setToast(result.getMessage());
-                        }
-                    } else {
-                        setToast(response.message());
-                    }
-                } else {
-                    setToast(response.message());
-                }
+    private boolean validationTrips() {
+        int empty = 0;
+        if (airportSelected) {
+            if (Helper.isEmpty(binding.edtPickUpTime)) {
+                binding.edtPickUpTime.setError("Please enter pick up time");
+                empty++;
             }
+            if (Helper.isEmpty(binding.edtPickUpDate)) {
+                binding.edtPickUpDate.setError("Please enter pick up date");
+                empty++;
+            }
+            if (Helper.isEmpty(binding.edtContact)) {
+                binding.edtContact.setError("Please enter contact number");
+                empty++;
+            }
+            if (selectedVehicleType == null) {
+                setToast("Please select vehicle type");
+                empty++;
+            }
+        }
 
-            @Override
-            public void onFailure(Call<WSMessage> call, Throwable t) {
-                call.cancel();
-                dialog.dismiss();
-                setToast(t.getMessage());
+        if (loungeSelected) {
+            if (selectedLoungeType == null) {
+                setToast("Please select lounge type");
+                empty++;
             }
-        });
+        }
+
+        if (flightSelected) {
+            if (selectedFLightClass == null) {
+                setToast("Please select flight class");
+                empty++;
+            }
+        }
+
+        if (fastLaneSelected) {
+            if (selectedFastType == null) {
+                setToast("Please select fast lane type");
+                empty++;
+            }
+        }
+
+        if (baggageSelected) {
+            if (selectedBaggage == null) {
+                setToast("Please select baggage type");
+                empty++;
+            }
+        }
+        return empty == 0;
     }
 
     private void prepareDataTrips() {
@@ -574,9 +597,12 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         if (airportSelected) {
             detail = new Packages();
             detail.setVehicle_type(selectedVehicleType.getId());
-            detail.setPickup_time(binding.edtPickUpTime.getText().toString());
+            String time = !Helper.isEmpty(binding.edtPickUpTime) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtPickUpTime.getText().toString()) : null;
+            String date = Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPickUpDate.getText().toString());
+            detail.setPickup_time(date + " " + time);
             detail.setContact_no(binding.edtContact.getText().toString());
             detail.setRequest_note(binding.edtOtherAirport.getText().toString());
+            detail.setSelectedVehicleType(selectedVehicleType);
             header.setAirport_transfer(detail);
         } else {
             header.setAirport_transfer(null);
@@ -586,6 +612,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail = new Packages();
             detail.setLounge_type(selectedLoungeType.getId());
             detail.setRequest_note(binding.edtOtherLounge.getText().toString());
+            detail.setSelectedLoungeType(selectedLoungeType);
             header.setLounge_access(detail);
         } else {
             header.setLounge_access(null);
@@ -595,6 +622,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail = new Packages();
             detail.setFlight_class(selectedFLightClass.getId());
             detail.setRequest_note(binding.edtOtherFlight.getText().toString());
+            detail.setSelectedFlightClasses(selectedFLightClass);
             header.setFlight_detail(detail);
         } else {
             header.setFlight_detail(null);
@@ -604,6 +632,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail = new Packages();
             detail.setType_lane(selectedFastType.getId());
             detail.setRequest_note(binding.edtOtherFast.getText().toString());
+            detail.setSelectedFastlaneType(selectedFastType);
             header.setFast_lane(detail);
         } else {
             header.setFast_lane(null);
@@ -613,15 +642,31 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail = new Packages();
             detail.setType_baggage(selectedBaggage.getId());
             detail.setRequest_note(binding.edtOtherLounge.getText().toString());
+            detail.setSelectedBaggageType(selectedBaggage);
             header.setBaggage_service(detail);
         } else {
             header.setBaggage_service(null);
         }
 
+        createTrips.setAgent_list(mChoosenAgentList);
         createTrips.setPackages(header);
         if (Helper.isNotEmptyOrNull(mChoosenAgentList)) {
             createTrips.setAgent_id(mChoosenAgentList.get(0).getId());
         }
+        Helper.setItemParam(Constants.DATA_CREATE_TRIPS, createTrips);
+    }
 
+    private void showDatePickerDialog() {
+        DatePickerFragment datePicker = DatePickerFragment.newInstance(this);
+        datePicker.show(getSupportFragmentManager(), "datePickerBirthActivity");
+    }
+
+    @Override
+    public void onDateSelected(int year, int month, int dayOfMonth) {
+        int displayMonth = month + 1;
+
+        // Format the date string as you like (e.g., dd/MM/yyyy)
+        String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, displayMonth, year);
+        binding.edtPickUpDate.setText(selectedDate);
     }
 }

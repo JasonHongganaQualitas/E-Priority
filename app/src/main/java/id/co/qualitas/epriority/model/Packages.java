@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Packages implements Serializable {
+    private Dropdown selectedLoungeType;
     private List<Dropdown> loungeTypes;
+    private Dropdown selectedVehicleType;
     private List<Dropdown> vehicleTypes;
+    private Dropdown selectedFastlaneType;
     private List<Dropdown> fastlaneTypes;
+    private Dropdown selectedFlightClasses;
     private List<Dropdown> flightClasses;
+    private Dropdown selectedBaggageType;
     private List<Dropdown> baggageTypes;
     private List<Dropdown> countries;
     private List<Dropdown> packages;
@@ -30,6 +35,46 @@ public class Packages implements Serializable {
     private int type_baggage;
 
     public Packages() {
+    }
+
+    public Dropdown getSelectedLoungeType() {
+        return selectedLoungeType;
+    }
+
+    public void setSelectedLoungeType(Dropdown selectedLoungeType) {
+        this.selectedLoungeType = selectedLoungeType;
+    }
+
+    public Dropdown getSelectedVehicleType() {
+        return selectedVehicleType;
+    }
+
+    public void setSelectedVehicleType(Dropdown selectedVehicleType) {
+        this.selectedVehicleType = selectedVehicleType;
+    }
+
+    public Dropdown getSelectedFastlaneType() {
+        return selectedFastlaneType;
+    }
+
+    public void setSelectedFastlaneType(Dropdown selectedFastlaneType) {
+        this.selectedFastlaneType = selectedFastlaneType;
+    }
+
+    public Dropdown getSelectedFlightClasses() {
+        return selectedFlightClasses;
+    }
+
+    public void setSelectedFlightClasses(Dropdown selectedFlightClasses) {
+        this.selectedFlightClasses = selectedFlightClasses;
+    }
+
+    public Dropdown getSelectedBaggageType() {
+        return selectedBaggageType;
+    }
+
+    public void setSelectedBaggageType(Dropdown selectedBaggageType) {
+        this.selectedBaggageType = selectedBaggageType;
     }
 
     public Packages getLounge_access() {

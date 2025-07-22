@@ -18,8 +18,35 @@ public class Passenger implements Serializable {
     private int passport_country;
     private int cabin;
     private int baggage;
+    private Dropdown selectedNationality;
+    private Dropdown selectedFlightClass;
+    private Dropdown selectedNationalityPassport;
 
     public Passenger() {
+    }
+
+    public Dropdown getSelectedFlightClass() {
+        return selectedFlightClass;
+    }
+
+    public void setSelectedFlightClass(Dropdown selectedFlightClass) {
+        this.selectedFlightClass = selectedFlightClass;
+    }
+
+    public Dropdown getSelectedNationalityPassport() {
+        return selectedNationalityPassport;
+    }
+
+    public void setSelectedNationalityPassport(Dropdown selectedNationalityPassport) {
+        this.selectedNationalityPassport = selectedNationalityPassport;
+    }
+
+    public Dropdown getSelectedNationality() {
+        return selectedNationality;
+    }
+
+    public void setSelectedNationality(Dropdown selectedNationality) {
+        this.selectedNationality = selectedNationality;
     }
 
     public String getSeat_layout() {

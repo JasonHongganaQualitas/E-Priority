@@ -35,6 +35,7 @@ public class TripsResponse {
     @SerializedName("package")
     public Packages packages;
     public String city;
+    private List<Agent> agent_list;
 
     public TripsResponse() {
     }
@@ -278,5 +279,13 @@ public class TripsResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setAgent_list(List<Agent> agent_list) {
+        this.agent_list = agent_list;
+    }
+
+    public List<Agent> getAgent_list() {
+        return agent_list;
     }
 }

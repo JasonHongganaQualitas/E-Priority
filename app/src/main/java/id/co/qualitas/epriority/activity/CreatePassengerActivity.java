@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -33,6 +34,7 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.DialogChooseNationalityBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
+import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
@@ -164,10 +166,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             empty++;
         }
 
-        if (empty == 0) {
-            return true;
-        }
-        return false;
+        return empty == 0;
     }
 
     private void saveData() {
@@ -181,10 +180,13 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         passenger.setBaggage(Integer.parseInt(binding.edtBaggage.getText().toString()));
         passenger.setInflight_meal(inFlightMealRequired ? 1 : 0);
         passenger.setNationality(selectedNationality.getId());
+        passenger.setSelectedNationality(selectedNationality);
         passenger.setFlight_class(selectedFlightClass.getId());
+        passenger.setSelectedFlightClass(selectedFlightClass);
         passenger.setPassport_no(binding.edtPassportNumber.getText().toString());
         passenger.setPassport_expdate(Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportExpiryDate.getText().toString()));
         passenger.setPassport_country(selectedNationalityPassport.getId());
+        passenger.setSelectedNationalityPassport(selectedNationalityPassport);
         passenger.setSeat_layout(null);
         Helper.setItemParam(Constants.DATA_PASSENGER, passenger);
     }
@@ -233,7 +235,6 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         datePicker.show(getSupportFragmentManager(), "datePickerBirthActivity");
     }
 
-    // This is the callback method from DatePickerFragment.DateSelectedListener
     @Override
     public void onDateSelected(int year, int month, int dayOfMonth) {
         // Month is 0-based, so add 1 for display

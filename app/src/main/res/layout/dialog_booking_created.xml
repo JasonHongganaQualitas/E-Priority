@@ -3,32 +3,32 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_rounded_qr_border_blue"
-    android:padding="12dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Booking Trip Created"
         android:textAlignment="center"
-        android:textSize="@dimen/text_reg1"
         android:textColor="@color/black"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/text_reg1"
+        android:textStyle="bold" />
 
     <TextView
-        android:text="Thank you! Your tripsResponse has been submitted. We're processing it and will confirm shortly."
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:textSize="@dimen/text_reg3"
-        android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="22dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="24dp"
+        android:text="Thank you! Your tripsResponse has been submitted. We're processing it and will confirm shortly."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_reg3" />
 
     <ImageView
-        android:src="@drawable/img_book_created"
-        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/img_book_created" />
 
 </LinearLayout>

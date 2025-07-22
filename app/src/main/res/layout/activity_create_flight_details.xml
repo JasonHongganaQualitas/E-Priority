@@ -95,7 +95,8 @@
                 android:background="@drawable/bg_rounded_edittext_gray"
                 android:hint="ex: 123456789"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -130,17 +131,30 @@
                             android:background="@drawable/bg_rounded_edittext_gray"
                             android:hint="ex: 15-08-2025"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtTimeFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: 08:00"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
 
                         <EditText
                             android:id="@+id/edtRouteFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/bg_rounded_edittext_gray"
                             android:hint="ex: Jakarta (CGK)"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -172,17 +186,30 @@
                             android:background="@drawable/bg_rounded_edittext_gray"
                             android:hint="ex: 15-08-2025"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtTimeTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: 08:00"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
 
                         <EditText
                             android:id="@+id/edtRouteTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/bg_rounded_edittext_gray"
                             android:hint="ex: Frankfurt (FRA)"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -223,7 +250,8 @@
                 android:hint="ex: GA-408"
                 android:inputType="textEmailAddress"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2" />
 
         </LinearLayout>
 
@@ -257,8 +285,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext_gray"
-                android:hint="1"
-                android:padding="8dp" />
+                android:hint="ex: 1"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <LinearLayout
                 android:id="@+id/llAddPassenger"

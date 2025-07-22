@@ -24,13 +24,15 @@ import id.co.qualitas.epriority.model.Agent;
 import id.co.qualitas.epriority.model.Passenger;
 
 public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAdapter.ViewHolder> implements Filterable {
+    private boolean isReview;
     private List<Passenger> mList, mFilteredList;
     private Context mContext;
     private OnAdapterListener onAdapterListener;
 
-    public PassengerTripsAdapter(Context mContext, List<Passenger> mList, OnAdapterListener onAdapterListener) {
+    public PassengerTripsAdapter(Context mContext, List<Passenger> mList, boolean isReview, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
+        this.isReview = isReview;
         this.mFilteredList = mList;
         this.onAdapterListener = onAdapterListener;
     }
@@ -55,11 +57,16 @@ public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAd
         String firstName = Helper.isEmpty(agent.getFirst_name(), "");
         String lastName = Helper.isEmpty(agent.getLast_name(), "");
         holder.binding.nameTxt.setText(firstName + " " + lastName);
-        holder.binding.imgDelete.setOnClickListener(v -> {
-            mList.remove(holder.getAdapterPosition());
-            notifyItemRemoved(holder.getAdapterPosition());
-            notifyItemRangeChanged(holder.getAdapterPosition(), mList.size());
-        });
+        if (isReview) {
+            holder.binding.imgDelete.setVisibility(View.GONE);
+        } else {
+            holder.binding.imgDelete.setVisibility(View.VISIBLE);
+            holder.binding.imgDelete.setOnClickListener(v -> {
+                mList.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+                notifyItemRangeChanged(holder.getAdapterPosition(), mList.size());
+            });
+        }
     }
 
     @Override

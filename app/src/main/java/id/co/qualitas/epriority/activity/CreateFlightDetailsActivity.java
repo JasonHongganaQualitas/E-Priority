@@ -32,14 +32,15 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.ActivityCreateFlightDetailsBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
+import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.model.Passenger;
 import id.co.qualitas.epriority.model.TripRequest;
 import id.co.qualitas.epriority.model.TripsResponse;
 
-public class CreateFlightDetailsActivity extends BaseActivity implements DatePickerFragment.DateSelectedListener {
+public class CreateFlightDetailsActivity extends BaseActivity implements TimePickerFragment.TimeSelectedListener, DatePickerFragment.DateSelectedListener {
     private ActivityCreateFlightDetailsBinding binding;
-    private EditText activeDateField;
+    private EditText activeDateField, activeTimeField;
     private Passenger dataPassenger;
     private TripsResponse createTrips;
     private PassengerTripsAdapter adapter;
@@ -101,12 +102,25 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
             binding.edtDateTo.setClickable(true);
         }
 
-        binding.imgQuestionFN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFlightInstructionBottomSheet(selectedTripType.equals("Arrival"));
-            }
-        });
+        if (binding.edtTimeFrom != null) {
+            binding.edtTimeFrom.setOnClickListener(v -> {
+                activeTimeField = binding.edtTimeFrom; // Set active field
+                openDialogTimePicker();
+            });
+            binding.edtTimeFrom.setFocusable(false);
+            binding.edtTimeFrom.setClickable(true);
+        }
+
+        if (binding.edtTimeTo != null) {
+            binding.edtTimeTo.setOnClickListener(v -> {
+                activeTimeField = binding.edtTimeTo; // Set active field
+                openDialogTimePicker();
+            });
+            binding.edtTimeTo.setFocusable(false);
+            binding.edtTimeTo.setClickable(true);
+        }
+
+        binding.imgQuestionFN.setOnClickListener(v -> showFlightInstructionBottomSheet(selectedTripType.equals("Arrival")));
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -119,7 +133,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
 
         tvTitle.setText(R.string.flight_instruction_title);
         String instructionText = getString(R.string.departure_instruction);
-        if(isArrival){
+        if (isArrival) {
             instructionText = getString(R.string.arrival_instruction);
         }
         tvInstruction.setText(instructionText);
@@ -127,12 +141,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
         String note = getString(R.string.flight_instruction_note);
         tvInstruction.setText(instructionText + "\n\n" + note);
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.cancel();
-            }
-        });
+        btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
 
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
@@ -150,6 +159,14 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
         }
         if (Helper.isEmpty(binding.edtDateTo)) {
             binding.edtDateTo.setError("Please enter date");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtTimeFrom)) {
+            binding.edtTimeFrom.setError("Please enter time");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtTimeTo)) {
+            binding.edtTimeTo.setError("Please enter time");
             empty++;
         }
         if (Helper.isEmpty(binding.edtAirline)) {
@@ -173,10 +190,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
             empty++;
         }
 
-        if (empty == 0) {
-            return true;
-        }
-        return false;
+        return empty == 0;
     }
 
     private void saveData() {
@@ -189,15 +203,17 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
             String currentSpinnerValue = (String) binding.spnType.getSelectedItem();
             createTrips.setTrip_type(currentSpinnerValue);
         }
+        String dateFrom = !Helper.isEmpty(binding.edtDateFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateFrom.getText().toString()) : null;
+        String dateTo = !Helper.isEmpty(binding.edtDateTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateTo.getText().toString()) : null;
+        String timeFrom = !Helper.isEmpty(binding.edtTimeFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeFrom.getText().toString()) : null;
+        String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
         createTrips.setCustomer_id(user.getId());
         createTrips.setBooking_id(binding.edtBookingID.getText().toString());
         createTrips.setFlight_no(binding.edtAirline.getText().toString());
         createTrips.setAirline(binding.edtAirline.getText().toString());
-        createTrips.setDate_from(!Helper.isEmpty(binding.edtDateFrom)
-                ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateFrom.getText().toString()) : null);
-        createTrips.setDate_to(!Helper.isEmpty(binding.edtDateTo)
-                ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateTo.getText().toString()) : null);
-        createTrips.setAircraft("Boeing 787-9");
+        createTrips.setDate_from(dateFrom + " " + timeFrom);
+        createTrips.setDate_to(dateTo + " " + timeTo);
+        createTrips.setAircraft("");
         createTrips.setRoute_from(binding.edtRouteFrom.getText().toString());
         createTrips.setRoute_to(binding.edtRouteTo.getText().toString());
         createTrips.setPassenger_count(Integer.parseInt(binding.edtNumberPassenger.getText().toString()));
@@ -232,16 +248,16 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
 
             if (Helper.getItemParam(Constants.DATA_PASSENGER) != null) {
                 dataPassenger = (Passenger) Helper.getItemParam(Constants.DATA_PASSENGER);
-            }
-            if (Helper.isNotEmptyOrNull(createTrips.getPassengers())) {
                 passengerList = new ArrayList<>();
-                passengerList = createTrips.getPassengers();
+                if (Helper.isNotEmptyOrNull(createTrips.getPassengers())) {
+                    passengerList = createTrips.getPassengers();
+                } else {
+                    passengerList = new ArrayList<>();
+                }
                 passengerList.add(dataPassenger);
                 createTrips.setPassengers(passengerList);
-            } else {
-                passengerList = new ArrayList<>();
-                passengerList.add(dataPassenger);
             }
+
             Helper.removeItemParam(Constants.DATA_PASSENGER);
         } else {
             passengerList = new ArrayList<>();
@@ -251,7 +267,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
 
     private void initAdapter() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(CreateFlightDetailsActivity.this));
-        adapter = new PassengerTripsAdapter(CreateFlightDetailsActivity.this, passengerList, (header, pos) -> {
+        adapter = new PassengerTripsAdapter(CreateFlightDetailsActivity.this, passengerList, false, (header, pos) -> {
         });
         binding.recyclerView.setAdapter(adapter);
     }
@@ -275,6 +291,21 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
             }
         });
         selectedTripType = "Departure";
+    }
+
+    private void openDialogTimePicker() {
+        TimePickerFragment timePicker = TimePickerFragment.newInstance(this);
+        timePicker.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimeSelected(int hourOfDay, int minute) {
+        String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
+        if (activeTimeField != null) {
+            activeTimeField.setText(selectedTime);
+        } else {
+            setToast("Error: Date field not identified.");
+        }
     }
 
 }
