@@ -1,21 +1,30 @@
 package id.co.qualitas.epriority.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.PassangerAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
@@ -91,6 +100,42 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
             binding.edtDateTo.setFocusable(false);
             binding.edtDateTo.setClickable(true);
         }
+
+        binding.imgQuestionFN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFlightInstructionBottomSheet(selectedTripType.equals("Arrival"));
+            }
+        });
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void showFlightInstructionBottomSheet(boolean isArrival) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.bottomsheet_flight_instruction, null);
+        TextView tvTitle = view.findViewById(R.id.tvTitle);
+        TextView tvInstruction = view.findViewById(R.id.tvInstruction);
+        Button btnClose = view.findViewById(R.id.btnClose);
+
+        tvTitle.setText(R.string.flight_instruction_title);
+        String instructionText = getString(R.string.departure_instruction);
+        if(isArrival){
+            instructionText = getString(R.string.arrival_instruction);
+        }
+        tvInstruction.setText(instructionText);
+
+        String note = getString(R.string.flight_instruction_note);
+        tvInstruction.setText(instructionText + "\n\n" + note);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
     }
 
     private boolean checkNoEmptyData() {
@@ -229,6 +274,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        selectedTripType = "Departure";
     }
 
 }

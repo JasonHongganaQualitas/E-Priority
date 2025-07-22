@@ -18,4 +18,55 @@
     <string name="customer">CUSTOMER</string>
     <string name="client_id">186779783163-5s35s6r05km04fdahk11i99a3u8a0kk2.apps.googleusercontent.com</string>
     <string name="server_client_id">186779783163-7db06iciu2c5trd7q6vqdebti016ahmp.apps.googleusercontent.com</string>
+    <string name="flight_instruction_title">Flight Number Instruction</string>
+
+    <string name="departure_instruction">
+Example itinerary:\n
+Semarang → GA233 → Jakarta → QR955 → Doha → QR946 → Amsterdam\n
+\n
+✈️ DEPARTURE (You are leaving from Semarang):\n
+\n
+Please enter the flight number for the JAKARTA → SEMARANG segment only.\n
+This is the domestic connecting flight after your international departure.\n
+\n
+You DO NOT need to enter:\n
+- Semarang → Jakarta\n
+- Any earlier international segments\n
+\n
+✅ You must enter:\n
+Flight Number: GA233 (Jakarta → Semarang)\n
+\n
+Why this matters:\n
+- We only track entry and exit segments connected to Indonesia.\n
+- This helps us coordinate your arrival and departure.
+    </string>
+
+    <string name="arrival_instruction">
+Example itinerary:\n
+Amsterdam → QR947 → Doha → QR954 → Jakarta → GA234 → Semarang\n
+\n
+✈️ ARRIVAL (You are arriving in Semarang):\n
+\n
+Please enter the flight number for the DOHA → JAKARTA segment only.\n
+This is your main international flight into Indonesia.\n
+\n
+You DO NOT need to enter:\n
+- Amsterdam → Doha\n
+- Jakarta → Semarang\n
+\n
+✅ You must enter:\n
+Flight Number: QR954 (Doha → Jakarta)\n
+\n
+Why this matters:\n
+- We only track entry and exit segments connected to Indonesia.\n
+- This helps us coordinate your arrival and departure.
+    </string>
+
+    <string name="flight_instruction_note">
+Note: Please enter only the flight number that marks your official entry into or exit from Indonesia.\n
+This ensures accurate tracking of your travel schedule.
+    </string>
+
+    <string name="close">Close</string>
+
 </resources>
