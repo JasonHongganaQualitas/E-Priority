@@ -59,9 +59,10 @@ public class CreateFlightDetailsActivity extends BaseActivity implements DatePic
         binding.llAddPassenger.setOnClickListener(v -> {
             if (Helper.isEmpty(binding.edtNumberPassenger)) {
                 binding.edtNumberPassenger.setError("Please enter passenger count");
-            } else if (passengerList.size() > Integer.parseInt(binding.edtNumberPassenger.getText().toString())) {
+            } else if (passengerList.size() >= Integer.parseInt(binding.edtNumberPassenger.getText().toString())) {
                 setToast("Passenger can't be more than passenger count");
             } else {
+                Helper.removeItemParam(Constants.DATA_PASSENGER);
                 saveData();//llAddPassenger
                 intent = new Intent(getApplicationContext(), CreatePassengerActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

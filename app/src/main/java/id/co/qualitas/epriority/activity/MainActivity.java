@@ -44,6 +44,7 @@ import id.co.qualitas.epriority.fragment.BookingDetailsAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeAgentFragment;
 import id.co.qualitas.epriority.fragment.HomeCustomerFragment;
 import id.co.qualitas.epriority.fragment.ProfileFragment;
+import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
@@ -99,6 +100,8 @@ public class MainActivity extends BaseActivity {
             if (currentFabIconId == R.drawable.ic_scan) {
                 checkCameraPermissionAndStartScanner();
             } else {
+                Helper.removeItemParam(Constants.DATA_CREATE_TRIPS);
+                Helper.removeItemParam(Constants.DATA_PASSENGER);
                 intent = new Intent(getApplicationContext(), CreateFlightDetailsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);

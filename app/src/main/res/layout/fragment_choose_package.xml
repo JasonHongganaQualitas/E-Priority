@@ -121,8 +121,7 @@
                     android:id="@+id/cbAirport"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:enabled="false" />
+                    android:layout_gravity="center_vertical" />
 
                 <ImageView
                     android:id="@+id/imgAirport"
@@ -283,8 +282,7 @@
                     android:id="@+id/cbLounge"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:enabled="false" />
+                    android:layout_gravity="center_vertical"/>
 
                 <ImageView
                     android:id="@+id/imgLounge"
@@ -408,8 +406,7 @@
                     android:id="@+id/cbFlight"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:enabled="false" />
+                    android:layout_gravity="center_vertical"/>
 
                 <ImageView
                     android:id="@+id/imgFlight"
@@ -533,8 +530,7 @@
                     android:id="@+id/cbFastLane"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:enabled="false" />
+                    android:layout_gravity="center_vertical"/>
 
                 <ImageView
                     android:id="@+id/imgFastLane"
@@ -658,8 +654,7 @@
                     android:id="@+id/cbBaggage"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:enabled="false" />
+                    android:layout_gravity="center_vertical"/>
 
                 <ImageView
                     android:id="@+id/imgBaggage"

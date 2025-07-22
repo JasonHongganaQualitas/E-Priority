@@ -82,110 +82,43 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         });
 
         binding.llAirportHeader.setOnClickListener(v -> {
-            if (airportSelected) {
-                airportSelected = false;
-                binding.llAirportDetail.setVisibility(View.GONE);
-                binding.cbAirport.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
-                binding.imgAirport.setImageResource(R.drawable.ic_airport_unchecked);
-                binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
-                binding.arrowAirport.setImageResource(R.drawable.ic_arrow_down_gray);
-
-                binding.edtPickUpTime.setText(null);
-                binding.edtContact.setText(null);
-                binding.edtOtherAirport.setText(null);
-                binding.spnVehicleType.setSelection(0);
-            } else {
-                airportSelected = true;
-                binding.llAirportDetail.setVisibility(View.VISIBLE);
-                binding.cbAirport.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
-                binding.imgAirport.setImageResource(R.drawable.ic_airport_checked);
-                binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
-                binding.arrowAirport.setImageResource(R.drawable.ic_arrow_up_gray);
-            }
+            selectAirport();
         });
 
         binding.llLoungeHeader.setOnClickListener(v -> {
-            if (loungeSelected) {
-                loungeSelected = false;
-                binding.llLoungeDetail.setVisibility(View.GONE);
-                binding.cbLounge.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
-                binding.imgLounge.setImageResource(R.drawable.ic_lounge_unchecked);
-                binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
-                binding.arrowLounge.setImageResource(R.drawable.ic_arrow_down_gray);
-
-                binding.spnLoungeType.setSelection(0);
-                binding.edtOtherLounge.setText(null);
-            } else {
-                loungeSelected = true;
-                binding.llLoungeDetail.setVisibility(View.VISIBLE);
-                binding.cbLounge.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
-                binding.imgLounge.setImageResource(R.drawable.ic_lounge_checked);
-                binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
-                binding.arrowLounge.setImageResource(R.drawable.ic_arrow_up_gray);
-            }
+            selectLounge();
         });
 
         binding.llFlightHeader.setOnClickListener(v -> {
-            if (flightSelected) {
-                flightSelected = false;
-                binding.llFlightDetail.setVisibility(View.GONE);
-                binding.cbFlight.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
-                binding.imgFlight.setImageResource(R.drawable.ic_flight_unchecked);
-                binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
-                binding.arrowFlight.setImageResource(R.drawable.ic_arrow_down_gray);
-
-                binding.spnFLightClass.setSelection(0);
-                binding.edtOtherFlight.setText(null);
-            } else {
-                flightSelected = true;
-                binding.llFlightDetail.setVisibility(View.VISIBLE);
-                binding.cbFlight.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
-                binding.imgFlight.setImageResource(R.drawable.ic_flight_checked);
-                binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
-                binding.arrowFlight.setImageResource(R.drawable.ic_arrow_up_gray);
-            }
+           selectFlight();
         });
 
         binding.llFastLaneHeader.setOnClickListener(v -> {
-            if (fastLaneSelected) {
-                fastLaneSelected = false;
-                binding.llFastLaneDetail.setVisibility(View.GONE);
-                binding.cbFastLane.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
-                binding.imgFastLane.setImageResource(R.drawable.ic_fast_unchecked);
-                binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
-                binding.arrowFastLane.setImageResource(R.drawable.ic_arrow_down_gray);
-
-                binding.spnFastType.setSelection(0);
-                binding.edtOtherFast.setText(null);
-            } else {
-                fastLaneSelected = true;
-                binding.llFastLaneDetail.setVisibility(View.VISIBLE);
-                binding.cbFastLane.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
-                binding.imgFastLane.setImageResource(R.drawable.ic_fast_checked);
-                binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
-                binding.arrowFastLane.setImageResource(R.drawable.ic_arrow_up_gray);
-            }
+            selectFastLane();
         });
 
         binding.llBaggageHeader.setOnClickListener(v -> {
-            if (baggageSelected) {
-                baggageSelected = false;
-                binding.llBaggageDetail.setVisibility(View.GONE);
-                binding.cbBaggage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
-                binding.imgBaggage.setImageResource(R.drawable.ic_baggage_unchecked);
-                binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
-                binding.arrowBaggage.setImageResource(R.drawable.ic_arrow_down_gray);
+            selectBaggage();
+        });
 
-                binding.spnBaggage.setSelection(0);
-                binding.edtOtherBaggage.setText(null);
-            } else {
-                baggageSelected = true;
-                binding.llBaggageDetail.setVisibility(View.VISIBLE);
-                binding.cbBaggage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
-                binding.imgBaggage.setImageResource(R.drawable.ic_baggage_checked);
-                binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
-                binding.arrowBaggage.setImageResource(R.drawable.ic_arrow_up_gray);
-            }
+        binding.cbAirport.setOnClickListener(v -> {
+            selectAirport();
+        });
+
+        binding.cbLounge.setOnClickListener(v -> {
+            selectLounge();
+        });
+
+        binding.cbFlight.setOnClickListener(v -> {
+           selectFlight();
+        });
+
+        binding.cbFastLane.setOnClickListener(v -> {
+            selectFastLane();
+        });
+
+        binding.cbBaggage.setOnClickListener(v -> {
+            selectBaggage();
         });
 
         binding.btnReview.setOnClickListener(v -> {
@@ -193,6 +126,113 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
 //            ReviewBookingFragment fragment = new ReviewBookingFragment();
 //            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
         });
+    }
+
+    private void selectBaggage() {
+        if (baggageSelected) {
+            baggageSelected = false;
+            binding.llBaggageDetail.setVisibility(View.GONE);
+            binding.cbBaggage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
+            binding.imgBaggage.setImageResource(R.drawable.ic_baggage_unchecked);
+            binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
+            binding.arrowBaggage.setImageResource(R.drawable.ic_arrow_down_gray);
+
+            binding.spnBaggage.setSelection(0);
+            binding.edtOtherBaggage.setText(null);
+        } else {
+            baggageSelected = true;
+            binding.llBaggageDetail.setVisibility(View.VISIBLE);
+            binding.cbBaggage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
+            binding.imgBaggage.setImageResource(R.drawable.ic_baggage_checked);
+            binding.llBaggageHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
+            binding.arrowBaggage.setImageResource(R.drawable.ic_arrow_up_gray);
+        }
+    }
+
+    private void selectFastLane() {
+        if (fastLaneSelected) {
+            fastLaneSelected = false;
+            binding.llFastLaneDetail.setVisibility(View.GONE);
+            binding.cbFastLane.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
+            binding.imgFastLane.setImageResource(R.drawable.ic_fast_unchecked);
+            binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
+            binding.arrowFastLane.setImageResource(R.drawable.ic_arrow_down_gray);
+
+            binding.spnFastType.setSelection(0);
+            binding.edtOtherFast.setText(null);
+        } else {
+            fastLaneSelected = true;
+            binding.llFastLaneDetail.setVisibility(View.VISIBLE);
+            binding.cbFastLane.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
+            binding.imgFastLane.setImageResource(R.drawable.ic_fast_checked);
+            binding.llFastLaneHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
+            binding.arrowFastLane.setImageResource(R.drawable.ic_arrow_up_gray);
+        }
+    }
+
+    private void selectFlight() {
+        if (flightSelected) {
+            flightSelected = false;
+            binding.llFlightDetail.setVisibility(View.GONE);
+            binding.cbFlight.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
+            binding.imgFlight.setImageResource(R.drawable.ic_flight_unchecked);
+            binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
+            binding.arrowFlight.setImageResource(R.drawable.ic_arrow_down_gray);
+
+            binding.spnFLightClass.setSelection(0);
+            binding.edtOtherFlight.setText(null);
+        } else {
+            flightSelected = true;
+            binding.llFlightDetail.setVisibility(View.VISIBLE);
+            binding.cbFlight.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
+            binding.imgFlight.setImageResource(R.drawable.ic_flight_checked);
+            binding.llFlightHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
+            binding.arrowFlight.setImageResource(R.drawable.ic_arrow_up_gray);
+        }
+    }
+
+    private void selectLounge() {
+        if (loungeSelected) {
+            loungeSelected = false;
+            binding.llLoungeDetail.setVisibility(View.GONE);
+            binding.cbLounge.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
+            binding.imgLounge.setImageResource(R.drawable.ic_lounge_unchecked);
+            binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
+            binding.arrowLounge.setImageResource(R.drawable.ic_arrow_down_gray);
+
+            binding.spnLoungeType.setSelection(0);
+            binding.edtOtherLounge.setText(null);
+        } else {
+            loungeSelected = true;
+            binding.llLoungeDetail.setVisibility(View.VISIBLE);
+            binding.cbLounge.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
+            binding.imgLounge.setImageResource(R.drawable.ic_lounge_checked);
+            binding.llLoungeHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
+            binding.arrowLounge.setImageResource(R.drawable.ic_arrow_up_gray);
+        }
+    }
+
+    private void selectAirport() {
+        if (airportSelected) {
+            airportSelected = false;
+            binding.llAirportDetail.setVisibility(View.GONE);
+            binding.cbAirport.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_unchecked));
+            binding.imgAirport.setImageResource(R.drawable.ic_airport_unchecked);
+            binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_border_gray));
+            binding.arrowAirport.setImageResource(R.drawable.ic_arrow_down_gray);
+
+            binding.edtPickUpTime.setText(null);
+            binding.edtContact.setText(null);
+            binding.edtOtherAirport.setText(null);
+            binding.spnVehicleType.setSelection(0);
+        } else {
+            airportSelected = true;
+            binding.llAirportDetail.setVisibility(View.VISIBLE);
+            binding.cbAirport.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_checked));
+            binding.imgAirport.setImageResource(R.drawable.ic_airport_checked);
+            binding.llAirportHeader.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_blue_card));
+            binding.arrowAirport.setImageResource(R.drawable.ic_arrow_up_gray);
+        }
     }
 
     private void openDialogTimePicker() {

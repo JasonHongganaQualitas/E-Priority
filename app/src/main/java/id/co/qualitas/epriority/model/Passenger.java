@@ -9,6 +9,7 @@ public class Passenger implements Serializable {
     private String email;
     private String phone_no;
     private String birth_date;
+    private String seat_layout;
     private String passport_no;
     private String passport_expdate;
     private int inflight_meal;
@@ -19,6 +20,14 @@ public class Passenger implements Serializable {
     private int baggage;
 
     public Passenger() {
+    }
+
+    public String getSeat_layout() {
+        return seat_layout;
+    }
+
+    public void setSeat_layout(String seat_layout) {
+        this.seat_layout = seat_layout;
     }
 
     public int getInflight_meal() {

@@ -98,7 +98,7 @@ public class HomeCustomerFragment extends BaseFragment {
         TripRequest tripRequest = new TripRequest();
         tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
         tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
-        tripRequest.setTripType((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
+        tripRequest.setTrip_type((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
         tripRequest.setSearch(search);
         Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(tripRequest);
         httpRequest.enqueue(new Callback<WSMessage>() {

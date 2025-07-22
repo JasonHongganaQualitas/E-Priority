@@ -185,6 +185,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         passenger.setPassport_no(binding.edtPassportNumber.getText().toString());
         passenger.setPassport_expdate(Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportExpiryDate.getText().toString()));
         passenger.setPassport_country(selectedNationalityPassport.getId());
+        passenger.setSeat_layout(null);
         Helper.setItemParam(Constants.DATA_PASSENGER, passenger);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 public class TripRequest implements Serializable {
     public int offset;
     public int limit;
-    public String tripType;
+    public String trip_type;
     public String search;
     @SerializedName("departureTrips")
     List<TripsResponse> departureTrips;
@@ -31,12 +31,12 @@ public class TripRequest implements Serializable {
         this.limit = limit;
     }
 
-    public String getTripType() {
-        return tripType;
+    public String getTrip_type() {
+        return trip_type;
     }
 
-    public void setTripType(String tripType) {
-        this.tripType = tripType;
+    public void setTrip_type(String trip_type) {
+        this.trip_type = trip_type;
     }
 
     public String getSearch() {
