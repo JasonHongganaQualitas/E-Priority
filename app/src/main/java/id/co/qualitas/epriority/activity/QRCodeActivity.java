@@ -28,6 +28,7 @@ public class QRCodeActivity extends AppCompatActivity {
 
     private ActivityQrcodeBinding binding;
     private TripsResponse tripDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -35,25 +36,13 @@ public class QRCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityQrcodeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.indicator.smoothToShow();
         initialize();
     }
 
-    public void initialize(){
-        tripDetails = (TripsResponse) Helper.getItemParam(Constants.QR_DATA);
-        new Handler().postDelayed(() -> {
-            try {
-                // Generate QR Code
-                Bitmap qrCodeBitmap = Helper.generateQRCode(tripDetails.getQr_code_data());
+    public void initialize() {
+        tripDetails = (TripsResponse) Helper.getItemParam(Constants.TRIP_DETAILS);
 
-                // Set the generated QR code as the ImageView source
-                binding.imgQR.setImageBitmap(qrCodeBitmap);
-                binding.indicator.smoothToHide();
-                binding.imgQR.setVisibility(View.VISIBLE);
-
-            } catch (WriterException e) {
-                e.printStackTrace();
-            }
-        }, 2000);
+        binding.imgQR.setImageBitmap((Bitmap) Helper.getItemParam(Constants.QR_DATA));
+        binding.txtBookingId.setText("#" + tripDetails.getTrip_id());
     }
 }

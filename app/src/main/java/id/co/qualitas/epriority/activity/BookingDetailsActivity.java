@@ -42,6 +42,7 @@ public class BookingDetailsActivity extends BaseActivity {
     private TripsResponse tripHeader;
     private TripsResponse tripDetail;
     private PassengerTripsAdapter passengerAdapter;
+    private Bitmap qrCodeBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,8 @@ public class BookingDetailsActivity extends BaseActivity {
         initAdapter();
 
         binding.btnViewQR.setOnClickListener(v -> {
-            Helper.setItemParam(Constants.QR_DATA, tripDetail);
+            Helper.setItemParam(Constants.QR_DATA, qrCodeBitmap);
+            Helper.setItemParam(Constants.TRIP_DETAILS, tripDetail);
             Intent intent = new Intent(getApplicationContext(), QRCodeActivity.class);
             startActivity(intent);
         });
@@ -131,7 +133,7 @@ public class BookingDetailsActivity extends BaseActivity {
             new Handler().postDelayed(() -> {
                 try {
                     // Generate QR Code
-                    Bitmap qrCodeBitmap = Helper.generateQRCode(tripDetail.getQr_code_data());
+                    qrCodeBitmap = Helper.generateQRCode(tripDetail.getQr_code_data());
 
                     // Set the generated QR code as the ImageView source
                     binding.imgQR.setImageBitmap(qrCodeBitmap);

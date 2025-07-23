@@ -293,11 +293,5 @@ public class MainActivity extends BaseActivity {
                         }
                     });
         }
-
-//        // Just sign out (keep access)
-//        signOutFromGoogle(this, false);
-//
-//// Or revoke access (logout + disconnect account)
-//        signOutFromGoogle(this, true);
     }
 }

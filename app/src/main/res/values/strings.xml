@@ -75,7 +75,7 @@ This ensures accurate tracking of your travel schedule.
 
     <!-- QR Section -->
     <string name="qr_code_title">QR Code Name</string>
-    <string name="booking_number">Booking No</string>
+    <string name="booking_number">Booking Trip No.</string>
     <string name="booking_id_sample">#ABC-01232</string>
 
     <!-- Instruction Card -->
