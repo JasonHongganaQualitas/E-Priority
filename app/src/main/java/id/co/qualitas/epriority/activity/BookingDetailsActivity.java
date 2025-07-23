@@ -1,22 +1,27 @@
 package id.co.qualitas.epriority.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 
 import com.google.gson.Gson;
+import com.google.zxing.WriterException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
-import id.co.qualitas.epriority.databinding.FragmentBookingDetailsBinding;
+import id.co.qualitas.epriority.databinding.ActivityBookingDetailsBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
@@ -33,7 +38,7 @@ public class BookingDetailsActivity extends BaseActivity {
     AgentAdapter agentAdapter;
     List<Agent> mAgentList = new ArrayList<>();
     List<Passenger> mPassengerList = new ArrayList<>();
-    private FragmentBookingDetailsBinding binding;
+    private ActivityBookingDetailsBinding binding;
     private TripsResponse tripHeader;
     private TripsResponse tripDetail;
     private PassengerTripsAdapter passengerAdapter;
@@ -42,15 +47,16 @@ public class BookingDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        binding = FragmentBookingDetailsBinding.inflate(getLayoutInflater());
+        binding = ActivityBookingDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initBase();
 
         initAdapter();
 
         binding.btnViewQR.setOnClickListener(v -> {
-//            QRFragment fragment = new QRFragment();
-//            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+            Helper.setItemParam(Constants.QR_DATA, tripDetail);
+            Intent intent = new Intent(getApplicationContext(), QRCodeActivity.class);
+            startActivity(intent);
         });
 
         binding.btnModifyTrip.setOnClickListener(v -> {
@@ -85,6 +91,7 @@ public class BookingDetailsActivity extends BaseActivity {
     }
 
     public void getDetails() {
+        binding.indicator.smoothToShow();
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         Call<WSMessage> httpRequest = apiInterface.getDetailTrips(String.valueOf(tripHeader.getId()));
@@ -120,6 +127,27 @@ public class BookingDetailsActivity extends BaseActivity {
     }
 
     private void setData() {
+        if(tripDetail.getQr_code_data() != null && !tripDetail.getQr_code_data().isEmpty()) {
+            new Handler().postDelayed(() -> {
+                try {
+                    // Generate QR Code
+                    Bitmap qrCodeBitmap = Helper.generateQRCode(tripDetail.getQr_code_data());
+
+                    // Set the generated QR code as the ImageView source
+                    binding.imgQR.setImageBitmap(qrCodeBitmap);
+                    binding.indicator.smoothToHide();
+                    binding.imgQR.setVisibility(View.VISIBLE);
+                    binding.btnViewQR.setEnabled(true);
+                    binding.btnViewQR.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                    binding.btnViewQR.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_rounded_button_blue));
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+            }, 1000);
+        }else {
+            binding.imgQR.setVisibility(View.GONE);
+            binding.indicator.smoothToHide();
+        }
         String dateFrom = "", dateTo = "", date = null, time = null;
         if (tripDetail.getDate_from() != null) {
             dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, tripDetail.getDate_from());

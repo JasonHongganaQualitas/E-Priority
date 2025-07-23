@@ -69,4 +69,18 @@ This ensures accurate tracking of your travel schedule.
 
     <string name="close">Close</string>
 
+    <!-- Header -->
+    <string name="booking_details_title">Booking Details</string>
+    <string name="booking_details_subtitle">Modify your booking trip</string>
+
+    <!-- QR Section -->
+    <string name="qr_code_title">QR Code Name</string>
+    <string name="booking_number">Booking No</string>
+    <string name="booking_id_sample">#ABC-01232</string>
+
+    <!-- Instruction Card -->
+    <string name="instruction_title">Instruction</string>
+    <string name="instruction_text">1. Show this QR Code when arrive\n2. Wait for agent to confirm your booking trip\n3. Check-in Complete</string>
+    <string name="instruction_note">* Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+
 </resources>

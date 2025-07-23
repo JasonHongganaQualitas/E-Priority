@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <LinearLayout
@@ -112,9 +113,20 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <ImageView
+                <com.frogobox.ui.loadingindicator.FrogoLoadingIndicatorView
+                    android:id="@+id/indicator"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:padding="4dp"
+                    app:indicatorName="BallTrianglePathIndicator"
+                    app:indicatorColor="@color/colorSecondary"
+                    android:layout_gravity="center"/>
+
+                <ImageView
+                    android:id="@+id/imgQR"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:visibility="gone"
                     android:background="@drawable/bg_rounded_qr_border_blue"
                     android:padding="4dp"
                     android:src="@drawable/img_qr" />
@@ -128,6 +140,7 @@
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
                 android:text="View QR Code"
+                android:enabled="false"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />

@@ -33,13 +33,13 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/loadingIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/loading_icon" />
+    <com.frogobox.ui.loadingindicator.FrogoLoadingIndicatorView
+        android:id="@+id/indicator"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:indicatorName="BallTrianglePathIndicator"
+        app:indicatorColor="@color/colorSecondary"
+        android:layout_gravity="center"/>
 
     <TextView
         android:layout_width="match_parent"
