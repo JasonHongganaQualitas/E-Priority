@@ -6,8 +6,8 @@ public class Agent implements Serializable {
     private boolean checked;
     private String name;
     private String languages;
-    private double rating_average;
-    private double review_count;
+    private double avg_rating;
+    private double total_reviews;
     private int id;
 
     public Agent() {
@@ -37,20 +37,20 @@ public class Agent implements Serializable {
         this.languages = languages;
     }
 
-    public double getRating_average() {
-        return rating_average;
+    public double getAvg_rating() {
+        return avg_rating;
     }
 
-    public void setRating_average(double rating_average) {
-        this.rating_average = rating_average;
+    public void setAvg_rating(double avg_rating) {
+        this.avg_rating = avg_rating;
     }
 
-    public double getReview_count() {
-        return review_count;
+    public double getTotal_reviews() {
+        return total_reviews;
     }
 
-    public void setReview_count(double review_count) {
-        this.review_count = review_count;
+    public void setTotal_reviews(double total_reviews) {
+        this.total_reviews = total_reviews;
     }
 
     public int getId() {

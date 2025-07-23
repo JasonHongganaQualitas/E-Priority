@@ -14,6 +14,7 @@ import java.util.List;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
+import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentBookingDetailsBinding;
 import id.co.qualitas.epriority.fragment.ModifyBookingFragment;
@@ -23,6 +24,7 @@ import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.Agent;
 import id.co.qualitas.epriority.model.Packages;
+import id.co.qualitas.epriority.model.Passenger;
 import id.co.qualitas.epriority.model.TripsResponse;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
@@ -30,11 +32,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BookingDetailsActivity extends BaseActivity {
-    AgentAdapter adapter;
-    List<Agent> mList = new ArrayList<>();
+    AgentAdapter agentAdapter;
+    List<Agent> mAgentList = new ArrayList<>();
+    List<Passenger> mPassengerList = new ArrayList<>();
     private FragmentBookingDetailsBinding binding;
     private TripsResponse tripHeader;
     private TripsResponse tripDetail;
+    private PassengerTripsAdapter passengerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +74,15 @@ public class BookingDetailsActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        binding.agentRV.setLayoutManager(new LinearLayoutManager(BookingDetailsActivity.this));
-        adapter = new AgentAdapter(BookingDetailsActivity.this, mList, (header, pos) -> {
+        binding.passengerDetailsRV.setLayoutManager(new LinearLayoutManager(BookingDetailsActivity.this));
+        passengerAdapter = new PassengerTripsAdapter(BookingDetailsActivity.this, mPassengerList, true, (header, pos) -> {
         });
-        binding.agentRV.setAdapter(adapter);
+        binding.passengerDetailsRV.setAdapter(passengerAdapter);
+
+        binding.agentRV.setLayoutManager(new LinearLayoutManager(BookingDetailsActivity.this));
+        agentAdapter = new AgentAdapter(BookingDetailsActivity.this, mAgentList, (header, pos) -> {
+        });
+        binding.agentRV.setAdapter(agentAdapter);
     }
 
     public void getDetails() {
@@ -112,12 +121,15 @@ public class BookingDetailsActivity extends BaseActivity {
     }
 
     private void setData() {
-        String dateFrom = "", dateTo = "";
+        String dateFrom = "", dateTo = "", tripDate = "";
         if (tripDetail.getDate_from() != null) {
             dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, tripDetail.getDate_from());
         }
         if (tripDetail.getDate_to() != null) {
             dateTo = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, tripDetail.getDate_to());
+        }
+        if (tripDetail.getTrip_date() != null) {
+            tripDate = Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_4, tripDetail.getTrip_date());
         }
 
         binding.txtTripId.setText("Order No. #" + tripDetail.getTrip_id());
@@ -129,6 +141,14 @@ public class BookingDetailsActivity extends BaseActivity {
         binding.txtBookingId.setText(Helper.isEmpty(tripDetail.getBooking_id(), ""));
         binding.txtFlightNumber.setText(Helper.isEmpty(tripDetail.getFlight_no(), ""));
         binding.passangerDetTitleTxt.setText("Passenger Details (" + tripDetail.getPassenger_count() + ")");
+
+        mAgentList = new ArrayList<>();
+        mAgentList.addAll(tripDetail.getAgent_list());
+        agentAdapter.setFilteredList(mAgentList);
+
+        mPassengerList = new ArrayList<>();
+        mPassengerList.addAll(tripDetail.getPassengers());
+        passengerAdapter.setFilteredList(mPassengerList);
 
 //        Packages packages = tripDetail.getPackages();
 //        if (packages.getAirport_transfer() != null) {
