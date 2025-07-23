@@ -61,7 +61,7 @@ public class OnGoingTripAdapter extends RecyclerView.Adapter<OnGoingTripAdapter.
             time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, tripsResponse.getFlight_time());
         }
 
-        holder.binding.bookingIdTxt.setText("Order No.: #" + Helper.isEmpty(tripsResponse.getBooking_id(), ""));
+        holder.binding.bookingIdTxt.setText("Booking Trips No.: #" + tripsResponse.getId());
         holder.binding.destinationTxt.setText(Helper.isEmpty(tripsResponse.getRoute_to(), ""));
         holder.binding.flightTxt.setText("Flight " + Helper.isEmpty(tripsResponse.getFlight_no(), ""));
         holder.binding.dateTxt.setText(date + " at " + time);

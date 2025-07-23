@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,24 +20,25 @@
 
             <ImageView
                 android:id="@+id/backBtn"
-                android:src="@drawable/ic_arrow_left_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingRight="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:src="@drawable/ic_arrow_left_blue" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Modify Booking"
+                    android:text="Modify booking trips"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_reg1"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -44,22 +46,21 @@
                 android:id="@+id/statusTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Booking No. #ABC-01232"
-                android:textSize="12sp"
-                android:textColor="@color/black"
                 android:background="@drawable/bg_rounded_border_gray"
                 android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"/>
+                android:paddingVertical="2dp"
+                android:text="Booking Trips No. #ABC-01232"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/flightDetailsLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/bg_rounded_button_border"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,854 +70,1040 @@
                 android:textSize="@dimen/text_reg1"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Flight"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SQ 953"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Airline"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Singapore Airlines"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Aircraft"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Boeing 777 - 200"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Route"
-                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:text="Type"
                 android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spnType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_spinner"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Jakarta (CGK)"
-                    android:textColor="@color/black" />
-
-                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right_long" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="Singapore (SIN)"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="05/07/25 at 14:30"
-                    android:textColor="@color/gray4" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="05/07/25 at 14:30"
-                    android:textColor="@color/gray4" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_rounded_button_border"
-            android:padding="16dp">
-
-            <TextView
-                android:text="Preferred Agent"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_reg2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="Choose an agent"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/text_small1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/agentRV"
-                android:layout_marginTop="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_rounded_button_border"
-            android:padding="16dp">
-
-            <TextView
-                android:text="Package Details"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_reg2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="Includes Services and Features"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/text_small1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <LinearLayout
-                android:id="@+id/transferLL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="@drawable/selector_blue_gray_card"
-                android:layout_marginTop="12dp">
-
-                <CheckBox
-                    android:id="@+id/transferCB"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"/>
+                    android:text="Flight Reservation Code"
+                    android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/transferImg"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    android:background="@color/gray3"
-                    android:padding="4dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:src="@drawable/ic_vehicle_gray"/>
+                    android:id="@+id/imgQuestionFRC"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_question" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edtFlightReservationCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="ex: 123456789"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="From"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edtDateFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: 15-08-2025"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtTimeFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: 08:00"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtRouteFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: Jakarta (CGK)"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="To"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edtDateTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: 15-08-2025"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtTimeTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: 08:00"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtRouteTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:hint="ex: Frankfurt (FRA)"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flight Number"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imgQuestionFN"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_question" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edtAirline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="ex: GA-408"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Passenger Information"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Number of Passenger"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtNumberPassenger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext_gray"
+                android:hint="ex: 1"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
+
+            <LinearLayout
+                android:id="@+id/llAddPassenger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:id="@+id/addPassengerTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add List Passenger"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/text_reg1" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_plus_blue" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:itemCount="2"
+                tools:listitem="@layout/row_view_passenger" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preferred Agent"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose an agent"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/text_small1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChooseAgent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/blue1"
+                app:strokeWidth="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="Search an agent"
+                android:textAllCaps="false"
+                android:textColor="@color/blue1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/agentRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="2"
+                tools:listitem="@layout/card_agent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Package Details"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Include Services and Features"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/text_small1" />
+
+            <LinearLayout
+                android:id="@+id/llAirportHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_border_gray"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/cbAirport"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
+
+                <ImageView
+                    android:id="@+id/imgAirport"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/selector_img_airport" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Airport Transfer"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/text_reg2"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Round-trip luxury taxi service"
-                        android:textSize="@dimen/text_reg3"/>
+                        android:textSize="@dimen/text_reg3" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/detTransfer"
-                    android:src="@drawable/ic_arrow_down_gray"
-                    android:layout_gravity="center"
+                    android:id="@+id/arrowAirport"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_down_gray"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/transferDetLL"
-                android:visibility="gone"
+                android:id="@+id/llAirportDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_rounded_qr_border_blue"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:src="@drawable/ic_pencil"
-                        android:paddingHorizontal="6dp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_pencil" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
                         android:text="Edit Airport Transfer Details"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="@dimen/text_reg2"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Vehicle Type"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <Spinner
+                    android:id="@+id/spnVehicleType"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Pick Up Time"
-                    android:textColor="@color/black"/>
-                <EditText
+                    android:textColor="@color/black" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_edittext_gray"
-                    android:hint="10:00 AM"
-                    android:textColor="@color/black"
-                    android:padding="12dp"
-                    android:gravity="top"/>
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/edtPickUpDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:gravity="top"
+                        android:hint="10-10-2025"
+                        android:padding="12dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_reg2" />
+
+                    <TextView
+                        android:id="@+id/edtPickUpTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:gravity="top"
+                        android:hint="10:00 AM"
+                        android:padding="12dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_reg2" />
+
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Contact Number"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <EditText
+                    android:id="@+id/edtContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_rounded_edittext_gray"
+                    android:gravity="top"
                     android:hint="Enter your phone number"
-                    android:textColor="@color/black"
+                    android:inputType="phone"
                     android:padding="12dp"
-                    android:gravity="top"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Other Request"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <EditText
+                    android:id="@+id/edtOtherAirport"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_rounded_edittext_gray"
+                    android:gravity="top"
                     android:hint="Child seats, wheel chair, etc"
-                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
                     android:padding="12dp"
-                    android:gravity="top"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/loungeLL"
+                android:id="@+id/llLoungeHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_border_gray"
                 android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="@drawable/bg_rounded_gray"
-                android:layout_marginTop="12dp">
-
-                <CheckBox
-                    android:id="@+id/loungeCB"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"/>
+                android:padding="12dp"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/loungeImg"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:id="@+id/cbLounge"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
+
+                <ImageView
+                    android:id="@+id/imgLounge"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:background="@color/gray3"
-                    android:padding="4dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:src="@drawable/ic_couch_gray"/>
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/selector_img_lounge" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lounge Access"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/text_reg2"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Premium airport lounge access"
-                        android:textSize="@dimen/text_reg3"/>
+                        android:textSize="@dimen/text_reg3" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/detLounge"
-                    android:src="@drawable/ic_arrow_down_gray"
-                    android:layout_gravity="center"
+                    android:id="@+id/arrowLounge"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_down_gray"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/loungeDetLL"
-                android:visibility="gone"
+                android:id="@+id/llLoungeDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
                 android:orientation="vertical"
                 android:padding="8dp"
-                android:background="@drawable/bg_rounded_qr_border_blue"
-                android:layout_marginTop="8dp">
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:src="@drawable/ic_pencil"
-                        android:paddingHorizontal="6dp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="6dp"
+                        android:src="@drawable/ic_pencil" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Edit Lounge Access"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="@dimen/text_reg2"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Lounge Type"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <Spinner
+                    android:id="@+id/spnLoungeType"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Other Request"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <EditText
+                    android:id="@+id/edtOtherLounge"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_rounded_edittext_gray"
+                    android:gravity="top"
                     android:hint="etc"
-                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
                     android:padding="12dp"
-                    android:gravity="top"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/flightLL"
+                android:id="@+id/llFlightHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_border_gray"
                 android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="@drawable/bg_rounded_gray"
-                android:layout_marginTop="12dp">
+                android:padding="12dp"
+                android:visibility="gone">
 
-                <CheckBox
-                    android:id="@+id/flightCB"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"/>
                 <ImageView
-                    android:id="@+id/flightImg"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:id="@+id/cbFlight"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
+
+                <ImageView
+                    android:id="@+id/imgFlight"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:background="@color/gray3"
-                    android:padding="4dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:src="@drawable/ic_airplane_gray"/>
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/selector_img_flight" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Flight Details"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/text_reg2"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Bussiness class seats"
-                        android:textSize="@dimen/text_reg3"/>
+                        android:textSize="@dimen/text_reg3" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/detFlight"
-                    android:src="@drawable/ic_arrow_down_gray"
-                    android:layout_gravity="center"
+                    android:id="@+id/arrowFlight"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_down_gray"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/flightDetLL"
-                android:visibility="gone"
+                android:id="@+id/llFlightDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
                 android:orientation="vertical"
                 android:padding="8dp"
-                android:background="@drawable/bg_rounded_qr_border_blue"
-                android:layout_marginTop="8dp">
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:src="@drawable/ic_pencil"
-                        android:paddingHorizontal="6dp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="6dp"
+                        android:src="@drawable/ic_pencil" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Edit Flight Details"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="@dimen/text_reg2"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Flight Class"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <Spinner
+                    android:id="@+id/spnFLightClass"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Other Request"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <EditText
+                    android:id="@+id/edtOtherFlight"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_rounded_edittext_gray"
+                    android:gravity="top"
                     android:hint="Seat Preference, etc"
-                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
                     android:padding="12dp"
-                    android:gravity="top"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/fastLaneLL"
+                android:id="@+id/llFastLaneHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_border_gray"
                 android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="@drawable/bg_rounded_gray"
-                android:layout_marginTop="12dp">
-
-                <CheckBox
-                    android:id="@+id/fastLaneCB"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"/>
+                android:padding="12dp"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/fastLaneImg"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:id="@+id/cbFastLane"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
+
+                <ImageView
+                    android:id="@+id/imgFastLane"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:background="@color/gray3"
-                    android:padding="4dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:src="@drawable/ic_fastlane_gray"/>
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/selector_img_fast" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fast Lane"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/text_reg2"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Save time at the airport"
-                        android:textSize="@dimen/text_reg3"/>
+                        android:textSize="@dimen/text_reg3" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/detFastLane"
-                    android:src="@drawable/ic_arrow_down_gray"
-                    android:layout_gravity="center"
+                    android:id="@+id/arrowFastLane"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_down_gray"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/fastLaneDetLL"
-                android:visibility="gone"
+                android:id="@+id/llFastLaneDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
                 android:orientation="vertical"
                 android:padding="8dp"
-                android:background="@drawable/bg_rounded_qr_border_blue"
-                android:layout_marginTop="8dp">
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:src="@drawable/ic_pencil"
-                        android:paddingHorizontal="6dp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="6dp"
+                        android:src="@drawable/ic_pencil" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Edit Fast Lane Details"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="@dimen/text_reg2"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Type"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <Spinner
+                    android:id="@+id/spnFastType"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Other Request"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <EditText
+                    android:id="@+id/edtOtherFast"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_rounded_edittext_gray"
+                    android:gravity="top"
                     android:hint="Special assistance"
-                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
                     android:padding="12dp"
-                    android:gravity="top"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/baggageLL"
+                android:id="@+id/llBaggageHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_rounded_border_gray"
                 android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="@drawable/bg_rounded_gray"
-                android:layout_marginTop="12dp">
-
-                <CheckBox
-                    android:id="@+id/baggageCB"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"/>
+                android:padding="12dp"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/baggageImg"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:id="@+id/cbBaggage"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
+
+                <ImageView
+                    android:id="@+id/imgBaggage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:background="@color/gray3"
-                    android:padding="4dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:src="@drawable/ic_baggage_gray"/>
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/selector_img_baggage" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Baggage Services"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/text_reg2"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="Enhanced baggage handling"
-                        android:textSize="@dimen/text_reg3"/>
+                        android:textSize="@dimen/text_reg3" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/detBaggage"
-                    android:src="@drawable/ic_arrow_down_gray"
-                    android:layout_gravity="center"
+                    android:id="@+id/arrowBaggage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_down_gray"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/baggageDetLL"
-                android:visibility="gone"
+                android:id="@+id/llBaggageDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_rounded_qr_border_blue"
                 android:orientation="vertical"
                 android:padding="8dp"
-                android:background="@drawable/bg_rounded_qr_border_blue"
-                android:layout_marginTop="8dp">
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:src="@drawable/ic_pencil"
-                        android:paddingHorizontal="6dp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="6dp"
+                        android:src="@drawable/ic_pencil" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Edit Baggage Services Details"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="@dimen/text_reg2"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Baggage handling"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <Spinner
+                    android:id="@+id/spnBaggage"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_spinner"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Other Request"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
+
                 <EditText
+                    android:id="@+id/edtOtherBaggage"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/bg_rounded_edittext_gray"
+                    android:gravity="top"
                     android:hint="Seat Preference, etc"
-                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
                     android:padding="12dp"
-                    android:gravity="top"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
             </LinearLayout>
+
         </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            android:padding="12dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:background="@drawable/bg_blue_card">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Price Summary"-->
-<!--                android:textColor="@color/blue1"-->
-<!--                android:textSize="@dimen/text_reg1"-->
-<!--                android:textStyle="bold" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_marginTop="12dp">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="Original Total:"-->
-<!--                    android:textSize="@dimen/text_reg2"-->
-<!--                    android:textColor="@color/black"/>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Rp 5,400,000"-->
-<!--                    android:textSize="@dimen/text_reg2"-->
-<!--                    android:textColor="@color/black"/>-->
-<!--            </LinearLayout>-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_marginTop="4dp">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="New Total:"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:textColor="#000000"/>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Rp 5,000,000"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:textColor="#000000"/>-->
-<!--            </LinearLayout>-->
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:background="@color/gray3" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_marginTop="8dp">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="Price Difference:"-->
-<!--                    android:textSize="@dimen/text_reg2"-->
-<!--                    android:textColor="@color/green1"-->
-<!--                    android:textStyle="bold" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="-Rp 400,000"-->
-<!--                    android:textSize="@dimen/text_reg2"-->
-<!--                    android:textColor="@color/green1"-->
-<!--                    android:textStyle="bold"/>-->
-<!--            </LinearLayout>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:text="*There will be additional charge depending on your request"-->
-<!--                android:textSize="@dimen/text_small1"-->
-<!--                android:textColor="#000000"/>-->
-
-<!--        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/buttonsLL"
@@ -929,36 +1116,36 @@
                 android:id="@+id/btnConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Confirm Changes"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_rounded_button_blue"
                 android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:paddingTop="12dp"
+                android:paddingRight="24dp"
                 android:paddingBottom="12dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="10dp"
-                android:layout_gravity="center"/>
+                android:text="Confirm Changes"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btnCancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cancel Modification"
-                android:textColor="@color/blue1"
-                android:textAlignment="center"
-                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/bg_rounded_qr_border_blue"
                 android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:paddingTop="12dp"
+                android:paddingRight="24dp"
                 android:paddingBottom="12dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center" />
+                android:text="Cancel Modification"
+                android:textAlignment="center"
+                android:textColor="@color/blue1"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

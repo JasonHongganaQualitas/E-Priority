@@ -18,11 +18,11 @@ public class Packages implements Serializable {
     private List<Dropdown> packages;
 
     //header packages
-    private Packages airport_transfer;
-    private Packages lounge_access;
+    private Packages trip_airporttransfer;
+    private Packages trip_loungeaccess;
     private Packages flight_detail;
-    private Packages fast_lane;
-    private Packages baggage_service;
+    private Packages trip_fastlane;
+    private Packages trip_baggageservice;
 
     //detail packages
     private int vehicle_type;
@@ -35,8 +35,98 @@ public class Packages implements Serializable {
     private int type_baggage;
     private int id;
     private int trip_id;
+    private int lane_type_id;
+    private int lounge_type_id;
+    private int vehicle_type_id;
+    private int baggage_type_id;
+    private int flight_class_id;
+    private String flight_class_name;
+    private String lounge_type_name;
+    private String lane_type_name;
+    private String vehicle_type_name;
+    private String baggage_type_name;
 
     public Packages() {
+    }
+
+    public int getLounge_type_id() {
+        return lounge_type_id;
+    }
+
+    public void setLounge_type_id(int lounge_type_id) {
+        this.lounge_type_id = lounge_type_id;
+    }
+
+    public int getLane_type_id() {
+        return lane_type_id;
+    }
+
+    public void setLane_type_id(int lane_type_id) {
+        this.lane_type_id = lane_type_id;
+    }
+
+    public int getVehicle_type_id() {
+        return vehicle_type_id;
+    }
+
+    public void setVehicle_type_id(int vehicle_type_id) {
+        this.vehicle_type_id = vehicle_type_id;
+    }
+
+    public int getBaggage_type_id() {
+        return baggage_type_id;
+    }
+
+    public void setBaggage_type_id(int baggage_type_id) {
+        this.baggage_type_id = baggage_type_id;
+    }
+
+    public String getLounge_type_name() {
+        return lounge_type_name;
+    }
+
+    public void setLounge_type_name(String lounge_type_name) {
+        this.lounge_type_name = lounge_type_name;
+    }
+
+    public String getLane_type_name() {
+        return lane_type_name;
+    }
+
+    public void setLane_type_name(String lane_type_name) {
+        this.lane_type_name = lane_type_name;
+    }
+
+    public String getVehicle_type_name() {
+        return vehicle_type_name;
+    }
+
+    public void setVehicle_type_name(String vehicle_type_name) {
+        this.vehicle_type_name = vehicle_type_name;
+    }
+
+    public String getBaggage_type_name() {
+        return baggage_type_name;
+    }
+
+    public void setBaggage_type_name(String baggage_type_name) {
+        this.baggage_type_name = baggage_type_name;
+    }
+
+    public int getFlight_class_id() {
+        return flight_class_id;
+    }
+
+    public void setFlight_class_id(int flight_class_id) {
+        this.flight_class_id = flight_class_id;
+    }
+
+    public String getFlight_class_name() {
+        return flight_class_name;
+    }
+
+    public void setFlight_class_name(String flight_class_name) {
+        this.flight_class_name = flight_class_name;
     }
 
     public int getId() {
@@ -95,12 +185,12 @@ public class Packages implements Serializable {
         this.selectedBaggageType = selectedBaggageType;
     }
 
-    public Packages getLounge_access() {
-        return lounge_access;
+    public Packages getTrip_loungeaccess() {
+        return trip_loungeaccess;
     }
 
-    public void setLounge_access(Packages lounge_access) {
-        this.lounge_access = lounge_access;
+    public void setTrip_loungeaccess(Packages trip_loungeaccess) {
+        this.trip_loungeaccess = trip_loungeaccess;
     }
 
     public Packages getFlight_detail() {
@@ -111,28 +201,28 @@ public class Packages implements Serializable {
         this.flight_detail = flight_detail;
     }
 
-    public Packages getFast_lane() {
-        return fast_lane;
+    public Packages getTrip_fastlane() {
+        return trip_fastlane;
     }
 
-    public void setFast_lane(Packages fast_lane) {
-        this.fast_lane = fast_lane;
+    public void setTrip_fastlane(Packages trip_fastlane) {
+        this.trip_fastlane = trip_fastlane;
     }
 
-    public Packages getBaggage_service() {
-        return baggage_service;
+    public Packages getTrip_baggageservice() {
+        return trip_baggageservice;
     }
 
-    public void setBaggage_service(Packages baggage_service) {
-        this.baggage_service = baggage_service;
+    public void setTrip_baggageservice(Packages trip_baggageservice) {
+        this.trip_baggageservice = trip_baggageservice;
     }
 
-    public Packages getAirport_transfer() {
-        return airport_transfer;
+    public Packages getTrip_airporttransfer() {
+        return trip_airporttransfer;
     }
 
-    public void setAirport_transfer(Packages airport_transfer) {
-        this.airport_transfer = airport_transfer;
+    public void setTrip_airporttransfer(Packages trip_airporttransfer) {
+        this.trip_airporttransfer = trip_airporttransfer;
     }
 
     public int getVehicle_type() {

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,6 @@ import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
-import id.co.qualitas.epriority.databinding.DialogBookingCreatedBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
 import id.co.qualitas.epriority.databinding.FragmentChoosePackageBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
@@ -637,9 +635,9 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail.setContact_no(binding.edtContact.getText().toString());
             detail.setRequest_note(binding.edtOtherAirport.getText().toString());
             detail.setSelectedVehicleType(selectedVehicleType);
-            header.setAirport_transfer(detail);
+            header.setTrip_airporttransfer(detail);
         } else {
-            header.setAirport_transfer(null);
+            header.setTrip_airporttransfer(null);
         }
 
         if (loungeSelected) {
@@ -647,9 +645,9 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail.setLounge_type(selectedLoungeType.getId());
             detail.setRequest_note(binding.edtOtherLounge.getText().toString());
             detail.setSelectedLoungeType(selectedLoungeType);
-            header.setLounge_access(detail);
+            header.setTrip_loungeaccess(detail);
         } else {
-            header.setLounge_access(null);
+            header.setTrip_loungeaccess(null);
         }
 
         if (flightSelected) {
@@ -667,19 +665,19 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             detail.setType_lane(selectedFastType.getId());
             detail.setRequest_note(binding.edtOtherFast.getText().toString());
             detail.setSelectedFastlaneType(selectedFastType);
-            header.setFast_lane(detail);
+            header.setTrip_fastlane(detail);
         } else {
-            header.setFast_lane(null);
+            header.setTrip_fastlane(null);
         }
 
         if (baggageSelected) {
             detail = new Packages();
             detail.setType_baggage(selectedBaggage.getId());
-            detail.setRequest_note(binding.edtOtherLounge.getText().toString());
+            detail.setRequest_note(binding.edtOtherBaggage.getText().toString());
             detail.setSelectedBaggageType(selectedBaggage);
-            header.setBaggage_service(detail);
+            header.setTrip_baggageservice(detail);
         } else {
-            header.setBaggage_service(null);
+            header.setTrip_baggageservice(null);
         }
 
         createTrips.setAgent_list(mChoosenAgentList);

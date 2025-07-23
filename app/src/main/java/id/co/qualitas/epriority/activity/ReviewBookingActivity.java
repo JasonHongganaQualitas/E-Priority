@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.co.qualitas.epriority.adapter.AgentAdapter;
-import id.co.qualitas.epriority.adapter.PackageDetailAdapter;
-import id.co.qualitas.epriority.adapter.PassangerDetailsAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.DialogBookingCreatedBinding;
@@ -93,8 +91,8 @@ public class ReviewBookingActivity extends BaseActivity {
         binding.passangerDetTitleTxt.setText("Passenger Details (" + createTrips.getPassenger_count() + ")");
 
         Packages packages = createTrips.getPackages();
-        if (packages.getAirport_transfer() != null) {
-            Packages param = packages.getAirport_transfer();
+        if (packages.getTrip_airporttransfer() != null) {
+            Packages param = packages.getTrip_airporttransfer();
             binding.llAirportHeader.setVisibility(View.VISIBLE);
             binding.llAirportDetail.setVisibility(View.VISIBLE);
             if (param.getPickup_time() != null) {
@@ -109,8 +107,8 @@ public class ReviewBookingActivity extends BaseActivity {
             binding.llAirportDetail.setVisibility(View.GONE);
         }
 
-        if (packages.getLounge_access() != null) {
-            Packages param = packages.getLounge_access();
+        if (packages.getTrip_loungeaccess() != null) {
+            Packages param = packages.getTrip_loungeaccess();
             binding.llLoungeHeader.setVisibility(View.VISIBLE);
             binding.llLoungeDetail.setVisibility(View.VISIBLE);
             binding.txtLoungeType.setText(Helper.isEmpty(param.getSelectedLoungeType().getName(), ""));
@@ -131,8 +129,8 @@ public class ReviewBookingActivity extends BaseActivity {
             binding.llFlightDetail.setVisibility(View.GONE);
         }
 
-        if (packages.getFast_lane() != null) {
-            Packages param = packages.getFast_lane();
+        if (packages.getTrip_fastlane() != null) {
+            Packages param = packages.getTrip_fastlane();
             binding.llFastLaneHeader.setVisibility(View.VISIBLE);
             binding.llFastLaneDetail.setVisibility(View.VISIBLE);
             binding.txtFastType.setText(Helper.isEmpty(param.getSelectedFastlaneType().getName(), ""));
@@ -142,8 +140,8 @@ public class ReviewBookingActivity extends BaseActivity {
             binding.llFastLaneDetail.setVisibility(View.GONE);
         }
 
-        if (packages.getBaggage_service() != null) {
-            Packages param = packages.getBaggage_service();
+        if (packages.getTrip_baggageservice() != null) {
+            Packages param = packages.getTrip_baggageservice();
             binding.llBaggageHeader.setVisibility(View.VISIBLE);
             binding.llBaggageDetail.setVisibility(View.VISIBLE);
             binding.txtBaggage.setText(Helper.isEmpty(param.getSelectedBaggageType().getName(), ""));
