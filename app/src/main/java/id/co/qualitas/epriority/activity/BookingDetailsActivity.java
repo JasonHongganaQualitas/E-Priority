@@ -1,5 +1,6 @@
 package id.co.qualitas.epriority.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,8 +54,9 @@ public class BookingDetailsActivity extends BaseActivity {
         });
 
         binding.btnModifyTrip.setOnClickListener(v -> {
-//            ModifyBookingFragment fragment = new ModifyBookingFragment();
-//            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+            intent = new Intent(BookingDetailsActivity.this, ModifyBookingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
         });
 
         binding.backBtn.setOnClickListener(v -> {
@@ -118,20 +120,29 @@ public class BookingDetailsActivity extends BaseActivity {
     }
 
     private void setData() {
-        String dateFrom = "", dateTo = "", tripDate = "";
+        String dateFrom = "", dateTo = "", date = null, time = null;
         if (tripDetail.getDate_from() != null) {
             dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, tripDetail.getDate_from());
         }
         if (tripDetail.getDate_to() != null) {
             dateTo = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, tripDetail.getDate_to());
         }
-        if (tripDetail.getTrip_date() != null) {
-            tripDate = Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_4, tripDetail.getTrip_date());
+
+        if (Helper.isNullOrEmpty(tripDetail.getFlight_date())) {
+            date = "-";
+        } else {
+            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, tripDetail.getFlight_date());
+        }
+
+        if (Helper.isNullOrEmpty(tripDetail.getFlight_time())) {
+            time = "-";
+        } else {
+            time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, tripDetail.getFlight_time());
         }
 
         binding.txtTripId.setText("Booking Trips No. #" + tripDetail.getTrip_id());
         binding.txtType.setText(Helper.isEmpty(tripDetail.getTrip_type(), ""));
-        binding.txtTripDate.setText(tripDate);
+        binding.txtTripDate.setText(date + " at " + time);
         binding.txtDateFrom.setText(dateFrom);
         binding.txtDateTo.setText(dateTo);
         binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_from(), ""));
@@ -141,72 +152,78 @@ public class BookingDetailsActivity extends BaseActivity {
         binding.passangerDetTitleTxt.setText("Passenger Details (" + tripDetail.getPassenger_count() + ")");
 
         mAgentList = new ArrayList<>();
-        mAgentList.addAll(tripDetail.getAgent_list());
+        if (Helper.isNotEmptyOrNull(tripDetail.getAgent_list())) {
+            mAgentList.addAll(tripDetail.getAgent_list());
+        }
         agentAdapter.setFilteredList(mAgentList);
 
         mPassengerList = new ArrayList<>();
-        mPassengerList.addAll(tripDetail.getPassengers());
+        if (Helper.isNotEmptyOrNull(tripDetail.getPassengers())) {
+            mPassengerList.addAll(tripDetail.getPassengers());
+        }
         passengerAdapter.setFilteredList(mPassengerList);
 
         Packages packages = tripDetail.getPackages();
-        if (packages.getTrip_airporttransfer() != null) {
-            Packages param = packages.getTrip_airporttransfer();
-            binding.llAirportHeader.setVisibility(View.VISIBLE);
-            binding.llAirportDetail.setVisibility(View.VISIBLE);
-            if (param.getPickup_time() != null) {
-                dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, param.getPickup_time());
+        if (packages != null) {
+            if (packages.getTrip_airporttransfer() != null) {
+                Packages param = packages.getTrip_airporttransfer();
+                binding.llAirportHeader.setVisibility(View.VISIBLE);
+                binding.llAirportDetail.setVisibility(View.VISIBLE);
+                if (param.getPickup_time() != null) {
+                    dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, param.getPickup_time());
+                }
+                binding.txtContact.setText(Helper.isEmpty(param.getContact_no(), ""));
+                binding.txtVehicleType.setText(Helper.isEmpty(param.getVehicle_type_name(), ""));
+                binding.txtOtherAirport.setText(Helper.isEmpty(param.getRequest_note(), ""));
+                binding.txtPickUpTime.setText(dateFrom);
+            } else {
+                binding.llAirportHeader.setVisibility(View.GONE);
+                binding.llAirportDetail.setVisibility(View.GONE);
             }
-            binding.txtContact.setText(Helper.isEmpty(param.getContact_no(), ""));
-            binding.txtVehicleType.setText(Helper.isEmpty(param.getVehicle_type_name(), ""));
-            binding.txtOtherAirport.setText(Helper.isEmpty(param.getRequest_note(), ""));
-            binding.txtPickUpTime.setText(dateFrom);
-        } else {
-            binding.llAirportHeader.setVisibility(View.GONE);
-            binding.llAirportDetail.setVisibility(View.GONE);
-        }
 
-        if (packages.getTrip_loungeaccess() != null) {
-            Packages param = packages.getTrip_loungeaccess();
-            binding.llLoungeHeader.setVisibility(View.VISIBLE);
-            binding.llLoungeDetail.setVisibility(View.VISIBLE);
-            binding.txtLoungeType.setText(Helper.isEmpty(param.getLounge_type_name(), ""));
-            binding.txtOtherLounge.setText(Helper.isEmpty(param.getRequest_note(), ""));
-        } else {
-            binding.llLoungeHeader.setVisibility(View.GONE);
-            binding.llLoungeDetail.setVisibility(View.GONE);
-        }
+            if (packages.getTrip_loungeaccess() != null) {
+                Packages param = packages.getTrip_loungeaccess();
+                binding.llLoungeHeader.setVisibility(View.VISIBLE);
+                binding.llLoungeDetail.setVisibility(View.VISIBLE);
+                binding.txtLoungeType.setText(Helper.isEmpty(param.getLounge_type_name(), ""));
+                binding.txtOtherLounge.setText(Helper.isEmpty(param.getRequest_note(), ""));
+            } else {
+                binding.llLoungeHeader.setVisibility(View.GONE);
+                binding.llLoungeDetail.setVisibility(View.GONE);
+            }
 
-        if (packages.getFlight_detail() != null) {
-            Packages param = packages.getFlight_detail();
-            binding.llFlightHeader.setVisibility(View.VISIBLE);
-            binding.llFlightDetail.setVisibility(View.VISIBLE);
-            binding.txtFLightClass.setText(Helper.isEmpty(param.getFlight_class_name(), ""));
-            binding.txtOtherFlight.setText(Helper.isEmpty(param.getRequest_note(), ""));
-        } else {
-            binding.llFlightHeader.setVisibility(View.GONE);
-            binding.llFlightDetail.setVisibility(View.GONE);
-        }
+            if (packages.getFlight_detail() != null) {
+                Packages param = packages.getFlight_detail();
+                binding.llFlightHeader.setVisibility(View.VISIBLE);
+                binding.llFlightDetail.setVisibility(View.VISIBLE);
+                binding.txtFLightClass.setText(Helper.isEmpty(param.getFlight_class_name(), ""));
+                binding.txtOtherFlight.setText(Helper.isEmpty(param.getRequest_note(), ""));
+            } else {
+                binding.llFlightHeader.setVisibility(View.GONE);
+                binding.llFlightDetail.setVisibility(View.GONE);
+            }
 
-        if (packages.getTrip_fastlane() != null) {
-            Packages param = packages.getTrip_fastlane();
-            binding.llFastLaneHeader.setVisibility(View.VISIBLE);
-            binding.llFastLaneDetail.setVisibility(View.VISIBLE);
-            binding.txtFastType.setText(Helper.isEmpty(param.getLane_type_name(), ""));
-            binding.txtOtherFast.setText(Helper.isEmpty(param.getRequest_note(), ""));
-        } else {
-            binding.llFastLaneHeader.setVisibility(View.GONE);
-            binding.llFastLaneDetail.setVisibility(View.GONE);
-        }
+            if (packages.getTrip_fastlane() != null) {
+                Packages param = packages.getTrip_fastlane();
+                binding.llFastLaneHeader.setVisibility(View.VISIBLE);
+                binding.llFastLaneDetail.setVisibility(View.VISIBLE);
+                binding.txtFastType.setText(Helper.isEmpty(param.getLane_type_name(), ""));
+                binding.txtOtherFast.setText(Helper.isEmpty(param.getRequest_note(), ""));
+            } else {
+                binding.llFastLaneHeader.setVisibility(View.GONE);
+                binding.llFastLaneDetail.setVisibility(View.GONE);
+            }
 
-        if (packages.getTrip_baggageservice() != null) {
-            Packages param = packages.getTrip_baggageservice();
-            binding.llBaggageHeader.setVisibility(View.VISIBLE);
-            binding.llBaggageDetail.setVisibility(View.VISIBLE);
-            binding.txtBaggage.setText(Helper.isEmpty(param.getBaggage_type_name(), ""));
-            binding.txtOtherBaggage.setText(Helper.isEmpty(param.getRequest_note(), ""));
-        } else {
-            binding.llBaggageHeader.setVisibility(View.GONE);
-            binding.llBaggageDetail.setVisibility(View.GONE);
+            if (packages.getTrip_baggageservice() != null) {
+                Packages param = packages.getTrip_baggageservice();
+                binding.llBaggageHeader.setVisibility(View.VISIBLE);
+                binding.llBaggageDetail.setVisibility(View.VISIBLE);
+                binding.txtBaggage.setText(Helper.isEmpty(param.getBaggage_type_name(), ""));
+                binding.txtOtherBaggage.setText(Helper.isEmpty(param.getRequest_note(), ""));
+            } else {
+                binding.llBaggageHeader.setVisibility(View.GONE);
+                binding.llBaggageDetail.setVisibility(View.GONE);
+            }
         }
     }
 }

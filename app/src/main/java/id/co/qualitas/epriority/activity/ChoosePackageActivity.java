@@ -327,21 +327,14 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                             }
                             mList.addAll(tempList);
                             adapterDialog.setFilteredList(mList);
-                        } else {
-                            setToast(result.getMessage());
                         }
-                    } else {
-                        setToast(response.message());
                     }
-                } else {
-                    setToast(response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
-                setToast(t.getMessage());
             }
         });
     }
