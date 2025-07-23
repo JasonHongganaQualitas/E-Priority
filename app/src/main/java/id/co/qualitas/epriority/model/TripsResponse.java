@@ -37,6 +37,10 @@ public class TripsResponse {
     public String city;
     private List<Agent> agent_list;
 
+    //detail
+    private int trip_id;
+    private String qr_code_data;
+
     public TripsResponse() {
     }
 
@@ -47,6 +51,22 @@ public class TripsResponse {
         this.locationAndFlight = locationAndFlight;
         this.peopleCount = peopleCount;
         this.status = status;
+    }
+
+    public int getTrip_id() {
+        return trip_id;
+    }
+
+    public void setTrip_id(int trip_id) {
+        this.trip_id = trip_id;
+    }
+
+    public String getQr_code_data() {
+        return qr_code_data;
+    }
+
+    public void setQr_code_data(String qr_code_data) {
+        this.qr_code_data = qr_code_data;
     }
 
     public int getAgent_id() {

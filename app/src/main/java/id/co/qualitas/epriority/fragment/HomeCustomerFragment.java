@@ -1,6 +1,7 @@
 package id.co.qualitas.epriority.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -19,7 +21,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.co.qualitas.epriority.R;
+import id.co.qualitas.epriority.activity.BookingDetailsActivity;
 import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentHomeCustomerBinding;
@@ -27,7 +29,6 @@ import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.TripsResponse;
-import id.co.qualitas.epriority.model.FlightInformation;
 import id.co.qualitas.epriority.model.TripRequest;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
@@ -39,8 +40,12 @@ public class HomeCustomerFragment extends BaseFragment {
     boolean arrival = true;
     OnGoingTripAdapter adapter;
     private List<TripsResponse> mList = new ArrayList<>(), arrivalList = new ArrayList<>(), departureList = new ArrayList<>();
-    private FlightInformation information;
     private String searchText;
+    int offsetDeparture, offsetArrival;
+    private boolean loadingDeparture = true, loadingArrival = true;
+    protected int pastVisiblesItemsDeparture, visibleItemCountDeparture, totalItemCountDeparture;
+    protected int pastVisiblesItemsArrival, visibleItemCountArrival, totalItemCountArrival;
+    private LinearLayoutManager linearLayout;
 
 
     @Override
@@ -58,7 +63,7 @@ public class HomeCustomerFragment extends BaseFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 arrival = tab.getPosition() == 0;
-                getOnGoingCustomerTrips(searchText);
+                getOnGoingCustomerTrips(searchText);//onTabSelected
             }
 
             @Override
@@ -71,21 +76,93 @@ public class HomeCustomerFragment extends BaseFragment {
             }
         });
 
-        binding.moreTripsImgView.setOnClickListener(v -> {
-            Helper.setItemParam(Constants.TYPE_TAB, arrival ? Constants.ARRIVAL : Constants.DEPARTURE);
-            OngoingTripFragment fragment = new OngoingTripFragment();
-            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
-        });
-
-        getOnGoingCustomerTrips(searchText);
+//        binding.moreTripsImgView.setOnClickListener(v -> {
+//            Helper.setItemParam(Constants.TYPE_TAB, arrival ? Constants.ARRIVAL : Constants.DEPARTURE);
+//            OngoingTripFragment fragment = new OngoingTripFragment();
+//            getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+//        });
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        offsetArrival = 0;
+        offsetDeparture = 0;
+        getOnGoingCustomerTrips(searchText);//onresume
+    }
+
     private void initAdapter() {
-        binding.ongoingTripRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayout = new LinearLayoutManager(getActivity());
+        binding.ongoingTripRV.setLayoutManager(linearLayout);
         adapter = new OnGoingTripAdapter(HomeCustomerFragment.this, mList, (header, pos) -> {
+            Helper.setItemParam(Constants.TRIP_HEADER, header);
+            Intent intent = new Intent(getContext(), BookingDetailsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
         });
         binding.ongoingTripRV.setAdapter(adapter);
+
+        binding.ongoingTripRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (arrival) {
+                    if (offsetArrival == 0) {
+                        itemCount();
+                    } else {
+                        if (dy > 0) //check for scroll down
+                        {
+                            itemCount();
+                        } else {
+                            binding.loadingDataBottom.relativeProgress.setVisibility(View.GONE);
+                            loadingArrival = true;
+                        }
+                    }
+                } else {
+                    if (offsetDeparture == 0) {
+                        itemCount();
+                    } else {
+                        if (dy > 0) //check for scroll down
+                        {
+                            itemCount();
+                        } else {
+                            binding.loadingDataBottom.relativeProgress.setVisibility(View.GONE);
+                            loadingDeparture = true;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void itemCount() {
+        if (arrival) {
+            visibleItemCountArrival = linearLayout.getChildCount();
+            totalItemCountArrival = linearLayout.getItemCount();
+            pastVisiblesItemsArrival = linearLayout.findFirstVisibleItemPosition();
+
+            if (loadingArrival) {
+                if ((visibleItemCountArrival + pastVisiblesItemsArrival) >= totalItemCountArrival) {
+                    loadingArrival = false;
+                    binding.loadingDataBottom.relativeProgress.setVisibility(View.VISIBLE);
+                    offsetArrival = totalItemCountArrival;
+                }
+            }
+        } else {
+            visibleItemCountDeparture = linearLayout.getChildCount();
+            totalItemCountDeparture = linearLayout.getItemCount();
+            pastVisiblesItemsDeparture = linearLayout.findFirstVisibleItemPosition();
+            if (loadingDeparture) {
+                if ((visibleItemCountDeparture + pastVisiblesItemsDeparture) >= totalItemCountDeparture) {
+                    loadingDeparture = false;
+                    binding.loadingDataBottom.relativeProgress.setVisibility(View.VISIBLE);
+                    offsetDeparture = totalItemCountDeparture;
+                }
+            }
+        }
+        getOnGoingCustomerTrips(searchText);//paging
+
     }
 
     private void initialize() {
@@ -97,7 +174,7 @@ public class HomeCustomerFragment extends BaseFragment {
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         TripRequest tripRequest = new TripRequest();
         tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
-        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        tripRequest.setOffset(arrival ? offsetArrival : offsetDeparture);
         tripRequest.setTrip_type((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
         tripRequest.setSearch(search);
         Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(tripRequest);
@@ -105,6 +182,7 @@ public class HomeCustomerFragment extends BaseFragment {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
                 binding.progressBar.setVisibility(View.GONE);
+                binding.loadingDataBottom.relativeProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     WSMessage result = response.body();
                     if (result != null) {
@@ -114,12 +192,19 @@ public class HomeCustomerFragment extends BaseFragment {
                             }.getType();
                             List<TripsResponse> tempList = new Gson().fromJson(jsonInString, listType);
                             if (arrival) {
-                                arrivalList = new ArrayList<>();
-                                arrivalList.addAll(tempList);
+                                if (Helper.isNotEmptyOrNull(tempList)) {
+                                    if (offsetArrival == 0) {
+                                        arrivalList = new ArrayList<>();
+                                    }
+                                    arrivalList.addAll(tempList);
+                                }
                             } else {
-                                departureList = new ArrayList<>();
-                                departureList.addAll(tempList);
-
+                                if (Helper.isNotEmptyOrNull(tempList)) {
+                                    if (offsetDeparture == 0) {
+                                        departureList = new ArrayList<>();
+                                    }
+                                    departureList.addAll(tempList);
+                                }
                             }
                         }
                     }
@@ -131,6 +216,7 @@ public class HomeCustomerFragment extends BaseFragment {
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 binding.progressBar.setVisibility(View.GONE);
+                binding.loadingDataBottom.relativeProgress.setVisibility(View.GONE);
                 setListView();//onFailure
             }
         });
@@ -192,7 +278,9 @@ public class HomeCustomerFragment extends BaseFragment {
             binding.etSearchTrips.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     searchText = v.getText().toString().trim();
-                    getOnGoingCustomerTrips(searchText);
+                    offsetDeparture = 0;
+                    offsetArrival = 0;
+                    getOnGoingCustomerTrips(searchText);//search
                     hideKeyboard(v);
                     return true; // Consume the event
                 }

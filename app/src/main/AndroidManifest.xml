@@ -29,6 +29,9 @@
             android:value="true" />
 
         <activity
+            android:name="id.co.qualitas.epriority.activity.BookingDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name="id.co.qualitas.epriority.activity.ReviewBookingActivity"
             android:exported="false" />
         <activity

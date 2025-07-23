@@ -30,6 +30,7 @@ import id.co.qualitas.epriority.adapter.PassangerAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.ActivityCreateFlightDetailsBinding;
+import id.co.qualitas.epriority.databinding.BottomsheetFlightInstructionBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
 import id.co.qualitas.epriority.fragment.TimePickerFragment;
@@ -121,36 +122,45 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
         }
 
         binding.imgQuestionFN.setOnClickListener(v -> showFlightInstructionBottomSheet(selectedTripType.equals("Arrival")));
+        binding.imgQuestionFRC.setOnClickListener(v -> showFRCInstructionBottomSheet());
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void showFRCInstructionBottomSheet() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetFlightInstructionBinding bottomSheetBinding = BottomsheetFlightInstructionBinding.inflate(getLayoutInflater());
+        bottomSheetBinding.tvTitle.setText("Flight Reservation Code Intruction");
+        bottomSheetBinding.tvInstruction.setText("As shown on your airline ticket");
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
     }
 
     @SuppressLint("ObsoleteSdkInt")
     private void showFlightInstructionBottomSheet(boolean isArrival) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.bottomsheet_flight_instruction, null);
-        TextView tvTitle = view.findViewById(R.id.tvTitle);
-        TextView tvInstruction = view.findViewById(R.id.tvInstruction);
-        Button btnClose = view.findViewById(R.id.btnClose);
+        BottomsheetFlightInstructionBinding bottomSheetBinding = BottomsheetFlightInstructionBinding.inflate(getLayoutInflater());
 
-        tvTitle.setText(R.string.flight_instruction_title);
+        bottomSheetBinding.tvTitle.setText(R.string.flight_instruction_title);
         String instructionText = getString(R.string.departure_instruction);
         if (isArrival) {
             instructionText = getString(R.string.arrival_instruction);
         }
-        tvInstruction.setText(instructionText);
+        bottomSheetBinding.tvInstruction.setText(instructionText);
 
         String note = getString(R.string.flight_instruction_note);
-        tvInstruction.setText(instructionText + "\n\n" + note);
+        bottomSheetBinding.tvInstruction.setText(instructionText + "\n\n" + note);
 
-        btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
-
-        bottomSheetDialog.setContentView(view);
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
         bottomSheetDialog.show();
     }
 
     private boolean checkNoEmptyData() {
         int empty = 0;
-        if (Helper.isEmpty(binding.edtBookingID)) {
-            binding.edtBookingID.setError("Please enter booking ID");
+        if (Helper.isEmpty(binding.edtFlightReservationCode)) {
+            binding.edtFlightReservationCode.setError("Please enter flight reservation code");
             empty++;
         }
         if (Helper.isEmpty(binding.edtDateFrom)) {
@@ -208,7 +218,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
         String timeFrom = !Helper.isEmpty(binding.edtTimeFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeFrom.getText().toString()) : null;
         String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
         createTrips.setCustomer_id(user.getId());
-        createTrips.setBooking_id(binding.edtBookingID.getText().toString());
+        createTrips.setBooking_id(binding.edtFlightReservationCode.getText().toString());
         createTrips.setFlight_no(binding.edtAirline.getText().toString());
         createTrips.setAirline(binding.edtAirline.getText().toString());
         createTrips.setDate_from(dateFrom + " " + timeFrom);

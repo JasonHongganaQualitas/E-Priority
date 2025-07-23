@@ -3,7 +3,6 @@ package id.co.qualitas.epriority.fragment;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,13 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import id.co.qualitas.epriority.R;
+import id.co.qualitas.epriority.activity.BookingDetailsActivity;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.model.Agent;
 
@@ -66,8 +65,8 @@ public class ModifyBookingFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                BookingDetailsFragment fragment = new BookingDetailsFragment();
-                getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+//                BookingDetailsActivity fragment = new BookingDetailsActivity();
+//                getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
             }
         }, 500);
     }

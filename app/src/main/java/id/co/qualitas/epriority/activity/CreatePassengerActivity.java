@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -53,8 +54,12 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
     private EditText activeDateField;
     private Dropdown selectedNationality, selectedFlightClass, selectedNationalityPassport;
     private List<Dropdown> nationalityList, flightClassList = new ArrayList<>();
-    private int offset = 0;
     boolean inFlightMealRequired;
+    int offset;
+    private boolean loading = true;
+    protected int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private LinearLayoutManager linearLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,7 +259,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         TripRequest tripRequest = new TripRequest();
         tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
-        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        tripRequest.setOffset(offset);
         tripRequest.setSearch(search);
         Call<WSMessage> httpRequest = apiInterface.getListCountries(tripRequest);
         httpRequest.enqueue(new Callback<WSMessage>() {
@@ -268,7 +273,9 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
                             Type listType = new TypeToken<ArrayList<Dropdown>>() {
                             }.getType();
                             List<Dropdown> tempList = new Gson().fromJson(jsonInString, listType);
-                            nationalityList = new ArrayList<>();
+                            if (offset == 0) {
+                                nationalityList = new ArrayList<>();
+                            }
                             nationalityList.addAll(tempList);
                             nationalityAdapter.setFilteredList(nationalityList);
                         }
@@ -288,8 +295,8 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         TripRequest tripRequest = new TripRequest();
-        tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
-        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT_ALL));
+        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));//no need limit
         tripRequest.setSearch("");
         Call<WSMessage> httpRequest = apiInterface.getListFlightClass(tripRequest);
         httpRequest.enqueue(new Callback<WSMessage>() {
@@ -326,10 +333,11 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         if (Helper.isEmptyOrNull(nationalityList)) {
             nationalityList = new ArrayList<>();
         }
+        offset = 0;
         getListCountries("", false);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
-        offset = 0;
+
         DialogChooseNationalityBinding dialogBinding = DialogChooseNationalityBinding.inflate(LayoutInflater.from(CreatePassengerActivity.this));
         dialog = new Dialog(CreatePassengerActivity.this);
         dialog.setContentView(dialogBinding.getRoot());
@@ -338,10 +346,28 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         dialog.show();
 
         dialogBinding.btnSearch.setOnClickListener(v -> {
-            getListCountries(dialogBinding.editText.getText().toString().trim(), false);
+            getListCountries(dialogBinding.editText.getText().toString().trim(), true);
         });
 
-        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(CreatePassengerActivity.this));
+        linearLayout = new LinearLayoutManager(CreatePassengerActivity.this);
+        dialogBinding.recyclerView.setLayoutManager(linearLayout);
+        dialogBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (offset == 0) {
+                    itemCount();
+                } else {
+                    if (dy > 0) //check for scroll down
+                    {
+                        itemCount();
+                    } else {
+                        loading = true;
+                    }
+                }
+            }
+        });
+
         nationalityAdapter = new NationalityAdapter(CreatePassengerActivity.this, nationalityList, (header, pos) -> {
             if (fromNationality) {
                 selectedNationality = header;
@@ -353,6 +379,20 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             dialog.dismiss();
         });
         dialogBinding.recyclerView.setAdapter(nationalityAdapter);
+    }
+
+    public void itemCount() {
+        visibleItemCount = linearLayout.getChildCount();
+        totalItemCount = linearLayout.getItemCount();
+        pastVisiblesItems = linearLayout.findFirstVisibleItemPosition();
+
+        if (loading) {
+            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                loading = false;
+                offset = totalItemCount;
+                getListCountries("", false);
+            }
+        }
     }
 
 }

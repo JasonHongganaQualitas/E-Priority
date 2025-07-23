@@ -36,6 +36,7 @@ public class Constants {
     public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/customer/trips/ongoing";
     public static final String API_LIST_AGENT = "/api/v1/mobile/customer/available-agents";
     public static final String API_CREATE_TRIPS = "/api/v1/mobile/customer/trips";
+    public static final String API_DETAIL_TRIPS = "/api/v1/mobile/customer/trips/";
     //agent
     public static final String API_ON_GOING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/ongoing";
     public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/pending";
@@ -76,13 +77,15 @@ public class Constants {
     public static final String IS_URL = "IsUrl";
     public static final String BOOKING_DETAIL = "Booking detail";
     public static final String DEFAULT_OFFSET = "0";
-    public static final String DEFAULT_LIMIT = "10";
+    public static final String DEFAULT_LIMIT = "20";
+    public static final String DEFAULT_LIMIT_ALL = "99999";
     public static final String ARRIVAL = "arrival";
     public static final String DEPARTURE = "departure";
     public static final String TYPE_TAB = "type tab";
     public static final String EMAIL_FORGOT_PASSWORD = "email forgot password";
     public static final String DATA_CREATE_TRIPS = "data create trips";
     public static final String DATA_PASSENGER = "data passenger";
+    public static final String TRIP_HEADER = "trip header";
 
     //PRD
 //    public static String BASE_URL = "http://192.168.137.202:3443";

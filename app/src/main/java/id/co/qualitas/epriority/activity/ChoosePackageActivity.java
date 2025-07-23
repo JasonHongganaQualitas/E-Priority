@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -50,16 +51,19 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
     List<Agent> mList = new ArrayList<>(), mChoosenAgentList = new ArrayList<>();
     private FragmentChoosePackageBinding binding;
     boolean airportSelected = false, loungeSelected = false, flightSelected = false, fastLaneSelected = false, baggageSelected = false;
-    private int offset;
     private Packages masterPackage;
     private SpinnerDropDownAdapter vehicleTypeAdapter, baggageHandlingAdapter, fastLaneAdapter, flightClassesAdapter, loungeTypeAdapter;
     private Dropdown selectedVehicleType, selectedLoungeType, selectedBaggage, selectedFastType, selectedFLightClass;
     private TripsResponse createTrips;
+    private AgentAdapter adapterDialog;
+    private LinearLayoutManager linearLayout;
+    private int offset;
+    private boolean loading = true;
+    protected int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         binding = FragmentChoosePackageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -79,7 +83,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         });
 
         binding.btnChooseAgent.setOnClickListener(v -> {
-            getAgent();
+            openDialogChooseAgent();
         });
 
         binding.llAirportHeader.setOnClickListener(v -> {
@@ -249,6 +253,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         offset = 0;
+        getAgent();//openDialogChooseAgent
         DialogChooseAgentBinding dialogBinding = DialogChooseAgentBinding.inflate(LayoutInflater.from(ChoosePackageActivity.this));
         dialog = new Dialog(ChoosePackageActivity.this);
         dialog.setContentView(dialogBinding.getRoot());
@@ -256,14 +261,46 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         dialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
 
-        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ChoosePackageActivity.this));
-        AgentAdapter adapterDialog = new AgentAdapter(ChoosePackageActivity.this, mList, (header, pos) -> {
+        linearLayout = new LinearLayoutManager(ChoosePackageActivity.this);
+        dialogBinding.recyclerView.setLayoutManager(linearLayout);
+        dialogBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (offset == 0) {
+                    itemCount();
+                } else {
+                    if (dy > 0) //check for scroll down
+                    {
+                        itemCount();
+                    } else {
+                        loading = true;
+                    }
+                }
+            }
+        });
+
+        adapterDialog = new AgentAdapter(ChoosePackageActivity.this, mList, (header, pos) -> {
             mChoosenAgentList = new ArrayList<>();
             mChoosenAgentList.add(header);
             adapter.setFilteredList(mChoosenAgentList);
             dialog.dismiss();
         });
         dialogBinding.recyclerView.setAdapter(adapterDialog);
+    }
+
+    public void itemCount() {
+        visibleItemCount = linearLayout.getChildCount();
+        totalItemCount = linearLayout.getItemCount();
+        pastVisiblesItems = linearLayout.findFirstVisibleItemPosition();
+
+        if (loading) {
+            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                loading = false;
+                offset = totalItemCount;
+                getAgent();//itemCount
+            }
+        }
     }
 
     private void initAdapter() {
@@ -274,13 +311,11 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
     }
 
     public void getAgent() {
-        openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getListAgent(Helper.getDateNow(Constants.DATE_PATTERN_2), Constants.DEFAULT_OFFSET, Constants.DEFAULT_LIMIT);
+        Call<WSMessage> httpRequest = apiInterface.getListAgent(Helper.getDateNow(Constants.DATE_PATTERN_2), String.valueOf(offset), Constants.DEFAULT_LIMIT);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                dialog.dismiss();
                 if (response.isSuccessful()) {
                     WSMessage result = response.body();
                     if (result != null) {
@@ -289,8 +324,11 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                             Type listType = new TypeToken<ArrayList<Agent>>() {
                             }.getType();
                             List<Agent> tempList = new Gson().fromJson(jsonInString, listType);
-                            mList = new ArrayList<>();
+                            if (offset == 0) {
+                                mList = new ArrayList<>();
+                            }
                             mList.addAll(tempList);
+                            adapterDialog.setFilteredList(mList);
                         } else {
                             setToast(result.getMessage());
                         }
@@ -300,15 +338,12 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                 } else {
                     setToast(response.message());
                 }
-                openDialogChooseAgent();
             }
 
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
-                dialog.dismiss();
                 setToast(t.getMessage());
-                openDialogChooseAgent();
             }
         });
     }
@@ -350,7 +385,6 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                 call.cancel();
                 dialog.dismiss();
                 setToast(t.getMessage());
-                openDialogChooseAgent();
             }
         });
     }

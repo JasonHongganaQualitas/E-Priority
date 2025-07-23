@@ -91,6 +91,6 @@ public interface APIInterface {
     @POST(Constants.API_CREATE_TRIPS)
     Call<WSMessage> createTrips(@Body TripsResponse tripRequestRequest);
 
-    @GET(Constants.API_CREATE_TRIPS + "{id}")
+    @GET(Constants.API_DETAIL_TRIPS + "{id}")
     Call<WSMessage> getDetailTrips(@Path("id") String id);
 }

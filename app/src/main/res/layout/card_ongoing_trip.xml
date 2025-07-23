@@ -39,7 +39,7 @@
             android:id="@+id/bookingIdTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Booking ID: #129-B012"
+            android:text="Order No.: #129-B012"
             android:textColor="@color/black"
             android:textSize="@dimen/text_reg2" />
     </LinearLayout>

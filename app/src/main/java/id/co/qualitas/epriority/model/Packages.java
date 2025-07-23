@@ -33,8 +33,26 @@ public class Packages implements Serializable {
     private int flight_class;
     private int type_lane;
     private int type_baggage;
+    private int id;
+    private int trip_id;
 
     public Packages() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getTrip_id() {
+        return trip_id;
+    }
+
+    public void setTrip_id(int trip_id) {
+        this.trip_id = trip_id;
     }
 
     public Dropdown getSelectedLoungeType() {
