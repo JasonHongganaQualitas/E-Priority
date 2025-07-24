@@ -12,6 +12,13 @@ public class Passenger implements Serializable {
     private String seat_layout;
     private String passport_no;
     private String passport_expdate;
+    private String nationality_name;
+    private String passport_country_name;
+    private String flight_class_name;
+    private int pos_passenger;
+    private int flight_class_id;
+    private int nationality_id;
+    private int passport_country_id;
     private int inflight_meal;
     private int nationality;
     private int flight_class;
@@ -20,8 +27,91 @@ public class Passenger implements Serializable {
     private String passport_country_name;
     private int cabin;
     private int baggage;
+    private Dropdown selectedNationality;
+    private Dropdown selectedFlightClass;
+    private Dropdown selectedNationalityPassport;
 
     public Passenger() {
+    }
+
+    public int getPos_passenger() {
+        return pos_passenger;
+    }
+
+    public void setPos_passenger(int pos_passenger) {
+        this.pos_passenger = pos_passenger;
+    }
+
+    public String getNationality_name() {
+        return nationality_name;
+    }
+
+    public void setNationality_name(String nationality_name) {
+        this.nationality_name = nationality_name;
+    }
+
+    public String getPassport_country_name() {
+        return passport_country_name;
+    }
+
+    public void setPassport_country_name(String passport_country_name) {
+        this.passport_country_name = passport_country_name;
+    }
+
+    public String getFlight_class_name() {
+        return flight_class_name;
+    }
+
+    public void setFlight_class_name(String flight_class_name) {
+        this.flight_class_name = flight_class_name;
+    }
+
+    public int getFlight_class_id() {
+        return flight_class_id;
+    }
+
+    public void setFlight_class_id(int flight_class_id) {
+        this.flight_class_id = flight_class_id;
+    }
+
+    public int getNationality_id() {
+        return nationality_id;
+    }
+
+    public void setNationality_id(int nationality_id) {
+        this.nationality_id = nationality_id;
+    }
+
+    public int getPassport_country_id() {
+        return passport_country_id;
+    }
+
+    public void setPassport_country_id(int passport_country_id) {
+        this.passport_country_id = passport_country_id;
+    }
+
+    public Dropdown getSelectedFlightClass() {
+        return selectedFlightClass;
+    }
+
+    public void setSelectedFlightClass(Dropdown selectedFlightClass) {
+        this.selectedFlightClass = selectedFlightClass;
+    }
+
+    public Dropdown getSelectedNationalityPassport() {
+        return selectedNationalityPassport;
+    }
+
+    public void setSelectedNationalityPassport(Dropdown selectedNationalityPassport) {
+        this.selectedNationalityPassport = selectedNationalityPassport;
+    }
+
+    public Dropdown getSelectedNationality() {
+        return selectedNationality;
+    }
+
+    public void setSelectedNationality(Dropdown selectedNationality) {
+        this.selectedNationality = selectedNationality;
     }
 
     public String getSeat_layout() {

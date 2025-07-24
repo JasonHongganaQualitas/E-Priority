@@ -65,8 +65,10 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.indicator.smoothToShow();
         initialize();
         getVersion();
+
     }
 
     private void initialize() {
@@ -122,45 +124,62 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void checkLogin() {
-        if (session.isLoggedIn()) {
-            binding.btnGetStarted.setVisibility(View.GONE);
-            Thread background = new Thread() {
-                public void run() {
-                    try {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        finish();
-                    } catch (Exception e) {
-                        session.logoutUser();
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
-                        finish();
+        Thread background = new Thread() {
+            public void run() {
+                try {
+                    // Thread will sleep for 5 seconds
+                    sleep(2000);
+                    if (session.isLoggedIn()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Update your UI here
+                                binding.btnGetStarted.setVisibility(View.GONE);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Update your UI here
+                                binding.btnGetStarted.setVisibility(View.VISIBLE);
+                                binding.btnGetStarted.setOnClickListener(v -> {
+                                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    startActivity(intent);
+                                    finish();
+                                });
+                            }
+                        });
+
                     }
+
+                } catch (Exception e) {
+                    session.logoutUser();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    finish();
                 }
-            };
-            background.start();
-        } else {
-            binding.btnGetStarted.setVisibility(View.VISIBLE);
-            binding.loadingIcon.setVisibility(View.GONE);
-            binding.btnGetStarted.setOnClickListener(v -> {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
-            });
-        }
+            }
+        };
+        // start thread
+        background.start();
+
     }
 
     private void getVersion() {
-        binding.loadingIcon.setVisibility(View.VISIBLE);
-        // Rotate the ImageView (loadingIcon) infinitely
-        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(binding.loadingIcon, "rotation", 0f, 360f);
-//        rotateAnim.setDuration(1500); // 1.5 seconds for one complete rotation
-        rotateAnim.setRepeatCount(ObjectAnimator.INFINITE); // Repeat infinitely
-        rotateAnim.setRepeatMode(ObjectAnimator.RESTART); // Restart from the beginning each time
-        rotateAnim.start();
+//        binding.loadingIcon.setVisibility(View.VISIBLE);
+//        // Rotate the ImageView (loadingIcon) infinitely
+//        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(binding.loadingIcon, "rotation", 0f, 360f);
+////        rotateAnim.setDuration(1500); // 1.5 seconds for one complete rotation
+//        rotateAnim.setRepeatCount(ObjectAnimator.INFINITE); // Repeat infinitely
+//        rotateAnim.setRepeatMode(ObjectAnimator.RESTART); // Restart from the beginning each time
+//        rotateAnim.start();
         apiInterface = RetrofitAPIClient.getClientWithoutCookies().create(APIInterface.class);
         Call<WSMessage> httpRequest = apiInterface.getVersion();
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3A7FFF</color>
+    <color name="colorSecondary">#FB8220</color>
     <color name="badgeActive">#D2E4FF</color>
     <color name="badgePending">#FFDDB0</color>
     <color name="badgeUpcoming">#FFE139</color>

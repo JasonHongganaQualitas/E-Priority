@@ -15,6 +15,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -91,7 +92,7 @@ public interface APIInterface {
     @POST(Constants.API_CREATE_TRIPS)
     Call<WSMessage> createTrips(@Body TripsResponse tripRequestRequest);
 
-    @GET(Constants.API_CREATE_TRIPS + "{id}")
+    @GET(Constants.API_DETAIL_TRIPS + "{id}")
     Call<WSMessage> getDetailTrips(@Path("id") String id);
     @POST(Constants.API_BOOKING + "{id}/accept")
     Call<WSMessage> acceptBooking(@Path("id") String id);
@@ -99,4 +100,7 @@ public interface APIInterface {
     Call<WSMessage> declineBooking(@Path("id") String id);
     @GET(Constants.API_BOOKING + "{id}")
     Call<WSMessage> getBookingDetails(@Path("id") String id);
+
+    @PUT(Constants.API_DETAIL_TRIPS + "{id}")
+    Call<WSMessage> modifyTrips(@Path("id") String id, @Body TripsResponse tripRequestRequest);
 }

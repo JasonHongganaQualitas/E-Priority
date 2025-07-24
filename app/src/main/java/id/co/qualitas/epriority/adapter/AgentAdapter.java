@@ -8,7 +8,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -54,8 +53,8 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         setFormatSeparator();
         Agent agent = mFilteredList.get(holder.getAdapterPosition());
-        String reviewCount = format.format(agent.getReview_count());
-        String average = format.format(agent.getRating_average());
+        String reviewCount = format.format(agent.getTotal_reviews());
+        String average = format.format(agent.getAvg_rating());
         holder.binding.nameText.setText(Helper.isEmpty(agent.getName(), ""));
         holder.binding.ratingText.setText(average + " (" + reviewCount + ") reviews");
         holder.binding.languagesText.setText("Language : " + Helper.isEmpty(agent.getLanguages(), ""));

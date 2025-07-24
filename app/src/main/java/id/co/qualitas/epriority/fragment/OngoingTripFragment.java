@@ -3,6 +3,7 @@ package id.co.qualitas.epriority.fragment;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.OnGoingTripAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentOngoingTripCustomerBinding;
@@ -33,18 +35,24 @@ public class OngoingTripFragment extends BaseFragment {
     OnGoingTripAdapter adapter;
     private boolean arrival = true;
     private FragmentOngoingTripCustomerBinding binding;
+    int offset;
+    private boolean loading = true;
+    protected int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private LinearLayoutManager linearLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentOngoingTripCustomerBinding.inflate(inflater, container, false);
+        initAdapter();
+
         if (Helper.getItemParam(Constants.TYPE_TAB) != null) {
             String type = (String) Helper.getItemParam(Constants.TYPE_TAB);
             binding.txtTitle.setText("Ongoing " + type.toUpperCase() + " trip");
             arrival = type.equals(Constants.ARRIVAL);
         }
-
-        initAdapter();
-        getOnGoingCustomerTrips();
+        offset = 0;
+        getOnGoingCustomerTrips();//first
+        setRefreshLayout();
 
         binding.backBtn.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
@@ -54,10 +62,57 @@ public class OngoingTripFragment extends BaseFragment {
     }
 
     private void initAdapter() {
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayout = new LinearLayoutManager(getActivity());
+        binding.recyclerView.setLayoutManager(linearLayout);
         adapter = new OnGoingTripAdapter(OngoingTripFragment.this, mList, (header, pos) -> {
         });
         binding.recyclerView.setAdapter(adapter);
+
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (offset == 0) {
+                    itemCount();
+                } else {
+                    if (dy > 0) //check for scroll down
+                    {
+                        itemCount();
+                    } else {
+                        binding.loadingDataBottom.relativeProgress.setVisibility(View.GONE);
+                        loading = true;
+                    }
+                }
+            }
+        });
+    }
+
+    public void itemCount() {
+        visibleItemCount = linearLayout.getChildCount();
+        totalItemCount = linearLayout.getItemCount();
+        pastVisiblesItems = linearLayout.findFirstVisibleItemPosition();
+
+        if (loading) {
+            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                loading = false;
+                binding.loadingDataBottom.relativeProgress.setVisibility(View.VISIBLE);
+                offset = totalItemCount;
+                getOnGoingCustomerTrips();//paging
+            }
+        }
+    }
+
+    private void setRefreshLayout() {
+        binding.swipeLayout.setColorSchemeResources(R.color.textPending,
+                R.color.badgeUpcoming,
+                R.color.textUpcoming,
+                R.color.badgePending);
+        binding.swipeLayout.setOnRefreshListener(() -> {
+            binding.swipeLayout.setRefreshing(false);
+            offset = 0;
+            binding.progressBar.setVisibility(View.VISIBLE);
+            getOnGoingCustomerTrips();//setRefreshLayout
+        });
     }
 
     public void getOnGoingCustomerTrips() {
@@ -65,9 +120,8 @@ public class OngoingTripFragment extends BaseFragment {
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         TripRequest tripRequest = new TripRequest();
         tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
-        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        tripRequest.setOffset(offset);
         tripRequest.setTrip_type((arrival ? Constants.ARRIVAL : Constants.DEPARTURE));
-//        trips.setSearch(search);
         Call<WSMessage> httpRequest = apiInterface.getOnGoingCustomerTrips(tripRequest);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
@@ -81,8 +135,12 @@ public class OngoingTripFragment extends BaseFragment {
                             Type listType = new TypeToken<ArrayList<TripsResponse>>() {
                             }.getType();
                             List<TripsResponse> tempList = new Gson().fromJson(jsonInString, listType);
-                            mList = new ArrayList<>();
-                            mList.addAll(tempList);
+                            if (Helper.isNotEmptyOrNull(tempList)) {
+                                if (offset == 0) {
+                                    mList = new ArrayList<>();
+                                }
+                                mList.addAll(tempList);
+                            }
                         }
                     }
                 }

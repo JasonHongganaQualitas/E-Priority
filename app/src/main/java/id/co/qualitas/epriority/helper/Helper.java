@@ -47,6 +47,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
 
@@ -85,6 +91,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1287,6 +1294,29 @@ public class Helper {
                 dip, resources.getDisplayMetrics()
         );
         return (int) px;
+    }
+
+    public static Bitmap generateQRCode(String text) throws WriterException {
+        // Set the encoding hints (optional)
+        Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
+        hints.put(EncodeHintType.MARGIN, 1);  // Set margin
+
+        // Generate the QR Code using ZXing
+        QRCodeWriter writer = new QRCodeWriter();
+        BitMatrix bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 512, 512, hints);
+
+        // Convert BitMatrix to Bitmap
+        int width = bitMatrix.getWidth();
+        int height = bitMatrix.getHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+            }
+        }
+
+        return bitmap;
     }
 
 }

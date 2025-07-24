@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import id.co.qualitas.epriority.R;
+import id.co.qualitas.epriority.activity.BookingDetailsActivity;
 
 public class UpdateSubmittedFragment extends Fragment {
     @Override
@@ -19,8 +20,8 @@ public class UpdateSubmittedFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                BookingDetailsFragment fragment = new BookingDetailsFragment();
-                getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
+//                BookingDetailsActivity fragment = new BookingDetailsActivity();
+//                getParentFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(null).commit();
             }
         }, 5000);
         return inflater.inflate(R.layout.fragment_update_submitted, container, false);

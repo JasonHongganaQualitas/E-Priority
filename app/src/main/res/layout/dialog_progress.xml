@@ -20,16 +20,13 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">
-        <com.github.ybq.android.spinkit.SpinKitView
+        <com.frogobox.ui.loadingindicator.FrogoLoadingIndicatorView
             android:id="@+id/indicator"
-            style="@style/SpinKitView.WanderingCubes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:SpinKit_Color="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"  />
+            app:indicatorName="BallTrianglePathIndicator"
+            app:indicatorColor="@color/colorSecondary"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/txtMsg"

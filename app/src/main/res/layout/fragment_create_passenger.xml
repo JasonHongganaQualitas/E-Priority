@@ -25,6 +25,7 @@
                 android:src="@drawable/ic_arrow_left_blue" />
 
             <TextView
+                android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Create New Passenger List"
@@ -74,9 +75,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:background="@drawable/bg_rounded_edittext"
                         android:hint="John"
-                        android:padding="8dp" />
+                        android:padding="8dp"
+                        android:textSize="@dimen/text_reg2" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -98,9 +100,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:background="@drawable/bg_rounded_edittext"
                         android:hint="Smith"
-                        android:padding="8dp" />
+                        android:padding="8dp"
+                        android:textSize="@dimen/text_reg2" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -116,9 +119,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="email@gmail.com"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -132,9 +137,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:inputType="phone"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="+62 82312 12312"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -148,11 +155,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
                 android:hint="20/07/2005"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -166,9 +174,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="Select Nationality"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -204,15 +213,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".3"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:inputType="number"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:hint="0"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="@dimen/text_reg2" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".7"
                     android:layout_marginStart="10dp"
+                    android:layout_weight=".7"
                     android:text="KG" />
             </LinearLayout>
 
@@ -234,18 +245,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".3"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:inputType="number"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:hint="0"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="@dimen/text_reg2" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".7"
                     android:layout_marginStart="10dp"
+                    android:layout_weight=".7"
                     android:text="KG" />
             </LinearLayout>
-            
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -257,23 +270,23 @@
                 android:id="@+id/rgInFlightMeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rbMealYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:text="Yes" />
 
                 <RadioButton
                     android:id="@+id/rbMealNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:text="No"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:text="No" />
 
             </RadioGroup>
 
@@ -334,9 +347,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="000000"
-                android:padding="@dimen/text_small1" />
+                android:padding="@dimen/text_small1"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -350,9 +364,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="Country"
-                android:padding="@dimen/text_small1" />
+                android:padding="@dimen/text_small1"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -366,11 +381,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
                 android:hint="20/07/2005"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
         </LinearLayout>
 

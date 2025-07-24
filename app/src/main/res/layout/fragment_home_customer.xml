@@ -139,5 +139,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             tools:listitem="@layout/card_ongoing_trip" />
+
+        <include
+            android:id="@+id/loadingDataBottom"
+            layout="@layout/layout_loading_data_bottom"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

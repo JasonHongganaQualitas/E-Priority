@@ -80,22 +80,40 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Booking ID"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flight Reservation Code"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imgQuestionFRC"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_question" />
+            </LinearLayout>
 
             <EditText
-                android:id="@+id/edtBookingID"
+                android:id="@+id/edtFlightReservationCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="ex: 123456789"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,20 +145,33 @@
                             android:id="@+id/edtDateFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: 15-08-2025"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtTimeFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext"
+                            android:hint="ex: 08:00"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
 
                         <EditText
                             android:id="@+id/edtRouteFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: Jakarta (CGK)"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -169,32 +200,45 @@
                             android:id="@+id/edtDateTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: 15-08-2025"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
+
+                        <EditText
+                            android:id="@+id/edtTimeTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext"
+                            android:hint="ex: 08:00"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
 
                         <EditText
                             android:id="@+id/edtRouteTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: Frankfurt (FRA)"
                             android:padding="8dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_reg2" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Flight Number"
@@ -208,22 +252,20 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_question"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView"
-                    app:layout_constraintTop_toTopOf="@+id/textView" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:src="@drawable/ic_question" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/edtAirline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="ex: GA-408"
                 android:inputType="textEmailAddress"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2" />
 
         </LinearLayout>
 
@@ -256,9 +298,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
-                android:hint="1"
-                android:padding="8dp" />
+                android:background="@drawable/bg_rounded_edittext"
+                android:hint="ex: 1"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <LinearLayout
                 android:id="@+id/llAddPassenger"
