@@ -4,12 +4,14 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DateBirthPickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private DateSelectedListener listener;
 
@@ -18,8 +20,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         void onDateSelected(int year, int month, int dayOfMonth);
     }
 
-    public static DatePickerFragment newInstance(DateSelectedListener listener) {
-        DatePickerFragment fragment = new DatePickerFragment();
+    public static DateBirthPickerFragment newInstance(DateSelectedListener listener) {
+        DateBirthPickerFragment fragment = new DateBirthPickerFragment();
         fragment.listener = listener;
         return fragment;
     }
@@ -39,9 +41,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         // Optional: Set a maximum date (e.g., today) or minimum date
 //         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-         Calendar minDate = Calendar.getInstance();
+//         Calendar minDate = Calendar.getInstance();
         // minDate.set(2000, 0, 1); // Year, Month (0-based), Day
-         datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+//         datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
 
         return datePickerDialog;
     }

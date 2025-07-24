@@ -20,11 +20,6 @@ public class Passenger implements Serializable {
     private int nationality_id;
     private int passport_country_id;
     private int inflight_meal;
-    private int nationality;
-    private int flight_class;
-    private String flight_class_name;
-    private int passport_country;
-    private String passport_country_name;
     private int cabin;
     private int baggage;
     private Dropdown selectedNationality;
@@ -208,45 +203,5 @@ public class Passenger implements Serializable {
 
     public void setPassport_expdate(String passport_expdate) {
         this.passport_expdate = passport_expdate;
-    }
-
-    public int getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(int nationality) {
-        this.nationality = nationality;
-    }
-
-    public int getFlight_class() {
-        return flight_class;
-    }
-
-    public void setFlight_class(int flight_class) {
-        this.flight_class = flight_class;
-    }
-
-    public int getPassport_country() {
-        return passport_country;
-    }
-
-    public void setPassport_country(int passport_country) {
-        this.passport_country = passport_country;
-    }
-
-    public String getFlight_class_name() {
-        return flight_class_name;
-    }
-
-    public void setFlight_class_name(String flight_class_name) {
-        this.flight_class_name = flight_class_name;
-    }
-
-    public String getPassport_country_name() {
-        return passport_country_name;
-    }
-
-    public void setPassport_country_name(String passport_country_name) {
-        this.passport_country_name = passport_country_name;
     }
 }

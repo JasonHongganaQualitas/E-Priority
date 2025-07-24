@@ -32,6 +32,7 @@ import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.DialogChooseNationalityBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
+import id.co.qualitas.epriority.fragment.DateBirthPickerFragment;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
 import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
@@ -45,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreatePassengerActivity extends BaseActivity implements DatePickerFragment.DateSelectedListener {
+public class CreatePassengerActivity extends BaseActivity implements DatePickerFragment.DateSelectedListener, DateBirthPickerFragment.DateSelectedListener {
     private FragmentCreatePassengerBinding binding;
     private NationalityAdapter nationalityAdapter;
     private SpinnerDropDownAdapter flightClassAdapter;
@@ -82,7 +83,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         if (binding.edtDateBirth != null) {
             binding.edtDateBirth.setOnClickListener(v -> {
                 activeDateField = binding.edtDateBirth; // Set active field
-                showDatePickerDialog();
+                showDateBirthPickerDialog();
             });
             binding.edtDateBirth.setFocusable(false);
             binding.edtDateBirth.setClickable(true);
@@ -182,13 +183,13 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         passenger.setCabin(Integer.parseInt(binding.edtCabin.getText().toString()));
         passenger.setBaggage(Integer.parseInt(binding.edtBaggage.getText().toString()));
         passenger.setInflight_meal(inFlightMealRequired ? 1 : 0);
-        passenger.setNationality(selectedNationality.getId());
+        passenger.setNationality_id(selectedNationality.getId());
         passenger.setSelectedNationality(selectedNationality);
-        passenger.setFlight_class(selectedFlightClass.getId());
+        passenger.setFlight_class_id(selectedFlightClass.getId());
         passenger.setSelectedFlightClass(selectedFlightClass);
         passenger.setPassport_no(binding.edtPassportNumber.getText().toString());
         passenger.setPassport_expdate(Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportExpiryDate.getText().toString()));
-        passenger.setPassport_country(selectedNationalityPassport.getId());
+        passenger.setPassport_country_id(selectedNationalityPassport.getId());
         passenger.setSelectedNationalityPassport(selectedNationalityPassport);
         passenger.setSeat_layout(null);
         Helper.setItemParam(Constants.DATA_PASSENGER, passenger);
@@ -234,6 +235,12 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
 
     private void showDatePickerDialog() {
         DatePickerFragment datePicker = DatePickerFragment.newInstance(this); // 'this' is the Activity
+        // Use getSupportFragmentManager() when calling from an Activity
+        datePicker.show(getSupportFragmentManager(), "datePickerBirthActivity");
+    }
+
+    private void showDateBirthPickerDialog() {
+        DateBirthPickerFragment datePicker = DateBirthPickerFragment.newInstance(this); // 'this' is the Activity
         // Use getSupportFragmentManager() when calling from an Activity
         datePicker.show(getSupportFragmentManager(), "datePickerBirthActivity");
     }

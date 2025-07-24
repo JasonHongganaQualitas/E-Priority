@@ -42,6 +42,7 @@ import id.co.qualitas.epriority.databinding.DialogBookingCreatedBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
 import id.co.qualitas.epriority.databinding.DialogUpdateSubmittedBinding;
 import id.co.qualitas.epriority.databinding.FragmentModifyBookingBinding;
+import id.co.qualitas.epriority.fragment.DateBirthPickerFragment;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
 import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
@@ -433,6 +434,9 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         }
 
         createTrips.setAgent_list(mChoosenAgentList);
+        if (Helper.isNotEmptyOrNull(mChoosenAgentList)) {
+            createTrips.setAgent_id(mChoosenAgentList.get(0).getId());
+        }
         createTrips.setPackages(header);
 
         Helper.setItemParam(Constants.DATA_CREATE_TRIPS, createTrips);
@@ -635,6 +639,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         adapter = new PassengerTripsAdapter(ModifyBookingActivity.this, passengerList, false, (header, pos) -> {
             header.setPos_passenger(pos);
             Helper.setItemParam(Constants.DETAIL_PASSENGER, header);
+            saveData();//adapter click
             intent = new Intent(getApplicationContext(), ModifyPassengerActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
