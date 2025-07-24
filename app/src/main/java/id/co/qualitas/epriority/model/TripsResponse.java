@@ -15,7 +15,7 @@ public class TripsResponse {
     public String status;
     public int id;
     public int passenger_count;
-    public int agent_id;
+    public int preferred_agent_id;
     public int customer_id;
     public String customer_name;
     public String tripId;
@@ -69,12 +69,12 @@ public class TripsResponse {
         this.qr_code_data = qr_code_data;
     }
 
-    public int getAgent_id() {
-        return agent_id;
+    public int getPreferred_agent_id() {
+        return preferred_agent_id;
     }
 
-    public void setAgent_id(int agent_id) {
-        this.agent_id = agent_id;
+    public void setPreferred_agent_id(int preferred_agent_id) {
+        this.preferred_agent_id = preferred_agent_id;
     }
 
     public String getAirline() {

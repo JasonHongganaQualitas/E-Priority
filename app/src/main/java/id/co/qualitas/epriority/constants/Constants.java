@@ -34,6 +34,7 @@ public class Constants {
     public static final String API_GET_FLIGHT_INFORMATION = "/v1/flights";
     //customer
     public static final String API_ON_GOING_CUSTOMER_TRIPS = "/api/v1/mobile/customer/trips/ongoing";
+    public static final String API_TRIPS_HISTORY = "/api/v1/mobile/customer/trips/history";
     public static final String API_LIST_AGENT = "/api/v1/mobile/customer/available-agents";
     public static final String API_CREATE_TRIPS = "/api/v1/mobile/customer/trips";
     public static final String API_DETAIL_TRIPS = "/api/v1/mobile/customer/trips/";
@@ -88,6 +89,7 @@ public class Constants {
     public static final String DATA_CREATE_TRIPS = "data create trips";
     public static final String DATA_PASSENGER = "data passenger";
     public static final String TRIP_HEADER = "trip header";
+    public static final String FROM_HISTORY = "from history";
     public static final String QR_DATA = "QR Data";
     public static final String TRIP_DETAILS = "Trip Details";
     public static final String DETAIL_PASSENGER = "detail passenger";

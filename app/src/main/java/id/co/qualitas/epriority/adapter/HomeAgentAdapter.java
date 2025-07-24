@@ -96,7 +96,7 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
         }
 
         holder.binding.tvName.setText(Helper.isEmpty(tripsResponse.getCustomer_name(), ""));
-        holder.binding.tvBookingId.setText("Booking ID: #" + Helper.isEmpty(tripsResponse.getBooking_id(), ""));
+        holder.binding.tvBookingId.setText("Booking Trips No.: #" + tripsResponse.getId());
         holder.binding.tvLocation.setText(flightInfo);
         holder.binding.tvPeople.setText(tripsResponse.getPassenger_count() + " People");
         holder.binding.tvDate.setText(date + " at " + time);
@@ -139,7 +139,6 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
             // TODO: handle accept
             mContext.acceptBooking(tripsResponse);
         });
-        holder.binding.cvBooking.setOnClickListener(v -> mContext.callBookingDetailsFragment(tripsResponse));
     }
 
     @Override

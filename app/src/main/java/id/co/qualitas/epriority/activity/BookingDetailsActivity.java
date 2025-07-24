@@ -77,6 +77,11 @@ public class BookingDetailsActivity extends BaseActivity {
 
         if (Helper.getItemParam(Constants.TRIP_HEADER) != null) {
             tripHeader = (TripsResponse) Helper.getItemParam(Constants.TRIP_HEADER);
+            if (Helper.getItemParam(Constants.FROM_HISTORY) != null) {
+                binding.buttonsLL.setVisibility(View.GONE);
+            } else {
+                binding.buttonsLL.setVisibility(View.VISIBLE);
+            }
             getDetails();
         } else {
             setToast("Please try again later.");

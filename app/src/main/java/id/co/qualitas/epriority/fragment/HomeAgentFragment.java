@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.rpc.Help;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
     private void initialize() {
         getOnGoingTrips();
         binding.tvWelcome.setText("Hello " + user.getName());
+        binding.tvDate.setText(Helper.getDateNow(Constants.DATE_PATTERN_4));
         initAdapter();
 
         binding.imgNotif.setOnClickListener(v -> {
@@ -80,23 +82,27 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
     private void initAdapter() {
         binding.rvOngoingBookings.setLayoutManager(new LinearLayoutManager(getContext()));
         oAdapter = new HomeAgentAdapter(this, onGoingList, true, (header, pos) -> {
+            Helper.setItemParam(Constants.BOOKING_DETAIL, header);
+            BookingDetailsAgentFragment fragment2 = new BookingDetailsAgentFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_container, fragment2);
+            fragmentTransaction.addToBackStack("Ongoing Booking");
+            fragmentTransaction.commit();
         });
         binding.rvOngoingBookings.setAdapter(oAdapter);
 
         binding.rvPendingBookings.setLayoutManager(new LinearLayoutManager(getContext()));
         pAdapter = new HomeAgentAdapter(this, pendingList, false, (header, pos) -> {
+            Helper.setItemParam(Constants.BOOKING_DETAIL, header);
+            BookingDetailsAgentFragment fragment2 = new BookingDetailsAgentFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_container, fragment2);
+            fragmentTransaction.addToBackStack("Ongoing Booking");
+            fragmentTransaction.commit();
         });
         binding.rvPendingBookings.setAdapter(pAdapter);
-    }
-
-    public void callBookingDetailsFragment(TripsResponse tripsResponse) {
-        Helper.setItemParam(Constants.BOOKING_DETAIL, tripsResponse);
-        BookingDetailsAgentFragment fragment2 = new BookingDetailsAgentFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_container, fragment2);
-        fragmentTransaction.addToBackStack("Ongoing Booking");
-        fragmentTransaction.commit();
     }
 
     public boolean onBackPressed() {
@@ -215,7 +221,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
         }
     }
 
-    public void acceptBooking(TripsResponse tripsResponse){
+    public void acceptBooking(TripsResponse tripsResponse) {
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         Call<WSMessage> httpRequest = apiInterface.acceptBooking(String.valueOf(tripsResponse.getId()));
@@ -223,9 +229,9 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
                 dialog.dismiss();
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     WSMessage result = response.body();
-                    if (result != null){
+                    if (result != null) {
                         if (result.getIdMessage() == 1) {
                             pAdapter.notifyDataSetChanged();
                             oAdapter.notifyDataSetChanged();
@@ -233,12 +239,10 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                         } else {
                             setToast(result.getMessage());
                         }
-                    }
-                    else {
+                    } else {
                         setToast(response.message());
                     }
-                }
-                else {
+                } else {
                     setToast(response.message());
                 }
             }
@@ -252,7 +256,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
         });
     }
 
-    public void declineBooking(TripsResponse tripsResponse){
+    public void declineBooking(TripsResponse tripsResponse) {
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         Call<WSMessage> httpRequest = apiInterface.declineBooking(String.valueOf(tripsResponse.getId()));
@@ -260,9 +264,9 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
                 dialog.dismiss();
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     WSMessage result = response.body();
-                    if (result != null){
+                    if (result != null) {
                         if (result.getIdMessage() == 1) {
                             pAdapter.notifyDataSetChanged();
                             oAdapter.notifyDataSetChanged();
@@ -270,12 +274,10 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                         } else {
                             setToast(result.getMessage());
                         }
-                    }
-                    else {
+                    } else {
                         setToast(response.message());
                     }
-                }
-                else {
+                } else {
                     setToast(response.message());
                 }
             }

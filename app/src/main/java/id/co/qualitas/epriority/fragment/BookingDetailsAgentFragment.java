@@ -35,14 +35,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BookingDetailsAgentFragment extends BaseFragment implements IOnBackPressed {
-
     private FragmentBookingDetailsAgentBinding binding;
     View view;
     TripsResponse tripsResponse, currTrip;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentBookingDetailsAgentBinding.inflate(inflater, container, false);
         view = binding.getRoot();

@@ -97,6 +97,7 @@ public class HomeCustomerFragment extends BaseFragment {
         binding.ongoingTripRV.setLayoutManager(linearLayout);
         adapter = new OnGoingTripAdapter(HomeCustomerFragment.this, mList, (header, pos) -> {
             Helper.setItemParam(Constants.TRIP_HEADER, header);
+            Helper.removeItemParam(Constants.FROM_HISTORY);
             Intent intent = new Intent(getContext(), BookingDetailsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);

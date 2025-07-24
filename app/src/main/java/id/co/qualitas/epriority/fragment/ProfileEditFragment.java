@@ -25,7 +25,7 @@ public class ProfileEditFragment extends BaseFragment {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false);
         init();
         setData();
-
+        binding.backBtn.setOnClickListener(v -> getActivity().getOnBackPressedDispatcher().onBackPressed());
         binding.btnSave.setOnClickListener(v -> {
             int error = 0;
             if (binding.edtPhoneNumber.getText().toString().isEmpty()) {

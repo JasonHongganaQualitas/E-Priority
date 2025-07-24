@@ -68,6 +68,9 @@ public interface APIInterface {
     @POST(Constants.API_ON_GOING_CUSTOMER_TRIPS)
     Call<WSMessage> getOnGoingCustomerTrips(@Body TripRequest tripRequestRequest);
 
+    @POST(Constants.API_TRIPS_HISTORY)
+    Call<WSMessage> getHistory(@Body TripRequest tripRequestRequest);
+
     @GET(Constants.API_ON_GOING_AGENT_BOOKINGS)
     Call<WSMessage> getOnGoingAgentBookings(@Query("offset") String offset, @Query("limit") String limit);
 
@@ -94,10 +97,13 @@ public interface APIInterface {
 
     @GET(Constants.API_DETAIL_TRIPS + "{id}")
     Call<WSMessage> getDetailTrips(@Path("id") String id);
+
     @POST(Constants.API_BOOKING + "{id}/accept")
     Call<WSMessage> acceptBooking(@Path("id") String id);
+
     @POST(Constants.API_BOOKING + "{id}/decline")
     Call<WSMessage> declineBooking(@Path("id") String id);
+
     @GET(Constants.API_BOOKING + "{id}")
     Call<WSMessage> getBookingDetails(@Path("id") String id);
 

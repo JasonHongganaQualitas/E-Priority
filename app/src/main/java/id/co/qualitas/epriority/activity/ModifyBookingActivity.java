@@ -1,7 +1,6 @@
 package id.co.qualitas.epriority.activity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -38,11 +36,9 @@ import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.BottomsheetFlightInstructionBinding;
-import id.co.qualitas.epriority.databinding.DialogBookingCreatedBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
 import id.co.qualitas.epriority.databinding.DialogUpdateSubmittedBinding;
 import id.co.qualitas.epriority.databinding.FragmentModifyBookingBinding;
-import id.co.qualitas.epriority.fragment.DateBirthPickerFragment;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
 import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
@@ -435,7 +431,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
 
         createTrips.setAgent_list(mChoosenAgentList);
         if (Helper.isNotEmptyOrNull(mChoosenAgentList)) {
-            createTrips.setAgent_id(mChoosenAgentList.get(0).getId());
+            createTrips.setPreferred_agent_id(mChoosenAgentList.get(0).getId());
         }
         createTrips.setPackages(header);
 

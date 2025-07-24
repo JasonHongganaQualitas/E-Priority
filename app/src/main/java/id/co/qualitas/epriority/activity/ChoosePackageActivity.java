@@ -675,7 +675,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         createTrips.setAgent_list(mChoosenAgentList);
         createTrips.setPackages(header);
         if (Helper.isNotEmptyOrNull(mChoosenAgentList)) {
-            createTrips.setAgent_id(mChoosenAgentList.get(0).getId());
+            createTrips.setPreferred_agent_id(mChoosenAgentList.get(0).getId());
         }
         Helper.setItemParam(Constants.DATA_CREATE_TRIPS, createTrips);
     }
