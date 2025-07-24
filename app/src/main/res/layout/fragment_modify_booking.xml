@@ -530,7 +530,7 @@
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/edtPickUpDate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -543,7 +543,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_reg2" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/edtPickUpTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

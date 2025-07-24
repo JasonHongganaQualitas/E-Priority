@@ -62,6 +62,7 @@ public class BookingDetailsActivity extends BaseActivity {
         });
 
         binding.btnModifyTrip.setOnClickListener(v -> {
+            Helper.setItemParam(Constants.DATA_CREATE_TRIPS, tripDetail);
             intent = new Intent(BookingDetailsActivity.this, ModifyBookingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
