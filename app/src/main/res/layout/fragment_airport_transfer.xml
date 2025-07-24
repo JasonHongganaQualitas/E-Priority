@@ -220,6 +220,7 @@
                     android:layout_marginTop="12dp" />
 
                 <TextView
+                    android:id="@+id/txtNote"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:text="Child seats, wheel chair, etc"

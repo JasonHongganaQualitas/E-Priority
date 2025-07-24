@@ -93,4 +93,10 @@ public interface APIInterface {
 
     @GET(Constants.API_CREATE_TRIPS + "{id}")
     Call<WSMessage> getDetailTrips(@Path("id") String id);
+    @POST(Constants.API_BOOKING + "{id}/accept")
+    Call<WSMessage> acceptBooking(@Path("id") String id);
+    @POST(Constants.API_BOOKING + "{id}/decline")
+    Call<WSMessage> declineBooking(@Path("id") String id);
+    @GET(Constants.API_BOOKING + "{id}")
+    Call<WSMessage> getBookingDetails(@Path("id") String id);
 }

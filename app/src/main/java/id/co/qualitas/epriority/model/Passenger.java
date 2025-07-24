@@ -15,7 +15,9 @@ public class Passenger implements Serializable {
     private int inflight_meal;
     private int nationality;
     private int flight_class;
+    private String flight_class_name;
     private int passport_country;
+    private String passport_country_name;
     private int cabin;
     private int baggage;
 
@@ -140,5 +142,21 @@ public class Passenger implements Serializable {
 
     public void setPassport_country(int passport_country) {
         this.passport_country = passport_country;
+    }
+
+    public String getFlight_class_name() {
+        return flight_class_name;
+    }
+
+    public void setFlight_class_name(String flight_class_name) {
+        this.flight_class_name = flight_class_name;
+    }
+
+    public String getPassport_country_name() {
+        return passport_country_name;
+    }
+
+    public void setPassport_country_name(String passport_country_name) {
+        this.passport_country_name = passport_country_name;
     }
 }

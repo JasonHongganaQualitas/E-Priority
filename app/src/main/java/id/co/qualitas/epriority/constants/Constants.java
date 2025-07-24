@@ -39,6 +39,7 @@ public class Constants {
     //agent
     public static final String API_ON_GOING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/ongoing";
     public static final String API_PENDING_AGENT_BOOKINGS = "/api/v1/mobile/agent/bookings/pending";
+    public static final String API_BOOKING = "/api/v1/mobile/agent/bookings/";
     public static final String API_STATS = "/api/v1/mobile/home/stats";
     public static final String API_LIST_PACKAGE = "/api/v1/mobile/package/details";
     public static final String API_LIST_COUNTRIES = "/api/v1/dropdown/country";
@@ -75,6 +76,7 @@ public class Constants {
     public static final String KEY_URL = "key_url";
     public static final String IS_URL = "IsUrl";
     public static final String BOOKING_DETAIL = "Booking detail";
+    public static final String PASSANGER_DETAIL = "Passanger detail";
     public static final String DEFAULT_OFFSET = "0";
     public static final String DEFAULT_LIMIT = "10";
     public static final String ARRIVAL = "arrival";

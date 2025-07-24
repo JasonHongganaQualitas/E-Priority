@@ -15,6 +15,8 @@ import java.util.List;
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.databinding.RowViewBookingsBinding;
 import id.co.qualitas.epriority.fragment.PendingBookingFragment;
+import id.co.qualitas.epriority.helper.RetrofitAPIClient;
+import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.TripsResponse;
 
 public class PendingBookingAdapter extends RecyclerView.Adapter<PendingBookingAdapter.ViewHolder> {
@@ -69,10 +71,12 @@ public class PendingBookingAdapter extends RecyclerView.Adapter<PendingBookingAd
         // Click listeners
         holder.binding.btnDecline.setOnClickListener(v -> {
             // TODO: handle decline
+            mContext.declineBooking(tripsResponse);
         });
 
         holder.binding.btnAccept.setOnClickListener(v -> {
             // TODO: handle accept
+            mContext.acceptBooking(tripsResponse);
         });
         holder.binding.cvBooking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +85,7 @@ public class PendingBookingAdapter extends RecyclerView.Adapter<PendingBookingAd
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

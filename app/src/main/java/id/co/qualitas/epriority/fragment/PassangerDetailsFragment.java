@@ -8,20 +8,24 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import id.co.qualitas.epriority.adapter.OngoingBookingAdapter;
 import id.co.qualitas.epriority.adapter.PassengerDetailsAdapter;
+import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.FragmentBookingDetailsAgentBinding;
 import id.co.qualitas.epriority.databinding.FragmentPassengerDetailsBinding;
+import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.interfaces.IOnBackPressed;
+import id.co.qualitas.epriority.model.Passenger;
 import id.co.qualitas.epriority.model.PassengerDetails;
 
 public class PassangerDetailsFragment extends BaseFragment implements IOnBackPressed {
 
     private FragmentPassengerDetailsBinding binding;
     private PassengerDetailsAdapter adapter;
-    private List<PassengerDetails> passengers;
+    private List<Passenger> passengers;
     View view;
 
     @Override
@@ -38,13 +42,14 @@ public class PassangerDetailsFragment extends BaseFragment implements IOnBackPre
 
     private void initialize() {
         passengers = new ArrayList<>();
-        passengers.add(new PassengerDetails(
-                "John Smith", "+123456788", "johnsmith@gmail.com", "20/07/2005", "Economy Class",
-                "TR000123", "JAPAN", "20/07/2023"));
-
-        passengers.add(new PassengerDetails(
-                "Jane Doe", "+987654321", "janedoe@gmail.com", "10/03/1998", "Business Class",
-                "TR000456", "INDONESIA", "15/10/2025"));
+        passengers.addAll((Collection<? extends Passenger>) Helper.getItemParam(Constants.PASSANGER_DETAIL));
+//        passengers.add(new PassengerDetails(
+//                "John Smith", "+123456788", "johnsmith@gmail.com", "20/07/2005", "Economy Class",
+//                "TR000123", "JAPAN", "20/07/2023"));
+//
+//        passengers.add(new PassengerDetails(
+//                "Jane Doe", "+987654321", "janedoe@gmail.com", "10/03/1998", "Business Class",
+//                "TR000456", "INDONESIA", "15/10/2025"));
 
         if(passengers.size() != 0) {
             adapter = new PassengerDetailsAdapter(this, passengers);

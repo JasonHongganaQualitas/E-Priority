@@ -132,10 +132,12 @@ public class HomeAgentAdapter extends RecyclerView.Adapter<HomeAgentAdapter.View
         // Click listeners
         holder.binding.btnDecline.setOnClickListener(v -> {
             // TODO: handle decline
+            mContext.declineBooking(tripsResponse);
         });
 
         holder.binding.btnAccept.setOnClickListener(v -> {
             // TODO: handle accept
+            mContext.acceptBooking(tripsResponse);
         });
         holder.binding.cvBooking.setOnClickListener(v -> mContext.callBookingDetailsFragment(tripsResponse));
     }

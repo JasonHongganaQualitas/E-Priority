@@ -215,6 +215,80 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
         }
     }
 
+    public void acceptBooking(TripsResponse tripsResponse){
+        openDialogProgress();
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.acceptBooking(String.valueOf(tripsResponse.getId()));
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()){
+                    WSMessage result = response.body();
+                    if (result != null){
+                        if (result.getIdMessage() == 1) {
+                            pAdapter.notifyDataSetChanged();
+                            oAdapter.notifyDataSetChanged();
+                            setToast(result.getMessage());
+                        } else {
+                            setToast(result.getMessage());
+                        }
+                    }
+                    else {
+                        setToast(response.message());
+                    }
+                }
+                else {
+                    setToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                setToast(t.getMessage());
+            }
+        });
+    }
+
+    public void declineBooking(TripsResponse tripsResponse){
+        openDialogProgress();
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.declineBooking(String.valueOf(tripsResponse.getId()));
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()){
+                    WSMessage result = response.body();
+                    if (result != null){
+                        if (result.getIdMessage() == 1) {
+                            pAdapter.notifyDataSetChanged();
+                            oAdapter.notifyDataSetChanged();
+                            setToast(result.getMessage());
+                        } else {
+                            setToast(result.getMessage());
+                        }
+                    }
+                    else {
+                        setToast(response.message());
+                    }
+                }
+                else {
+                    setToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                setToast(t.getMessage());
+            }
+        });
+    }
+
     private void setListView() {
         binding.tvPendingBookingCount.setText(todayStatus.getPending_count() + "");
         binding.tvTotalBookingCount.setText(todayStatus.getTotal_count() + "");
