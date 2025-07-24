@@ -15,6 +15,7 @@ public class Passenger implements Serializable {
     private String nationality_name;
     private String passport_country_name;
     private String flight_class_name;
+    private int pos_passenger;
     private int flight_class_id;
     private int nationality_id;
     private int passport_country_id;
@@ -29,6 +30,14 @@ public class Passenger implements Serializable {
     private Dropdown selectedNationalityPassport;
 
     public Passenger() {
+    }
+
+    public int getPos_passenger() {
+        return pos_passenger;
+    }
+
+    public void setPos_passenger(int pos_passenger) {
+        this.pos_passenger = pos_passenger;
     }
 
     public String getNationality_name() {

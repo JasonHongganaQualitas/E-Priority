@@ -1,5 +1,6 @@
 package id.co.qualitas.epriority.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.zxing.WriterException;
 
@@ -22,6 +24,7 @@ import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.ActivityBookingDetailsBinding;
+import id.co.qualitas.epriority.databinding.BottomsheetDetailPassengerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
@@ -84,6 +87,7 @@ public class BookingDetailsActivity extends BaseActivity {
     private void initAdapter() {
         binding.passengerDetailsRV.setLayoutManager(new LinearLayoutManager(BookingDetailsActivity.this));
         passengerAdapter = new PassengerTripsAdapter(BookingDetailsActivity.this, mPassengerList, true, (header, pos) -> {
+            bottomDialogDetailPassenger(header);
         });
         binding.passengerDetailsRV.setAdapter(passengerAdapter);
 
@@ -91,6 +95,32 @@ public class BookingDetailsActivity extends BaseActivity {
         agentAdapter = new AgentAdapter(BookingDetailsActivity.this, mAgentList, (header, pos) -> {
         });
         binding.agentRV.setAdapter(agentAdapter);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void bottomDialogDetailPassenger(Passenger header) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetDetailPassengerBinding bottomSheetBinding = BottomsheetDetailPassengerBinding.inflate(getLayoutInflater());
+        String dateBirth = !Helper.isEmpty(header.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getBirth_date()) : "";
+        String expDate = !Helper.isEmpty(header.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getPassport_expdate()) : "";
+
+        bottomSheetBinding.txtFirstName.setText(Helper.isEmpty(header.getFirst_name(), ""));
+        bottomSheetBinding.txtLastName.setText(Helper.isEmpty(header.getLast_name(), ""));
+        bottomSheetBinding.txtEmail.setText(Helper.isEmpty(header.getEmail(), ""));
+        bottomSheetBinding.txtPhoneNumber.setText(Helper.isEmpty(header.getPhone_no(), ""));
+        bottomSheetBinding.txtDateBirth.setText(dateBirth);
+        bottomSheetBinding.txtNationality.setText(Helper.isEmpty(header.getNationality_name(), ""));
+        bottomSheetBinding.txtFlightClass.setText(Helper.isEmpty(header.getFlight_class_name(), ""));
+        bottomSheetBinding.txtCabin.setText(header.getCabin() + " KG");
+        bottomSheetBinding.txtBaggage.setText(header.getBaggage() + " KG");
+        bottomSheetBinding.txtInFLightMeal.setText(header.getInflight_meal() == 1 ? "Yes" : "No");
+        bottomSheetBinding.txtPassportNumber.setText(Helper.isEmpty(header.getPassport_no(), ""));
+        bottomSheetBinding.txtCountryPassport.setText(Helper.isEmpty(header.getPassport_country_name(), ""));
+        bottomSheetBinding.txtPassportExpiryDate.setText(expDate);
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
     }
 
     public void getDetails() {
@@ -130,7 +160,7 @@ public class BookingDetailsActivity extends BaseActivity {
     }
 
     private void setData() {
-        if(tripDetail.getQr_code_data() != null && !tripDetail.getQr_code_data().isEmpty()) {
+        if (tripDetail.getQr_code_data() != null && !tripDetail.getQr_code_data().isEmpty()) {
             new Handler().postDelayed(() -> {
                 try {
                     // Generate QR Code
@@ -147,7 +177,7 @@ public class BookingDetailsActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }, 1000);
-        }else {
+        } else {
             binding.imgQR.setVisibility(View.GONE);
             binding.indicator.smoothToHide();
         }

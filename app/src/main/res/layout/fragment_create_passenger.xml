@@ -25,6 +25,7 @@
                 android:src="@drawable/ic_arrow_left_blue" />
 
             <TextView
+                android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Create New Passenger List"
@@ -74,7 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:background="@drawable/bg_rounded_edittext"
                         android:hint="John"
                         android:padding="8dp"
                         android:textSize="@dimen/text_reg2" />
@@ -99,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:background="@drawable/bg_rounded_edittext"
                         android:hint="Smith"
                         android:padding="8dp"
                         android:textSize="@dimen/text_reg2" />
@@ -118,7 +119,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="email@gmail.com"
                 android:padding="8dp"
                 android:textSize="@dimen/text_reg2" />
@@ -135,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:inputType="phone"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="+62 82312 12312"
                 android:padding="8dp"
                 android:textSize="@dimen/text_reg2" />
@@ -152,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
                 android:hint="20/07/2005"
@@ -171,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="Select Nationality"
                 android:padding="8dp"
                 android:textSize="@dimen/text_reg2" />
@@ -210,7 +213,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".3"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:inputType="number"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:hint="0"
                     android:padding="8dp"
                     android:textSize="@dimen/text_reg2" />
@@ -241,7 +245,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".3"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:inputType="number"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:hint="0"
                     android:padding="8dp"
                     android:textSize="@dimen/text_reg2" />
@@ -342,7 +347,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="000000"
                 android:padding="@dimen/text_small1"
                 android:textSize="@dimen/text_reg2" />
@@ -359,7 +364,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="Country"
                 android:padding="@dimen/text_small1"
                 android:textSize="@dimen/text_reg2" />
@@ -376,7 +381,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="6dp"
                 android:hint="20/07/2005"

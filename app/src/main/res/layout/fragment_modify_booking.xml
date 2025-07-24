@@ -16,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -27,7 +28,7 @@
                 android:src="@drawable/ic_arrow_left_blue" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -43,12 +44,11 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/statusTxt"
+                android:id="@+id/txtTripId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_border_gray"
                 android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
                 android:text="Booking Trips No. #ABC-01232"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -77,14 +77,14 @@
                 android:text="Type"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spnType"
+            <TextView
+                android:id="@+id/txtType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_spinner"
-                android:padding="8dp"
-                android:textColor="@color/black" />
+                android:background="@drawable/bg_rounded_edittext_disable"
+                android:padding="10dp"
+                android:text="Type" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="ex: 123456789"
                 android:padding="8dp"
                 android:textColor="@color/black"
@@ -148,7 +148,7 @@
                             android:id="@+id/edtDateFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: 15-08-2025"
                             android:padding="8dp"
                             android:textColor="@color/black"
@@ -159,7 +159,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: 08:00"
                             android:padding="8dp"
                             android:textColor="@color/black"
@@ -170,7 +170,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: Jakarta (CGK)"
                             android:padding="8dp"
                             android:textColor="@color/black"
@@ -203,7 +203,7 @@
                             android:id="@+id/edtDateTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: 15-08-2025"
                             android:padding="8dp"
                             android:textColor="@color/black"
@@ -214,7 +214,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: 08:00"
                             android:padding="8dp"
                             android:textColor="@color/black"
@@ -225,7 +225,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_rounded_edittext_gray"
+                            android:background="@drawable/bg_rounded_edittext"
                             android:hint="ex: Frankfurt (FRA)"
                             android:padding="8dp"
                             android:textColor="@color/black"
@@ -242,13 +242,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Flight Number"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imgQuestionFN"
@@ -263,7 +263,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="ex: GA-408"
                 android:inputType="textEmailAddress"
                 android:padding="8dp"
@@ -301,7 +301,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext_gray"
+                android:background="@drawable/bg_rounded_edittext"
                 android:hint="ex: 1"
                 android:padding="8dp"
                 android:textSize="@dimen/text_reg2" />
@@ -368,17 +368,17 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnChooseAgent"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:backgroundTint="@color/white"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/blue1"
-                app:strokeWidth="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="Search an agent"
                 android:textAllCaps="false"
-                android:textColor="@color/blue1" />
+                android:textColor="@color/blue1"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/blue1"
+                app:strokeWidth="1dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/agentRV"
@@ -536,7 +536,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:background="@drawable/bg_rounded_edittext"
                         android:gravity="top"
                         android:hint="10-10-2025"
                         android:padding="12dp"
@@ -548,7 +548,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_edittext_gray"
+                        android:background="@drawable/bg_rounded_edittext"
                         android:gravity="top"
                         android:hint="10:00 AM"
                         android:padding="12dp"
@@ -569,7 +569,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:gravity="top"
                     android:hint="Enter your phone number"
                     android:inputType="phone"
@@ -589,7 +589,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:gravity="top"
                     android:hint="Child seats, wheel chair, etc"
                     android:inputType="textMultiLine"
@@ -715,7 +715,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:gravity="top"
                     android:hint="etc"
                     android:inputType="textMultiLine"
@@ -841,7 +841,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:gravity="top"
                     android:hint="Seat Preference, etc"
                     android:inputType="textMultiLine"
@@ -967,7 +967,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:gravity="top"
                     android:hint="Special assistance"
                     android:inputType="textMultiLine"
@@ -1093,7 +1093,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_rounded_edittext_gray"
+                    android:background="@drawable/bg_rounded_edittext"
                     android:gravity="top"
                     android:hint="Seat Preference, etc"
                     android:inputType="textMultiLine"

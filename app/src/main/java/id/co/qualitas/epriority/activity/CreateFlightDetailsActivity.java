@@ -30,6 +30,7 @@ import id.co.qualitas.epriority.adapter.PassangerAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.ActivityCreateFlightDetailsBinding;
+import id.co.qualitas.epriority.databinding.BottomsheetDetailPassengerBinding;
 import id.co.qualitas.epriority.databinding.BottomsheetFlightInstructionBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
@@ -278,8 +279,35 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
     private void initAdapter() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(CreateFlightDetailsActivity.this));
         adapter = new PassengerTripsAdapter(CreateFlightDetailsActivity.this, passengerList, false, (header, pos) -> {
+            bottomDialogDetailPassenger(header);
         });
         binding.recyclerView.setAdapter(adapter);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void bottomDialogDetailPassenger(Passenger header) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetDetailPassengerBinding bottomSheetBinding = BottomsheetDetailPassengerBinding.inflate(getLayoutInflater());
+        String dateBirth = !Helper.isEmpty(header.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getBirth_date()) : "";
+        String expDate = !Helper.isEmpty(header.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getPassport_expdate()) : "";
+
+        bottomSheetBinding.txtFirstName.setText(Helper.isEmpty(header.getFirst_name(), ""));
+        bottomSheetBinding.txtLastName.setText(Helper.isEmpty(header.getLast_name(), ""));
+        bottomSheetBinding.txtEmail.setText(Helper.isEmpty(header.getEmail(), ""));
+        bottomSheetBinding.txtPhoneNumber.setText(Helper.isEmpty(header.getPhone_no(), ""));
+        bottomSheetBinding.txtDateBirth.setText(dateBirth);
+        bottomSheetBinding.txtNationality.setText(Helper.isEmpty(header.getSelectedNationality().getName(), ""));
+        bottomSheetBinding.txtFlightClass.setText(Helper.isEmpty(header.getSelectedFlightClass().getName(), ""));
+        bottomSheetBinding.txtCabin.setText(header.getCabin() + "");
+        bottomSheetBinding.txtBaggage.setText(header.getBaggage() + "");
+        bottomSheetBinding.txtInFLightMeal.setText(header.getInflight_meal() == 1 ? "Yes" : "No");
+        bottomSheetBinding.txtPassportNumber.setText(Helper.isEmpty(header.getPassport_no(), ""));
+        bottomSheetBinding.txtCountryPassport.setText(Helper.isEmpty(header.getSelectedNationalityPassport().getName(), ""));
+        bottomSheetBinding.txtPassportExpiryDate.setText(expDate);
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
     }
 
     private void setupTripTypeSpinner() {

@@ -92,7 +92,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@drawable/bg_rounded_edittext_gray"
+            android:background="@drawable/bg_rounded_edittext"
             android:hint="etc"
             android:padding="12dp"
             android:gravity="top"/>
@@ -151,7 +151,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_rounded_edittext_gray"
+            android:background="@drawable/bg_rounded_edittext"
             android:hint="10:00 AM"
             android:padding="12dp"
             android:gravity="top"/>
@@ -166,7 +166,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_rounded_edittext_gray"
+            android:background="@drawable/bg_rounded_edittext"
             android:hint="Enter your phone number"
             android:padding="12dp"
             android:gravity="top"/>
@@ -181,7 +181,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@drawable/bg_rounded_edittext_gray"
+            android:background="@drawable/bg_rounded_edittext"
             android:hint="etc"
             android:padding="12dp"
             android:gravity="top"/>
@@ -240,7 +240,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@drawable/bg_rounded_edittext_gray"
+            android:background="@drawable/bg_rounded_edittext"
             android:hint="etc"
             android:padding="12dp"
             android:gravity="top"/>

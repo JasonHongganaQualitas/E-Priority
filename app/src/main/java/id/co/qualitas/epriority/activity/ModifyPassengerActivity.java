@@ -169,9 +169,6 @@ public class ModifyPassengerActivity extends BaseActivity implements DatePickerF
     }
 
     private void saveData() {
-        if (passenger == null) {
-            passenger = new Passenger();
-        }
         passenger.setFirst_name(binding.edtFirstName.getText().toString());
         passenger.setLast_name(binding.edtLastName.getText().toString());
         passenger.setEmail(binding.edtEmail.getText().toString());
@@ -181,19 +178,25 @@ public class ModifyPassengerActivity extends BaseActivity implements DatePickerF
         passenger.setBaggage(Integer.parseInt(binding.edtBaggage.getText().toString()));
         passenger.setInflight_meal(inFlightMealRequired ? 1 : 0);
         passenger.setNationality(selectedNationality.getId());
+        passenger.setNationality_id(selectedNationality.getId());
+        passenger.setNationality_name(selectedNationality.getName());
         passenger.setSelectedNationality(selectedNationality);
         passenger.setFlight_class(selectedFlightClass.getId());
+        passenger.setFlight_class_name(selectedFlightClass.getName());
+        passenger.setFlight_class_id(selectedFlightClass.getId());
         passenger.setSelectedFlightClass(selectedFlightClass);
         passenger.setPassport_no(binding.edtPassportNumber.getText().toString());
         passenger.setPassport_expdate(Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportExpiryDate.getText().toString()));
         passenger.setPassport_country(selectedNationalityPassport.getId());
+        passenger.setPassport_country_id(selectedNationalityPassport.getId());
+        passenger.setPassport_country_name(selectedNationalityPassport.getName());
         passenger.setSelectedNationalityPassport(selectedNationalityPassport);
         passenger.setSeat_layout(null);
-        Helper.setItemParam(Constants.DATA_PASSENGER, passenger);
+        Helper.setItemParam(Constants.DETAIL_PASSENGER, passenger);
     }
 
     private void setViewData() {
-        passenger = (Passenger) Helper.getItemParam(Constants.DATA_PASSENGER);
+        passenger = (Passenger) Helper.getItemParam(Constants.DETAIL_PASSENGER);
 
         String dateBirth = !Helper.isEmpty(passenger.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getBirth_date()) : "";
         String expDate = !Helper.isEmpty(passenger.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getPassport_expdate()) : "";
@@ -201,13 +204,15 @@ public class ModifyPassengerActivity extends BaseActivity implements DatePickerF
         selectedNationalityPassport = new Dropdown(passenger.getPassport_country_id(), passenger.getPassport_country_name());
         selectedFlightClass = new Dropdown(passenger.getFlight_class_id(), passenger.getFlight_class_name());
 
+        binding.txtTitle.setText("Modify Passenger");
+        binding.btnCreate.setText("Save Passenger");
         binding.edtFirstName.setText(Helper.isEmpty(passenger.getFirst_name(), ""));
         binding.edtLastName.setText(Helper.isEmpty(passenger.getLast_name(), ""));
         binding.edtEmail.setText(Helper.isEmpty(passenger.getEmail(), ""));
         binding.edtPhoneNumber.setText(Helper.isEmpty(passenger.getPhone_no(), ""));
         binding.edtDateBirth.setText(dateBirth);
-        binding.edtCabin.setText(passenger.getCabin());
-        binding.edtBaggage.setText(passenger.getBaggage());
+        binding.edtCabin.setText(passenger.getCabin() + "");
+        binding.edtBaggage.setText(passenger.getBaggage() + "");
         binding.rgInFlightMeal.check(passenger.getInflight_meal() == 1 ? R.id.rbMealYes : R.id.rbMealNo);
         binding.txtNationality.setText(Helper.isEmpty(passenger.getNationality_name(), ""));
         binding.edtPassportNumber.setText(Helper.isEmpty(passenger.getPassport_no(), ""));

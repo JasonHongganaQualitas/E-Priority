@@ -1,5 +1,6 @@
 package id.co.qualitas.epriority.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.BottomsheetDetailPassengerBinding;
+import id.co.qualitas.epriority.databinding.BottomsheetFlightInstructionBinding;
 import id.co.qualitas.epriority.databinding.DialogBookingCreatedBinding;
 import id.co.qualitas.epriority.databinding.FragmentReviewBookingBinding;
 import id.co.qualitas.epriority.helper.Helper;
@@ -155,6 +161,7 @@ public class ReviewBookingActivity extends BaseActivity {
     private void initAdapter() {
         binding.passengerDetailsRV.setLayoutManager(new LinearLayoutManager(ReviewBookingActivity.this));
         adapter = new PassengerTripsAdapter(ReviewBookingActivity.this, passengerList, true, (header, pos) -> {
+            bottomDialogDetailPassenger(header);
         });
         binding.passengerDetailsRV.setAdapter(adapter);
 
@@ -162,6 +169,32 @@ public class ReviewBookingActivity extends BaseActivity {
         agentAdapter = new AgentAdapter(ReviewBookingActivity.this, mChoosenAgentList, (header, pos) -> {
         });
         binding.agentRV.setAdapter(agentAdapter);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void bottomDialogDetailPassenger(Passenger header) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetDetailPassengerBinding bottomSheetBinding = BottomsheetDetailPassengerBinding.inflate(getLayoutInflater());
+        String dateBirth = !Helper.isEmpty(header.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getBirth_date()) : "";
+        String expDate = !Helper.isEmpty(header.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getPassport_expdate()) : "";
+
+        bottomSheetBinding.txtFirstName.setText(Helper.isEmpty(header.getFirst_name(), ""));
+        bottomSheetBinding.txtLastName.setText(Helper.isEmpty(header.getLast_name(), ""));
+        bottomSheetBinding.txtEmail.setText(Helper.isEmpty(header.getEmail(), ""));
+        bottomSheetBinding.txtPhoneNumber.setText(Helper.isEmpty(header.getPhone_no(), ""));
+        bottomSheetBinding.txtDateBirth.setText(dateBirth);
+        bottomSheetBinding.txtNationality.setText(Helper.isEmpty(header.getSelectedNationality().getName(), ""));
+        bottomSheetBinding.txtFlightClass.setText(Helper.isEmpty(header.getSelectedFlightClass().getName(), ""));
+        bottomSheetBinding.txtCabin.setText(header.getCabin() + "");
+        bottomSheetBinding.txtBaggage.setText(header.getBaggage() + "");
+        bottomSheetBinding.txtInFLightMeal.setText(header.getInflight_meal() == 1 ? "Yes" : "No");
+        bottomSheetBinding.txtPassportNumber.setText(Helper.isEmpty(header.getPassport_no(), ""));
+        bottomSheetBinding.txtCountryPassport.setText(Helper.isEmpty(header.getSelectedNationalityPassport().getName(), ""));
+        bottomSheetBinding.txtPassportExpiryDate.setText(expDate);
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
     }
 
     public void createTrips() {

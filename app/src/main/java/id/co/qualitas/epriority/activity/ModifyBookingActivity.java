@@ -64,7 +64,6 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
     private PassengerTripsAdapter adapter;
     AgentAdapter agentAdapter, adapterDialog;
     List<Passenger> passengerList = new ArrayList<>();
-    private String selectedTripType;
     private FragmentModifyBookingBinding binding;
     private List<Agent> mAgentList, mChoosenAgentList = new ArrayList<>();
     private Packages masterPackage;
@@ -83,10 +82,12 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         binding = FragmentModifyBookingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initBase();
-        setData();
 
         binding.btnConfirm.setOnClickListener(v -> {
-            dialogBookingUpdated();
+            if (validateData()) {
+                saveData();//btnConfirm
+                modifyTrips();
+            }
         });
 
         binding.btnCancel.setOnClickListener(v -> {
@@ -98,7 +99,104 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         });
     }
 
+    private boolean validateData() {
+        int empty = 0;
+        if (Helper.isEmpty(binding.edtFlightReservationCode)) {
+            binding.edtFlightReservationCode.setError("Please enter flight reservation code");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtDateFrom)) {
+            binding.edtDateFrom.setError("Please enter date");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtDateTo)) {
+            binding.edtDateTo.setError("Please enter date");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtTimeFrom)) {
+            binding.edtTimeFrom.setError("Please enter time");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtTimeTo)) {
+            binding.edtTimeTo.setError("Please enter time");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtAirline)) {
+            binding.edtAirline.setError("Please enter airline");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtRouteFrom)) {
+            binding.edtRouteFrom.setError("Please enter route from");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtRouteTo)) {
+            binding.edtRouteTo.setError("Please enter route to");
+            empty++;
+        }
+        if (Helper.isEmpty(binding.edtNumberPassenger)) {
+            binding.edtNumberPassenger.setError("Please enter passenger count");
+            empty++;
+        }
+        if (Helper.isEmptyOrNull(passengerList)) {
+            setToast("Please add passenger");
+            empty++;
+        }
 
+        if (airportSelected) {
+            if (Helper.isEmpty(binding.edtPickUpTime)) {
+                binding.edtPickUpTime.setError("Please enter pick up time");
+                empty++;
+            }
+            if (Helper.isEmpty(binding.edtPickUpDate)) {
+                binding.edtPickUpDate.setError("Please enter pick up date");
+                empty++;
+            }
+            if (Helper.isEmpty(binding.edtContact)) {
+                binding.edtContact.setError("Please enter contact number");
+                empty++;
+            }
+            if (selectedVehicleType == null) {
+                setToast("Please select vehicle type");
+                empty++;
+            }
+        }
+
+        if (loungeSelected) {
+            if (selectedLoungeType == null) {
+                setToast("Please select lounge type");
+                empty++;
+            }
+        }
+
+        if (flightSelected) {
+            if (selectedFLightClass == null) {
+                setToast("Please select flight class");
+                empty++;
+            }
+        }
+
+        if (fastLaneSelected) {
+            if (selectedFastType == null) {
+                setToast("Please select fast lane type");
+                empty++;
+            }
+        }
+
+        if (baggageSelected) {
+            if (selectedBaggage == null) {
+                setToast("Please select baggage type");
+                empty++;
+            }
+        }
+
+        return empty == 0;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setData();
+    }
 
     private void dialogBookingUpdated() {
         DialogUpdateSubmittedBinding dialogBinding = DialogUpdateSubmittedBinding.inflate(LayoutInflater.from(ModifyBookingActivity.this));
@@ -134,6 +232,15 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         } else {
             passengerList = new ArrayList<>();
         }
+
+        if (Helper.getItemParam(Constants.DETAIL_PASSENGER) != null) {
+            Passenger edtPassenger = (Passenger) Helper.getItemParam(Constants.DETAIL_PASSENGER);
+            if (Helper.isNotEmptyOrNull(passengerList)) {
+                passengerList.remove(edtPassenger);
+                passengerList.add(edtPassenger.getPos_passenger(), edtPassenger);
+            }
+            Helper.removeItemParam(Constants.DETAIL_PASSENGER);
+        }
         getPackages();
     }
 
@@ -162,6 +269,8 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         String dateTo = !Helper.isEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, createTrips.getDate_to()) : null;
         String timeTo = !Helper.isEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_9, createTrips.getDate_to()) : null;
 
+        binding.txtTripId.setText("Booking Trips No. #" + createTrips.getTrip_id());
+        binding.txtType.setText(Helper.isEmpty(createTrips.getTrip_type(), ""));
         binding.edtFlightReservationCode.setText(Helper.isEmpty(createTrips.getBooking_id(), ""));
         binding.edtAirline.setText(Helper.isEmpty(createTrips.getFlight_no(), ""));
         binding.edtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
@@ -186,8 +295,8 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             Packages packages = createTrips.getPackages();
             if (packages.getTrip_airporttransfer() != null) {
                 Packages param = packages.getTrip_airporttransfer();
-                airportSelected = true;
-                selectAirport();
+                airportSelected = false;
+                selectAirport();//set data
                 String datePickUp = "", timePickUp = "";
                 if (param.getPickup_time() != null) {
                     datePickUp = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, param.getPickup_time());
@@ -202,7 +311,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             }
             if (packages.getTrip_loungeaccess() != null) {
                 Packages param = packages.getTrip_loungeaccess();
-                loungeSelected = true;
+                loungeSelected = false;
                 selectLounge();
                 selectedLoungeType = new Dropdown(param.getLounge_type_id(), param.getLounge_type_name());
                 selectSpinnerItemById(binding.spnLoungeType, masterPackage.getLoungeTypes(), selectedLoungeType);
@@ -210,7 +319,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             }
             if (packages.getTrip_fastlane() != null) {
                 Packages param = packages.getTrip_fastlane();
-                fastLaneSelected = true;
+                fastLaneSelected = false;
                 selectFastLane();
                 selectedFastType = new Dropdown(param.getLane_type_id(), param.getLane_type_name());
                 selectSpinnerItemById(binding.spnFastType, masterPackage.getFastlaneTypes(), selectedFastType);
@@ -218,7 +327,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             }
             if (packages.getTrip_baggageservice() != null) {
                 Packages param = packages.getTrip_baggageservice();
-                baggageSelected = true;
+                baggageSelected = false;
                 selectBaggage();
                 selectedBaggage = new Dropdown(param.getBaggage_type_id(), param.getBaggage_type_name());
                 selectSpinnerItemById(binding.spnBaggage, masterPackage.getBaggageTypes(), selectedBaggage);
@@ -226,7 +335,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             }
             if (packages.getFlight_detail() != null) {
                 Packages param = packages.getFlight_detail();
-                flightSelected = true;
+                flightSelected = false;
                 selectFlight();
                 selectedFLightClass = new Dropdown(param.getFlight_class_id(), param.getFlight_class_name());
                 selectSpinnerItemById(binding.spnFLightClass, masterPackage.getFlightClasses(), selectedFLightClass);
@@ -241,17 +350,12 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         if (createTrips == null) {
             createTrips = new TripsResponse();
         }
-        if (selectedTripType != null) {
-            createTrips.setTrip_type(selectedTripType);
-        } else {
-            String currentSpinnerValue = (String) binding.spnType.getSelectedItem();
-            createTrips.setTrip_type(currentSpinnerValue);
-        }
         String dateFrom = !Helper.isEmpty(binding.edtDateFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateFrom.getText().toString()) : null;
         String dateTo = !Helper.isEmpty(binding.edtDateTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateTo.getText().toString()) : null;
         String timeFrom = !Helper.isEmpty(binding.edtTimeFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeFrom.getText().toString()) : null;
         String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
         createTrips.setCustomer_id(user.getId());
+        createTrips.setBooking_id(binding.txtType.getText().toString());
         createTrips.setBooking_id(binding.edtFlightReservationCode.getText().toString());
         createTrips.setFlight_no(binding.edtAirline.getText().toString());
         createTrips.setAirline(binding.edtAirline.getText().toString());
@@ -262,7 +366,110 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         createTrips.setRoute_to(binding.edtRouteTo.getText().toString());
         createTrips.setPassenger_count(Integer.parseInt(binding.edtNumberPassenger.getText().toString()));
         createTrips.setPassengers(passengerList);
+
+        Packages header = new Packages(), detail = new Packages();
+        if (airportSelected) {
+            detail = new Packages();
+            detail.setVehicle_type(selectedVehicleType.getId());
+            detail.setVehicle_type_name(selectedVehicleType.getName());
+            detail.setVehicle_type_id(selectedVehicleType.getId());
+            String time = !Helper.isEmpty(binding.edtPickUpTime) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtPickUpTime.getText().toString()) : null;
+            String date = Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPickUpDate.getText().toString());
+            detail.setPickup_time(date + " " + time);
+            detail.setContact_no(binding.edtContact.getText().toString());
+            detail.setRequest_note(binding.edtOtherAirport.getText().toString());
+            detail.setSelectedVehicleType(selectedVehicleType);
+            header.setTrip_airporttransfer(detail);
+        } else {
+            header.setTrip_airporttransfer(null);
+        }
+
+        if (loungeSelected) {
+            detail = new Packages();
+            detail.setLounge_type(selectedLoungeType.getId());
+            detail.setLounge_type_id(selectedLoungeType.getId());
+            detail.setLounge_type_name(selectedLoungeType.getName());
+            detail.setRequest_note(binding.edtOtherLounge.getText().toString());
+            detail.setSelectedLoungeType(selectedLoungeType);
+            header.setTrip_loungeaccess(detail);
+        } else {
+            header.setTrip_loungeaccess(null);
+        }
+
+        if (flightSelected) {
+            detail = new Packages();
+            detail.setFlight_class(selectedFLightClass.getId());
+            detail.setFlight_class_id(selectedFLightClass.getId());
+            detail.setFlight_class_name(selectedFLightClass.getName());
+            detail.setRequest_note(binding.edtOtherFlight.getText().toString());
+            detail.setSelectedFlightClasses(selectedFLightClass);
+            header.setFlight_detail(detail);
+        } else {
+            header.setFlight_detail(null);
+        }
+
+        if (fastLaneSelected) {
+            detail = new Packages();
+            detail.setType_lane(selectedFastType.getId());
+            detail.setLane_type_id(selectedFastType.getId());
+            detail.setLane_type_name(selectedFastType.getName());
+            detail.setRequest_note(binding.edtOtherFast.getText().toString());
+            detail.setSelectedFastlaneType(selectedFastType);
+            header.setTrip_fastlane(detail);
+        } else {
+            header.setTrip_fastlane(null);
+        }
+
+        if (baggageSelected) {
+            detail = new Packages();
+            detail.setType_baggage(selectedBaggage.getId());
+            detail.setBaggage_type_id(selectedBaggage.getId());
+            detail.setBaggage_type_name(selectedBaggage.getName());
+            detail.setRequest_note(binding.edtOtherBaggage.getText().toString());
+            detail.setSelectedBaggageType(selectedBaggage);
+            header.setTrip_baggageservice(detail);
+        } else {
+            header.setTrip_baggageservice(null);
+        }
+
+        createTrips.setAgent_list(mChoosenAgentList);
+        createTrips.setPackages(header);
+
         Helper.setItemParam(Constants.DATA_CREATE_TRIPS, createTrips);
+    }
+
+    public void modifyTrips() {
+        openDialogProgress();
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.modifyTrips(String.valueOf(createTrips.getTrip_id()), createTrips);
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            setToast(result.getMessage());
+                            dialogBookingUpdated();
+                        } else {
+                            setToast(result.getMessage());
+                        }
+                    } else {
+                        setToast(response.message());
+                    }
+                } else {
+                    setToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                setToast(t.getMessage());
+            }
+        });
     }
 
     private void setViewOnClick() {
@@ -315,7 +522,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             binding.edtTimeTo.setClickable(true);
         }
 
-        binding.imgQuestionFN.setOnClickListener(v -> showFlightInstructionBottomSheet(selectedTripType.equals("Arrival")));
+        binding.imgQuestionFN.setOnClickListener(v -> showFlightInstructionBottomSheet(createTrips.getTrip_type().equals("Arrival")));
         binding.imgQuestionFRC.setOnClickListener(v -> showFRCInstructionBottomSheet());
 
         binding.btnChooseAgent.setOnClickListener(v -> {
@@ -323,7 +530,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         });
 
         binding.llAirportHeader.setOnClickListener(v -> {
-            selectAirport();
+            selectAirport();//click
         });
 
         binding.llLoungeHeader.setOnClickListener(v -> {
@@ -393,27 +600,6 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         }
     }
 
-    private void setupTripTypeSpinner() {
-        List<String> tripTypes = new ArrayList<>();
-        tripTypes.add("Departure");
-        tripTypes.add("Arrival");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tripTypes);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spnType.setAdapter(adapter);
-        binding.spnType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedTripType = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        selectedTripType = "Departure";
-    }
-
     @Override
     public void onTimeSelected(int hourOfDay, int minute) {
         String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
@@ -447,6 +633,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
     private void iniAdapter() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(ModifyBookingActivity.this));
         adapter = new PassengerTripsAdapter(ModifyBookingActivity.this, passengerList, false, (header, pos) -> {
+            header.setPos_passenger(pos);
             Helper.setItemParam(Constants.DETAIL_PASSENGER, header);
             intent = new Intent(getApplicationContext(), ModifyPassengerActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -568,7 +755,6 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             binding.llBaggageHeader.setVisibility(View.GONE);
             binding.llBaggageDetail.setVisibility(View.GONE);
         }
-        setupTripTypeSpinner();
         setDataView();
         setViewOnClick();
     }
@@ -843,6 +1029,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         offset = 0;
+        mAgentList = new ArrayList<>();
         getAgent();//openDialogChooseAgent
         DialogChooseAgentBinding dialogBinding = DialogChooseAgentBinding.inflate(LayoutInflater.from(ModifyBookingActivity.this));
         dialog = new Dialog(ModifyBookingActivity.this);
