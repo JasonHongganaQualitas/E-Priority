@@ -88,6 +88,7 @@ public class Constants {
     public static final String TRIP_HEADER = "trip header";
     public static final String QR_DATA = "QR Data";
     public static final String TRIP_DETAILS = "Trip Details";
+    public static final String DETAIL_PASSENGER = "detail passenger";
 
     //PRD
 //    public static String BASE_URL = "http://192.168.137.202:3443";

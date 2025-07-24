@@ -1,21 +1,16 @@
 package id.co.qualitas.epriority.activity;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +30,6 @@ import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.DialogChooseNationalityBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
-import id.co.qualitas.epriority.fragment.TimePickerFragment;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.helper.RetrofitAPIClient;
 import id.co.qualitas.epriority.interfaces.APIInterface;
@@ -47,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreatePassengerActivity extends BaseActivity implements DatePickerFragment.DateSelectedListener {
+public class ModifyPassengerActivity extends BaseActivity implements DatePickerFragment.DateSelectedListener {
     private FragmentCreatePassengerBinding binding;
     private NationalityAdapter nationalityAdapter;
     private SpinnerDropDownAdapter flightClassAdapter;
@@ -59,12 +53,12 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
     private boolean loading = true;
     protected int pastVisiblesItems, visibleItemCount, totalItemCount;
     private LinearLayoutManager linearLayout;
+    private Passenger passenger;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         binding = FragmentCreatePassengerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -107,8 +101,8 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             openDialogNationality(false);
         });
 
-        getRadioButtonValue();
         getListFlightClass();
+        getRadioButtonValue();
 
         binding.rgInFlightMeal.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rbMealYes) {
@@ -175,7 +169,9 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
     }
 
     private void saveData() {
-        Passenger passenger = new Passenger();
+        if (passenger == null) {
+            passenger = new Passenger();
+        }
         passenger.setFirst_name(binding.edtFirstName.getText().toString());
         passenger.setLast_name(binding.edtLastName.getText().toString());
         passenger.setEmail(binding.edtEmail.getText().toString());
@@ -194,6 +190,46 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         passenger.setSelectedNationalityPassport(selectedNationalityPassport);
         passenger.setSeat_layout(null);
         Helper.setItemParam(Constants.DATA_PASSENGER, passenger);
+    }
+
+    private void setViewData() {
+        passenger = (Passenger) Helper.getItemParam(Constants.DATA_PASSENGER);
+
+        String dateBirth = !Helper.isEmpty(passenger.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getBirth_date()) : "";
+        String expDate = !Helper.isEmpty(passenger.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getPassport_expdate()) : "";
+        selectedNationality = new Dropdown(passenger.getNationality_id(), passenger.getNationality_name());
+        selectedNationalityPassport = new Dropdown(passenger.getPassport_country_id(), passenger.getPassport_country_name());
+        selectedFlightClass = new Dropdown(passenger.getFlight_class_id(), passenger.getFlight_class_name());
+
+        binding.edtFirstName.setText(Helper.isEmpty(passenger.getFirst_name(), ""));
+        binding.edtLastName.setText(Helper.isEmpty(passenger.getLast_name(), ""));
+        binding.edtEmail.setText(Helper.isEmpty(passenger.getEmail(), ""));
+        binding.edtPhoneNumber.setText(Helper.isEmpty(passenger.getPhone_no(), ""));
+        binding.edtDateBirth.setText(dateBirth);
+        binding.edtCabin.setText(passenger.getCabin());
+        binding.edtBaggage.setText(passenger.getBaggage());
+        binding.rgInFlightMeal.check(passenger.getInflight_meal() == 1 ? R.id.rbMealYes : R.id.rbMealNo);
+        binding.txtNationality.setText(Helper.isEmpty(passenger.getNationality_name(), ""));
+        binding.edtPassportNumber.setText(Helper.isEmpty(passenger.getPassport_no(), ""));
+        binding.edtPassportExpiryDate.setText(expDate);
+        binding.txtCountryPassport.setText(Helper.isEmpty(passenger.getPassport_country_name(), ""));
+
+        int positionToSelect = -1;
+        for (int i = 0; i < flightClassList.size(); i++) {
+            Dropdown item = flightClassList.get(i);
+            if (item.getId() == selectedFlightClass.getId()) {
+                positionToSelect = i;
+                break;
+            }
+        }
+
+        if (positionToSelect != -1) {
+            binding.spnFlightClass.setSelection(positionToSelect);
+        } else {
+            if (!flightClassList.isEmpty() && flightClassList.get(0).getId() == 0) {
+                binding.spnFlightClass.setSelection(0);
+            }
+        }
     }
 
     private void getRadioButtonValue() {
@@ -232,10 +268,11 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        setViewData();
     }
 
     private void showDatePickerDialog() {
-        DatePickerFragment datePicker = DatePickerFragment.newInstance(this); // 'this' is the Activity
+        DatePickerFragment datePicker = DatePickerFragment.newInstance(this);
         // Use getSupportFragmentManager() when calling from an Activity
         datePicker.show(getSupportFragmentManager(), "datePickerBirthActivity");
     }
@@ -338,8 +375,8 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
 
-        DialogChooseNationalityBinding dialogBinding = DialogChooseNationalityBinding.inflate(LayoutInflater.from(CreatePassengerActivity.this));
-        dialog = new Dialog(CreatePassengerActivity.this);
+        DialogChooseNationalityBinding dialogBinding = DialogChooseNationalityBinding.inflate(LayoutInflater.from(ModifyPassengerActivity.this));
+        dialog = new Dialog(ModifyPassengerActivity.this);
         dialog.setContentView(dialogBinding.getRoot());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -349,7 +386,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             getListCountries(dialogBinding.editText.getText().toString().trim(), true);
         });
 
-        linearLayout = new LinearLayoutManager(CreatePassengerActivity.this);
+        linearLayout = new LinearLayoutManager(ModifyPassengerActivity.this);
         dialogBinding.recyclerView.setLayoutManager(linearLayout);
         dialogBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -368,7 +405,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             }
         });
 
-        nationalityAdapter = new NationalityAdapter(CreatePassengerActivity.this, nationalityList, (header, pos) -> {
+        nationalityAdapter = new NationalityAdapter(ModifyPassengerActivity.this, nationalityList, (header, pos) -> {
             if (fromNationality) {
                 selectedNationality = header;
                 binding.txtNationality.setText(selectedNationality.getName());

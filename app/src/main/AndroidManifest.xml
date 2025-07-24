@@ -34,7 +34,10 @@
             android:value="true" />
 
         <activity
-            android:name=".activity.ModifyBookingActivity"
+            android:name="id.co.qualitas.epriority.activity.ModifyPassengerActivity"
+            android:exported="false" />
+        <activity
+            android:name="id.co.qualitas.epriority.activity.ModifyBookingActivity"
             android:exported="false" />
         <activity
             android:name=".activity.BookingDetailsActivity"

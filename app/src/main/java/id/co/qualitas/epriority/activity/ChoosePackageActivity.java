@@ -45,7 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChoosePackageActivity extends BaseActivity implements TimePickerFragment.TimeSelectedListener, DatePickerFragment.DateSelectedListener {
-    AgentAdapter adapter;
+    AgentAdapter agentAdapter, adapterDialog;
     List<Agent> mList = new ArrayList<>(), mChoosenAgentList = new ArrayList<>();
     private FragmentChoosePackageBinding binding;
     boolean airportSelected = false, loungeSelected = false, flightSelected = false, fastLaneSelected = false, baggageSelected = false;
@@ -53,7 +53,6 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
     private SpinnerDropDownAdapter vehicleTypeAdapter, baggageHandlingAdapter, fastLaneAdapter, flightClassesAdapter, loungeTypeAdapter;
     private Dropdown selectedVehicleType, selectedLoungeType, selectedBaggage, selectedFastType, selectedFLightClass;
     private TripsResponse createTrips;
-    private AgentAdapter adapterDialog;
     private LinearLayoutManager linearLayout;
     private int offset;
     private boolean loading = true;
@@ -281,7 +280,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
         adapterDialog = new AgentAdapter(ChoosePackageActivity.this, mList, (header, pos) -> {
             mChoosenAgentList = new ArrayList<>();
             mChoosenAgentList.add(header);
-            adapter.setFilteredList(mChoosenAgentList);
+            agentAdapter.setFilteredList(mChoosenAgentList);
             dialog.dismiss();
         });
         dialogBinding.recyclerView.setAdapter(adapterDialog);
@@ -303,9 +302,9 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
 
     private void initAdapter() {
         binding.agentRV.setLayoutManager(new LinearLayoutManager(ChoosePackageActivity.this));
-        adapter = new AgentAdapter(ChoosePackageActivity.this, mChoosenAgentList, (header, pos) -> {
+        agentAdapter = new AgentAdapter(ChoosePackageActivity.this, mChoosenAgentList, (header, pos) -> {
         });
-        binding.agentRV.setAdapter(adapter);
+        binding.agentRV.setAdapter(agentAdapter);
     }
 
     public void getAgent() {
