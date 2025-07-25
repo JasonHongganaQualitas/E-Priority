@@ -75,8 +75,8 @@ public class PendingBookingFragment extends BaseFragment implements IOnBackPress
                             Type listType = new TypeToken<ArrayList<TripsResponse>>() {
                             }.getType();
                             List<TripsResponse> tempList = new Gson().fromJson(jsonInString, listType);
-                            pendingList = new ArrayList<>();
                             pendingList.addAll(tempList);
+                            initAdapter();
                         } else {
                             setToast(result.getMessage());
                         }

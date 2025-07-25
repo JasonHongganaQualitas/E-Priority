@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import id.co.qualitas.epriority.R;
+import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.RowViewBookingsBinding;
 import id.co.qualitas.epriority.fragment.OngoingBookingFragment;
+import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.model.TripsResponse;
 
 public class OngoingBookingAdapter extends RecyclerView.Adapter<OngoingBookingAdapter.ViewHolder> {
@@ -57,12 +59,37 @@ public class OngoingBookingAdapter extends RecyclerView.Adapter<OngoingBookingAd
                     ContextCompat.getColorStateList(context, R.color.badgeActive)
             );
         }
+
+        String date = null, time = null;
+        if (Helper.isNullOrEmpty(tripsResponse.getFlight_date())) {
+            date = "-";
+        } else {
+            date = Helper.changeFormatDate1(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, tripsResponse.getFlight_date());
+        }
+
+        if (Helper.isNullOrEmpty(tripsResponse.getFlight_time())) {
+            time = "-";
+        } else {
+            time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, tripsResponse.getFlight_time());
+        }
+        String flightInfo = "";
+        if (Helper.isNullOrEmpty(tripsResponse.getCity())) {
+            flightInfo = "";
+        } else {
+            flightInfo = tripsResponse.getCity();
+        }
+
+        if (Helper.isNullOrEmpty(tripsResponse.getFlight_no())) {
+            flightInfo = flightInfo + "";
+        } else {
+            flightInfo = flightInfo + " - Flight "  + tripsResponse.getFlight_no();
+        }
         holder.binding.tvStatus.setText(tripsResponse.status);
-        holder.binding.tvName.setText(tripsResponse.name);
-        holder.binding.tvBookingId.setText("Booking ID: " + tripsResponse.booking_id);
-        holder.binding.tvDate.setText(tripsResponse.dateTime);
-        holder.binding.tvLocation.setText(tripsResponse.locationAndFlight);
-        holder.binding.tvPeople.setText(tripsResponse.peopleCount + " People");
+        holder.binding.tvName.setText(Helper.isEmpty(tripsResponse.getCustomer_name(), ""));
+        holder.binding.tvBookingId.setText("Booking Trips No.: #" + tripsResponse.getId());
+        holder.binding.tvDate.setText(date + " " + time);
+        holder.binding.tvLocation.setText(flightInfo);
+        holder.binding.tvPeople.setText(tripsResponse.getPassenger_count() + " People");
 
         // Show buttons only if status is "Pending"
         if ("Pending".equalsIgnoreCase(tripsResponse.status)) {

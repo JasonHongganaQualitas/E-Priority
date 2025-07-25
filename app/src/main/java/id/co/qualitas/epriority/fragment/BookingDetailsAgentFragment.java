@@ -121,6 +121,7 @@ public class BookingDetailsAgentFragment extends BaseFragment implements IOnBack
             throw new RuntimeException(e);
         }
         binding.passengerDetailsCard.tvPassengerCount.setText(currTrip.getPassengers().size() + "");
+        binding.contactCard.tvContactName.setText(currTrip.getCustomer_name());
     }
 
     private void initialize() {

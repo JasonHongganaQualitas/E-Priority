@@ -235,6 +235,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                         if (result.getIdMessage() == 1) {
                             pAdapter.notifyDataSetChanged();
                             oAdapter.notifyDataSetChanged();
+                            initAdapter();
                             setToast(result.getMessage());
                         } else {
                             setToast(result.getMessage());
@@ -270,6 +271,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                         if (result.getIdMessage() == 1) {
                             pAdapter.notifyDataSetChanged();
                             oAdapter.notifyDataSetChanged();
+                            initAdapter();
                             setToast(result.getMessage());
                         } else {
                             setToast(result.getMessage());
