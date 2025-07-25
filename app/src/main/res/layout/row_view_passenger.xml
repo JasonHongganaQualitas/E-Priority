@@ -12,6 +12,17 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Passenger Name"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_reg2" />
+
+    <TextView
+        android:id="@+id/txtFlightClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Bussiness"
+        android:textStyle="italic"
         android:textColor="@color/black"
         android:textSize="@dimen/text_reg2" />
 
@@ -19,6 +30,7 @@
         android:id="@+id/imgDelete"
         android:layout_width="22dp"
         android:layout_height="22dp"
+        android:layout_marginStart="16dp"
         android:src="@android:drawable/ic_delete" />
 </LinearLayout>
 

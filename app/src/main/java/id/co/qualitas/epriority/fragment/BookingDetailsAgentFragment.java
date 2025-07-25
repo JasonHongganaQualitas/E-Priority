@@ -75,7 +75,7 @@ public class BookingDetailsAgentFragment extends BaseFragment implements IOnBack
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
                     setToast(Constants.INTERNAL_SERVER_ERROR);

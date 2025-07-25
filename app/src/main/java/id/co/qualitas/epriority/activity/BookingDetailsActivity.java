@@ -102,32 +102,6 @@ public class BookingDetailsActivity extends BaseActivity {
         binding.agentRV.setAdapter(agentAdapter);
     }
 
-    @SuppressLint("ObsoleteSdkInt")
-    private void bottomDialogDetailPassenger(Passenger header) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        BottomsheetDetailPassengerBinding bottomSheetBinding = BottomsheetDetailPassengerBinding.inflate(getLayoutInflater());
-        String dateBirth = !Helper.isEmpty(header.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getBirth_date()) : "";
-        String expDate = !Helper.isEmpty(header.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getPassport_expdate()) : "";
-
-        bottomSheetBinding.txtFirstName.setText(Helper.isEmpty(header.getFirst_name(), ""));
-        bottomSheetBinding.txtLastName.setText(Helper.isEmpty(header.getLast_name(), ""));
-        bottomSheetBinding.txtEmail.setText(Helper.isEmpty(header.getEmail(), ""));
-        bottomSheetBinding.txtPhoneNumber.setText(Helper.isEmpty(header.getPhone_no(), ""));
-        bottomSheetBinding.txtDateBirth.setText(dateBirth);
-        bottomSheetBinding.txtNationality.setText(Helper.isEmpty(header.getNationality_name(), ""));
-        bottomSheetBinding.txtFlightClass.setText(Helper.isEmpty(header.getFlight_class_name(), ""));
-        bottomSheetBinding.txtCabin.setText(header.getCabin() + " KG");
-        bottomSheetBinding.txtBaggage.setText(header.getBaggage() + " KG");
-        bottomSheetBinding.txtInFLightMeal.setText(header.getInflight_meal() == 1 ? "Yes" : "No");
-        bottomSheetBinding.txtPassportNumber.setText(Helper.isEmpty(header.getPassport_no(), ""));
-        bottomSheetBinding.txtCountryPassport.setText(Helper.isEmpty(header.getPassport_country_name(), ""));
-        bottomSheetBinding.txtPassportExpiryDate.setText(expDate);
-
-        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
-        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
-        bottomSheetDialog.show();
-    }
-
     public void getDetails() {
         binding.indicator.smoothToShow();
         openDialogProgress();
@@ -148,10 +122,10 @@ public class BookingDetailsActivity extends BaseActivity {
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 
@@ -206,13 +180,40 @@ public class BookingDetailsActivity extends BaseActivity {
             time = Helper.changeFormatDate1(Constants.DATE_PATTERN_13, Constants.DATE_PATTERN_9, tripDetail.getFlight_time());
         }
 
+        if (!Helper.isNullOrEmpty(tripDetail.getStatus())) {
+            switch (tripDetail.getStatus().toLowerCase()) {
+                case "pending":
+                    binding.statusTxt.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.pending_text));
+                    binding.statusTxt.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.pending_bg));
+                    break;
+                case "upcoming":
+                    binding.statusTxt.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.assigned_text));
+                    binding.statusTxt.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.assigned_bg));
+                    break;
+                case "active":
+                    binding.statusTxt.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.confirmed_text));
+                    binding.statusTxt.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.confirmed_bg));
+                    break;
+                default:
+                    binding.statusTxt.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.default_text));
+                    binding.statusTxt.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.default_bg));
+                    break;
+            }
+        }
+
+        if (tripDetail.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
+            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_to(), ""));
+        } else {
+            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_from(), ""));
+        }
+
         binding.txtTripId.setText("Booking Trips No. #" + tripDetail.getTrip_id());
+        binding.statusTxt.setText(!Helper.isNullOrEmpty(tripDetail.getStatus()) ? Helper.capitalizeFirstLetter(tripDetail.getStatus()) : "");
         binding.txtType.setText(Helper.isEmpty(tripDetail.getTrip_type(), ""));
         binding.txtTripDate.setText(date + " at " + time);
         binding.txtDateFrom.setText(dateFrom);
-        binding.txtDateTo.setText(dateTo);
-        binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_from(), ""));
-        binding.txtRouteTo.setText(Helper.isEmpty(tripDetail.getRoute_to(), ""));
+//        binding.txtDateTo.setText(dateTo);
+//        binding.txtRouteTo.setText(Helper.isEmpty(tripDetail.getRoute_to(), ""));
         binding.txtBookingId.setText(Helper.isEmpty(tripDetail.getBooking_id(), ""));
         binding.txtFlightNumber.setText(Helper.isEmpty(tripDetail.getFlight_no(), ""));
         binding.passangerDetTitleTxt.setText("Passenger Details (" + tripDetail.getPassenger_count() + ")");
@@ -239,6 +240,8 @@ public class BookingDetailsActivity extends BaseActivity {
                     dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, param.getPickup_time());
                 }
                 binding.txtContact.setText(Helper.isEmpty(param.getContact_no(), ""));
+                binding.txtPickUpLocation.setText(Helper.isEmpty(param.getPickup_location(), ""));
+                binding.txtDropOffLocation.setText(Helper.isEmpty(param.getDropoff_location(), ""));
                 binding.txtVehicleType.setText(Helper.isEmpty(param.getVehicle_type_name(), ""));
                 binding.txtOtherAirport.setText(Helper.isEmpty(param.getRequest_note(), ""));
                 binding.txtPickUpTime.setText(dateFrom);

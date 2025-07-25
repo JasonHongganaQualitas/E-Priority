@@ -44,16 +44,47 @@
             android:padding="16dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Passenger Information"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_reg1" />
+                android:textSize="@dimen/text_reg1"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupSalutation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonMr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="Mr"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonMrs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="Mrs"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonMs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ms"
+                    android:textColor="@color/black" />
+
+            </RadioGroup>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -111,43 +142,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Email Address"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/bg_rounded_edittext"
-                android:hint="email@gmail.com"
-                android:padding="8dp"
-                android:textSize="@dimen/text_reg2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Phone Number"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/edtPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:inputType="phone"
-                android:background="@drawable/bg_rounded_edittext"
-                android:hint="+62 82312 12312"
-                android:padding="8dp"
-                android:textSize="@dimen/text_reg2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="Date of Birth"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <EditText
@@ -167,6 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Nationality"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -183,112 +180,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Flight Class"
+                android:text="National Identity Number (NIN)"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spnFlightClass"
+            <EditText
+                android:id="@+id/edtNIK"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_spinner"
-                android:hint="Economy Class"
-                android:padding="8dp" />
+                android:background="@drawable/bg_rounded_edittext"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Cabin"
+                android:text="Email Address"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/edtCabin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".3"
-                    android:inputType="number"
-                    android:background="@drawable/bg_rounded_edittext"
-                    android:hint="0"
-                    android:padding="8dp"
-                    android:textSize="@dimen/text_reg2" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".7"
-                    android:text="KG" />
-            </LinearLayout>
+                android:background="@drawable/bg_rounded_edittext"
+                android:hint="email@gmail.com"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Baggage"
+                android:text="Phone Number"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/edtPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/edtBaggage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".3"
-                    android:inputType="number"
-                    android:background="@drawable/bg_rounded_edittext"
-                    android:hint="0"
-                    android:padding="8dp"
-                    android:textSize="@dimen/text_reg2" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".7"
-                    android:text="KG" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="In Flight Meal?"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/rgInFlightMeal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rbMealYes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="Yes" />
-
-                <RadioButton
-                    android:id="@+id/rbMealNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:checked="true"
-                    android:text="No" />
-
-            </RadioGroup>
+                android:background="@drawable/bg_rounded_edittext"
+                android:hint="+62 82312 12312"
+                android:inputType="phone"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
 
         </LinearLayout>
 
@@ -304,6 +245,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Passport Information"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_reg1"
                 android:textStyle="bold" />
 
@@ -330,9 +272,7 @@
                     android:text="Scan Passport"
                     android:textColor="@color/blue1"
                     android:textStyle="bold" />
-
             </LinearLayout>
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -357,6 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Country of Passport"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -373,7 +314,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="Passport Issue Date"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtPassportIssueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="6dp"
+                android:hint="20/07/2005"
+                android:padding="8dp"
+                android:textSize="@dimen/text_reg2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Passport Expiry Date"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <EditText
@@ -389,6 +351,152 @@
                 android:textSize="@dimen/text_reg2" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_rounded_button_border"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flight Details"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_reg1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Flight Class"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spnFlightClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_spinner"
+                android:hint="Economy Class"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Cabin"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edtCabin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:background="@drawable/bg_rounded_edittext"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textSize="@dimen/text_reg2" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".7"
+                    android:text="KG"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Baggage"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edtBaggage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:background="@drawable/bg_rounded_edittext"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textSize="@dimen/text_reg2" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".7"
+                    android:text="KG"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="In Flight Meal?"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rgInFlightMeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbMealYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Yes"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/rbMealNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:checked="true"
+                    android:text="No"
+                    android:textColor="@color/black" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cbUpdateDataPassenger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Update Data Passenger"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/btnCreate"

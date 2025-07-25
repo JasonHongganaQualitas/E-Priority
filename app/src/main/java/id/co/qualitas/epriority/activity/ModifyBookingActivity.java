@@ -87,6 +87,10 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             }
         });
 
+        binding.imgQuestionAgent.setOnClickListener(v -> {
+            showInstructionBottomSheetAgent();
+        });
+
         binding.btnCancel.setOnClickListener(v -> {
             onBackPressed();
         });
@@ -96,12 +100,24 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         });
     }
 
+    @SuppressLint("ObsoleteSdkInt")
+    private void showInstructionBottomSheetAgent() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetFlightInstructionBinding bottomSheetBinding = BottomsheetFlightInstructionBinding.inflate(getLayoutInflater());
+        bottomSheetBinding.tvTitle.setText("Preferred Agent Instruction");
+        bottomSheetBinding.tvInstruction.setText("We’ll try to assign your preferred agent, depending on availability.");
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
+    }
+
     private boolean validateData() {
         int empty = 0;
-        if (Helper.isEmpty(binding.edtFlightReservationCode)) {
-            binding.edtFlightReservationCode.setError("Please enter flight reservation code");
-            empty++;
-        }
+//        if (Helper.isEmpty(binding.edtFlightReservationCode)) {
+//            binding.edtFlightReservationCode.setError("Please enter flight reservation code");
+//            empty++;
+//        }
         if (Helper.isEmpty(binding.edtDateFrom)) {
             binding.edtDateFrom.setError("Please enter date");
             empty++;
@@ -119,7 +135,7 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             empty++;
         }
         if (Helper.isEmpty(binding.edtAirline)) {
-            binding.edtAirline.setError("Please enter airline");
+            binding.edtAirline.setError("Please enter flight number");
             empty++;
         }
         if (Helper.isEmpty(binding.edtRouteFrom)) {
@@ -261,14 +277,14 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
     }
 
     private void setDataView() {
-        String dateFrom = !Helper.isEmpty(createTrips.getDate_from()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, createTrips.getDate_from()) : null;
-        String timeFrom = !Helper.isEmpty(createTrips.getDate_from()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_9, createTrips.getDate_from()) : null;
-        String dateTo = !Helper.isEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, createTrips.getDate_to()) : null;
-        String timeTo = !Helper.isEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_9, createTrips.getDate_to()) : null;
+        String dateFrom = !Helper.isNullOrEmpty(createTrips.getDate_from()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, createTrips.getDate_from()) : null;
+        String timeFrom = !Helper.isNullOrEmpty(createTrips.getDate_from()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_9, createTrips.getDate_from()) : null;
+        String dateTo = !Helper.isNullOrEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, createTrips.getDate_to()) : null;
+        String timeTo = !Helper.isNullOrEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_9, createTrips.getDate_to()) : null;
 
         binding.txtTripId.setText("Booking Trips No. #" + createTrips.getTrip_id());
         binding.txtType.setText(Helper.isEmpty(createTrips.getTrip_type(), ""));
-        binding.edtFlightReservationCode.setText(Helper.isEmpty(createTrips.getBooking_id(), ""));
+//        binding.edtFlightReservationCode.setText(Helper.isEmpty(createTrips.getBooking_id(), ""));
         binding.edtAirline.setText(Helper.isEmpty(createTrips.getFlight_no(), ""));
         binding.edtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
         binding.edtRouteTo.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
@@ -352,8 +368,8 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         String timeFrom = !Helper.isEmpty(binding.edtTimeFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeFrom.getText().toString()) : null;
         String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
         createTrips.setCustomer_id(user.getId());
-        createTrips.setBooking_id(binding.txtType.getText().toString());
-        createTrips.setBooking_id(binding.edtFlightReservationCode.getText().toString());
+        createTrips.setTrip_type(binding.txtType.getText().toString());
+//        createTrips.setBooking_id(binding.edtFlightReservationCode.getText().toString());
         createTrips.setFlight_no(binding.edtAirline.getText().toString());
         createTrips.setAirline(binding.edtAirline.getText().toString());
         createTrips.setDate_from(dateFrom + " " + timeFrom);
@@ -456,10 +472,10 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 
@@ -698,10 +714,10 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 

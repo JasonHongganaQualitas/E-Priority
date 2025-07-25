@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Type"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <Spinner
@@ -85,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -113,6 +115,44 @@
                 android:hint="ex: 123456789"
                 android:padding="8dp"
                 android:textColor="@color/black"
+                android:textSize="@dimen/text_reg2"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flight Number"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imgQuestionFN"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_question" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edtAirline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_rounded_edittext"
+                android:hint="ex: GA-408"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_reg2" />
 
             <LinearLayout
@@ -129,9 +169,10 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txtTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="From"
+                        android:text="Route"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -177,6 +218,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -231,42 +273,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Flight Number"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imgQuestionFN"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_question" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/edtAirline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bg_rounded_edittext"
-                android:hint="ex: GA-408"
-                android:inputType="textEmailAddress"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_reg2" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -282,7 +288,8 @@
                 android:layout_height="wrap_content"
                 android:text="Passenger Information"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_reg1" />
+                android:textSize="@dimen/text_reg1"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -300,6 +307,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext"
                 android:hint="ex: 1"
+                android:inputType="number"
                 android:padding="8dp"
                 android:textSize="@dimen/text_reg2" />
 

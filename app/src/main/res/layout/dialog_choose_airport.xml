@@ -19,18 +19,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Nationality"
+            android:text="Select a City or Airport"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_reg1"
+            android:textSize="@dimen/text_title"
             android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Choose an your nationality"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/text_reg2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,13 +33,13 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_rounded_edittext"
-                android:hint="Search..."
+                android:hint="Enter the city or airport"
                 android:padding="8dp"
                 android:singleLine="true" />
 
@@ -71,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:itemCount="2"
-            tools:listitem="@layout/spinner_filtered_item" />
+            tools:listitem="@layout/row_view_airports" />
 
         <LinearLayout
             android:id="@+id/llEmpty"
@@ -85,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
-                android:text="No nationality found" />
+                android:text="No airport found" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -94,11 +86,6 @@
                 android:src="@drawable/img_no_trip" />
 
         </LinearLayout>
-
-        <include
-            android:id="@+id/loadingDataBottom"
-            layout="@layout/layout_loading_data_bottom"
-            android:visibility="gone" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

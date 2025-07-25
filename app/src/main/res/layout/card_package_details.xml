@@ -26,7 +26,7 @@
             android:id="@+id/nameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Airport Transfer"
+            android:text="Airport Transport"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"/>

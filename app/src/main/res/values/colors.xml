@@ -20,4 +20,25 @@
     <color name="gray4">#686868</color>
     <color name="green1">#00AA00</color>
     <color name="light_gray">#D3D3D3</color>
+
+<!--    • reassign → bg: #ffe4e6, text: #9f1239-->
+<!--    • pending → bg: #f3f4f6, text: #1f2937-->
+<!--    • assigned → bg: #dbeafe, text: #1e40af-->
+<!--    • confirmed → bg: #d1fae5, text: #065f46-->
+<!--    • modified → bg: #fefce8, text: #78350f-->
+<!--    • default → bg: #f3f4f6, text: #374151-->
+
+    <color name="reassign_bg">#ffe4e6</color>
+    <color name="pending_bg">#f3f4f6</color>
+    <color name="assigned_bg">#dbeafe</color>
+    <color name="confirmed_bg">#d1fae5</color>
+    <color name="modified_bg">#fefce8</color>
+    <color name="default_bg">#f3f4f6</color>
+
+    <color name="reassign_text">#9f1239</color>
+    <color name="pending_text">#1f2937</color>
+    <color name="assigned_text">#1e40af</color>
+    <color name="confirmed_text">#065f46</color>
+    <color name="modified_text">#78350f</color>
+    <color name="default_text">#374151</color>
 </resources>

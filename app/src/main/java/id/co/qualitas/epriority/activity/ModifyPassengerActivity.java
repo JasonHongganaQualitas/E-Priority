@@ -196,8 +196,8 @@ public class ModifyPassengerActivity extends BaseActivity implements DatePickerF
     private void setViewData() {
         passenger = (Passenger) Helper.getItemParam(Constants.DETAIL_PASSENGER);
 
-        String dateBirth = !Helper.isEmpty(passenger.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getBirth_date()) : "";
-        String expDate = !Helper.isEmpty(passenger.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getPassport_expdate()) : "";
+        String dateBirth = !Helper.isNullOrEmpty(passenger.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getBirth_date()) : "";
+        String expDate = !Helper.isNullOrEmpty(passenger.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, passenger.getPassport_expdate()) : "";
         selectedNationality = new Dropdown(passenger.getNationality_id(), passenger.getNationality_name());
         selectedNationalityPassport = new Dropdown(passenger.getPassport_country_id(), passenger.getPassport_country_name());
         selectedFlightClass = new Dropdown(passenger.getFlight_class_id(), passenger.getFlight_class_name());

@@ -89,6 +89,9 @@ public interface APIInterface {
     @POST(Constants.API_LIST_COUNTRIES)
     Call<WSMessage> getListCountries(@Body TripRequest tripRequestRequest);
 
+    @POST(Constants.API_LIST_AIRPORTS)
+    Call<WSMessage> getListAirport(@Body TripRequest tripRequestRequest);
+
     @POST(Constants.API_LIST_FLIGHT_CLASS)
     Call<WSMessage> getListFlightClass(@Body TripRequest tripRequestRequest);
 

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Passenger implements Serializable {
     private int item_no;
+    private String title;
+    private String nik;
     private String first_name;
     private String last_name;
     private String email;
@@ -12,6 +14,7 @@ public class Passenger implements Serializable {
     private String seat_layout;
     private String passport_no;
     private String passport_expdate;
+    private String issue_date;
     private String nationality_name;
     private String passport_country_name;
     private String flight_class_name;
@@ -30,6 +33,30 @@ public class Passenger implements Serializable {
     private Dropdown selectedNationalityPassport;
 
     public Passenger() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getIssue_date() {
+        return issue_date;
+    }
+
+    public void setIssue_date(String issue_date) {
+        this.issue_date = issue_date;
     }
 
     public int getPos_passenger() {

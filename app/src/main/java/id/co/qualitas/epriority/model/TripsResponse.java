@@ -35,6 +35,7 @@ public class TripsResponse {
     @SerializedName("package")
     public Packages packages;
     public String city;
+    public Dropdown selectedAirport;
     private List<Agent> agent_list;
 
     //detail
@@ -51,6 +52,14 @@ public class TripsResponse {
         this.locationAndFlight = locationAndFlight;
         this.peopleCount = peopleCount;
         this.status = status;
+    }
+
+    public Dropdown getSelectedAirport() {
+        return selectedAirport;
+    }
+
+    public void setSelectedAirport(Dropdown selectedAirport) {
+        this.selectedAirport = selectedAirport;
     }
 
     public int getTrip_id() {

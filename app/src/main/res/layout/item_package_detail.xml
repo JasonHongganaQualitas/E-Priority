@@ -18,7 +18,7 @@
         android:textColor="@color/black"
         android:layout_marginBottom="12dp" />
 
-    <!-- CARD 1 - Airport Transfer -->
+    <!-- CARD 1 - Airport Transport -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                     android:layout_height="40dp"
                     android:src="@drawable/ic_vehicle"
                     android:layout_marginEnd="12dp"
-                    android:contentDescription="Airport Transfer"
+                    android:contentDescription="Airport Transport"
                     app:tint="@color/gray2" />
 
                 <LinearLayout
@@ -69,7 +69,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Airport Transfer"
+                        android:text="Airport Transport"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:textColor="@color/black" />

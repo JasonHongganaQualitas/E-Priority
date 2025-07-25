@@ -45,6 +45,7 @@ public class Constants {
     public static final String API_STATS = "/api/v1/mobile/home/stats";
     public static final String API_LIST_PACKAGE = "/api/v1/mobile/package/details";
     public static final String API_LIST_COUNTRIES = "/api/v1/dropdown/country";
+    public static final String API_LIST_AIRPORTS = "/api/v1/airports/search";
     public static final String API_LIST_FLIGHT_CLASS = "/api/v1/dropdown/flight-class";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -81,6 +82,7 @@ public class Constants {
     public static final String PASSANGER_DETAIL = "Passanger detail";
     public static final String DEFAULT_OFFSET = "0";
     public static final String DEFAULT_LIMIT = "20";
+    public static final String DEFAULT_LIMIT_DROPDOWN = "50";
     public static final String DEFAULT_LIMIT_ALL = "99999";
     public static final String ARRIVAL = "arrival";
     public static final String DEPARTURE = "departure";

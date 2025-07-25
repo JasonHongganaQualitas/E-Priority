@@ -81,7 +81,7 @@ public class PendingBookingFragment extends BaseFragment implements IOnBackPress
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
                     setToast(Constants.INTERNAL_SERVER_ERROR);
@@ -154,11 +154,11 @@ public class PendingBookingFragment extends BaseFragment implements IOnBackPress
                         }
                     }
                     else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 }
                 else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 
@@ -189,11 +189,11 @@ public class PendingBookingFragment extends BaseFragment implements IOnBackPress
                         }
                     }
                     else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 }
                 else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 

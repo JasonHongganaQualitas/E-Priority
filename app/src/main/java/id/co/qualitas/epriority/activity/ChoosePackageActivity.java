@@ -1,5 +1,6 @@
 package id.co.qualitas.epriority.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,6 +30,7 @@ import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
 import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.BottomsheetFlightInstructionBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
 import id.co.qualitas.epriority.databinding.FragmentChoosePackageBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
@@ -74,6 +77,10 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             setToast("Data Flight not found");
             onBackPressed();
         }
+
+        binding.imgQuestionAgent.setOnClickListener(v -> {
+            showInstructionBottomSheetAgent();
+        });
 
         binding.backBtn.setOnClickListener(v -> {
             onBackPressed();
@@ -131,6 +138,18 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                 startActivity(intent);
             }
         });
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void showInstructionBottomSheetAgent() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetFlightInstructionBinding bottomSheetBinding = BottomsheetFlightInstructionBinding.inflate(getLayoutInflater());
+        bottomSheetBinding.tvTitle.setText("Preferred Agent Instruction");
+        bottomSheetBinding.tvInstruction.setText("We’ll try to assign your preferred agent, depending on availability.");
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
     }
 
     private void selectBaggage() {
@@ -309,7 +328,8 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
 
     public void getAgent() {
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getListAgent(Helper.getDateNow(Constants.DATE_PATTERN_2), String.valueOf(offset), Constants.DEFAULT_LIMIT);
+        String dateTrip = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_2, createTrips.getTrip_date());
+        Call<WSMessage> httpRequest = apiInterface.getListAgent(dateTrip, String.valueOf(offset), Constants.DEFAULT_LIMIT);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -363,10 +383,10 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 
@@ -576,6 +596,14 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
                 binding.edtPickUpDate.setError("Please enter pick up date");
                 empty++;
             }
+            if (Helper.isEmpty(binding.edtPickUpLocation)) {
+                binding.edtPickUpLocation.setError("Please enter pick up location");
+                empty++;
+            }
+            if (Helper.isEmpty(binding.edtDropOffLocation)) {
+                binding.edtDropOffLocation.setError("Please enter drop off location");
+                empty++;
+            }
             if (Helper.isEmpty(binding.edtContact)) {
                 binding.edtContact.setError("Please enter contact number");
                 empty++;
@@ -625,6 +653,8 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             String date = Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPickUpDate.getText().toString());
             detail.setPickup_time(date + " " + time);
             detail.setContact_no(binding.edtContact.getText().toString());
+            detail.setPickup_location(binding.edtPickUpLocation.getText().toString());
+            detail.setDropoff_location(binding.edtDropOffLocation.getText().toString());
             detail.setRequest_note(binding.edtOtherAirport.getText().toString());
             detail.setSelectedVehicleType(selectedVehicleType);
             header.setTrip_airporttransfer(detail);

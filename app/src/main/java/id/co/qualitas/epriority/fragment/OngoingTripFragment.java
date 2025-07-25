@@ -39,6 +39,7 @@ public class OngoingTripFragment extends BaseFragment {
     private boolean loading = true;
     protected int pastVisiblesItems, visibleItemCount, totalItemCount;
     private LinearLayoutManager linearLayout;
+    String type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class OngoingTripFragment extends BaseFragment {
         initAdapter();
 
         if (Helper.getItemParam(Constants.TYPE_TAB) != null) {
-            String type = (String) Helper.getItemParam(Constants.TYPE_TAB);
+            type = (String) Helper.getItemParam(Constants.TYPE_TAB);
             binding.txtTitle.setText("Ongoing " + type.toUpperCase() + " trip");
             arrival = type.equals(Constants.ARRIVAL);
         }

@@ -130,7 +130,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
                     setToast(Constants.INTERNAL_SERVER_ERROR);
@@ -167,7 +167,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
                     setToast(Constants.INTERNAL_SERVER_ERROR);
@@ -202,7 +202,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                                 setToast(result.getMessage());
                             }
                         } else {
-                            setToast(response.message());
+                            setToast(Constants.INTERNAL_SERVER_ERROR);
                         }
                     } else {
                         setToast(Constants.INTERNAL_SERVER_ERROR);
@@ -241,10 +241,10 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 
@@ -277,10 +277,10 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
                 }
             }
 

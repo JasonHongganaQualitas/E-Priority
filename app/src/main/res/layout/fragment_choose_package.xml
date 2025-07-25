@@ -43,13 +43,30 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Preferred Agent"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_reg2"
-                android:textStyle="bold" />
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Preferred Agent"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imgQuestionAgent"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_question" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -120,8 +137,8 @@
                     android:id="@+id/cbAirport"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_unchecked"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
 
                 <ImageView
                     android:id="@+id/imgAirport"
@@ -140,7 +157,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Airport Transfer"
+                        android:text="Airport Transport"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_reg2"
                         android:textStyle="bold" />
@@ -188,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
-                        android:text="Edit Airport Transfer Details"
+                        android:text="Edit Airport Transport Details"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_reg2"
                         android:textStyle="bold" />
@@ -254,6 +271,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:text="Pick Up Location"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/edtPickUpLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_rounded_edittext"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Drop Off Location"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/edtDropOffLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_rounded_edittext"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="Contact Number"
                     android:textColor="@color/black" />
 
@@ -306,8 +359,8 @@
                     android:id="@+id/cbLounge"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_unchecked"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
 
                 <ImageView
                     android:id="@+id/imgLounge"
@@ -432,8 +485,8 @@
                     android:id="@+id/cbFlight"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_unchecked"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
 
                 <ImageView
                     android:id="@+id/imgFlight"
@@ -558,8 +611,8 @@
                     android:id="@+id/cbFastLane"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_unchecked"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
 
                 <ImageView
                     android:id="@+id/imgFastLane"
@@ -684,8 +737,8 @@
                     android:id="@+id/cbBaggage"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_unchecked"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_unchecked" />
 
                 <ImageView
                     android:id="@+id/imgBaggage"

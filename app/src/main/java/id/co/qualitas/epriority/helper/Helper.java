@@ -123,6 +123,14 @@ public class Helper {
     public static String movementService;
 
     /*Strings*/
+
+    public static String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
+
     public static String isEmpty(String input, String placeHolder) {
         if (input != null) {
             if (input.length() != 0) {
@@ -157,12 +165,12 @@ public class Helper {
         return true;
     }
 
-    public static boolean isEmpty(String etText) {
-        if (etText.trim().length() > 0)
-            return false;
-
-        return true;
-    }
+//    public static boolean isEmpty(String etText) {
+//        if (etText.trim().length() > 0)
+//            return false;
+//
+//        return true;
+//    }
 
     public static boolean isEmpty(TextView etText) {
         if (etText.getText().toString().trim().length() > 0)

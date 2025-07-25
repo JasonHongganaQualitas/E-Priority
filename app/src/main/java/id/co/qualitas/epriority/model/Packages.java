@@ -26,6 +26,8 @@ public class Packages implements Serializable {
 
     //detail packages
     private int vehicle_type;
+    private String pickup_location;
+    private String dropoff_location;
     private String pickup_time;
     private String contact_no;
     private String request_note;
@@ -47,6 +49,22 @@ public class Packages implements Serializable {
     private String baggage_type_name;
 
     public Packages() {
+    }
+
+    public String getPickup_location() {
+        return pickup_location;
+    }
+
+    public void setPickup_location(String pickup_location) {
+        this.pickup_location = pickup_location;
+    }
+
+    public String getDropoff_location() {
+        return dropoff_location;
+    }
+
+    public void setDropoff_location(String dropoff_location) {
+        this.dropoff_location = dropoff_location;
     }
 
     public int getLounge_type_id() {

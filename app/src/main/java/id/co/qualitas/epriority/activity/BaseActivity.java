@@ -1,6 +1,7 @@
 package id.co.qualitas.epriority.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
@@ -35,10 +36,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.BottomsheetDetailPassengerBinding;
 import id.co.qualitas.epriority.helper.Helper;
 import id.co.qualitas.epriority.interfaces.APIInterface;
+import id.co.qualitas.epriority.model.Passenger;
 import id.co.qualitas.epriority.model.User;
 import id.co.qualitas.epriority.session.SessionManager;
 
@@ -86,6 +91,38 @@ public class BaseActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    protected void bottomDialogDetailPassenger(Passenger header) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        BottomsheetDetailPassengerBinding bottomSheetBinding = BottomsheetDetailPassengerBinding.inflate(getLayoutInflater());
+        String dateBirth = !Helper.isNullOrEmpty(header.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getBirth_date()) : "";
+        String expDate = !Helper.isNullOrEmpty(header.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getPassport_expdate()) : "";
+        String issueDate = !Helper.isNullOrEmpty(header.getIssue_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getIssue_date()) : "";
+
+        bottomSheetBinding.txtTitle.setText(Helper.isEmpty(header.getTitle(), ""));
+        bottomSheetBinding.txtNationality.setText(Helper.isEmpty(header.getNationality_name(), ""));
+        bottomSheetBinding.txtNIK.setText(Helper.isEmpty(header.getNik(), ""));
+        bottomSheetBinding.txtFirstName.setText(Helper.isEmpty(header.getFirst_name(), ""));
+        bottomSheetBinding.txtLastName.setText(Helper.isEmpty(header.getLast_name(), ""));
+        bottomSheetBinding.txtDateBirth.setText(dateBirth);
+        bottomSheetBinding.txtEmail.setText(Helper.isEmpty(header.getEmail(), ""));
+        bottomSheetBinding.txtPhoneNumber.setText(Helper.isEmpty(header.getPhone_no(), ""));
+
+        bottomSheetBinding.txtPassportNumber.setText(Helper.isEmpty(header.getPassport_no(), ""));
+        bottomSheetBinding.txtCountryPassport.setText(Helper.isEmpty(header.getPassport_country_name(), ""));
+        bottomSheetBinding.txtPassportIssueDate.setText(issueDate);
+        bottomSheetBinding.txtPassportExpiryDate.setText(expDate);
+
+        bottomSheetBinding.txtFlightClass.setText(Helper.isEmpty(header.getFlight_class_name(), ""));
+        bottomSheetBinding.txtCabin.setText(header.getCabin() + " KG");
+        bottomSheetBinding.txtBaggage.setText(header.getBaggage() + " KG");
+        bottomSheetBinding.txtInFLightMeal.setText(header.getInflight_meal() == 1 ? "Yes" : "No");
+
+        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
     }
 
 //    @Override

@@ -17,27 +17,26 @@ import java.util.List;
 import java.util.Locale;
 
 import id.co.qualitas.epriority.constants.Constants;
-import id.co.qualitas.epriority.databinding.CardAgentBinding;
-import id.co.qualitas.epriority.databinding.RowViewPassengerBinding;
+import id.co.qualitas.epriority.databinding.RowViewAirportsBinding;
+import id.co.qualitas.epriority.databinding.SpinnerFilteredItemBinding;
 import id.co.qualitas.epriority.helper.Helper;
-import id.co.qualitas.epriority.model.Agent;
-import id.co.qualitas.epriority.model.Passenger;
+import id.co.qualitas.epriority.model.Dropdown;
 
-public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAdapter.ViewHolder> implements Filterable {
-    private boolean isReview;
-    private List<Passenger> mList, mFilteredList;
+public class AirportAdapter extends RecyclerView.Adapter<AirportAdapter.ViewHolder> implements Filterable {
+    private List<Dropdown> mList, mFilteredList;
     private Context mContext;
     private OnAdapterListener onAdapterListener;
+    protected DecimalFormatSymbols otherSymbols;
+    protected DecimalFormat format;
 
-    public PassengerTripsAdapter(Context mContext, List<Passenger> mList, boolean isReview, OnAdapterListener onAdapterListener) {
+    public AirportAdapter(Context mContext, List<Dropdown> mList, OnAdapterListener onAdapterListener) {
         this.mContext = mContext;
         this.mList = mList;
-        this.isReview = isReview;
         this.mFilteredList = mList;
         this.onAdapterListener = onAdapterListener;
     }
 
-    public void setFilteredList(List<Passenger> filteredList) {
+    public void setFilteredList(List<Dropdown> filteredList) {
         this.mList = filteredList;
         this.mFilteredList = filteredList;
         notifyDataSetChanged();
@@ -47,28 +46,20 @@ public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        RowViewPassengerBinding binding = RowViewPassengerBinding.inflate(inflater, parent, false);
+        RowViewAirportsBinding binding = RowViewAirportsBinding.inflate(inflater, parent, false);
         return new ViewHolder(binding, onAdapterListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Passenger agent = mFilteredList.get(holder.getAdapterPosition());
-        String firstName = Helper.isEmpty(agent.getFirst_name(), "");
-        String lastName = Helper.isEmpty(agent.getLast_name(), "");
-        holder.binding.nameTxt.setText(firstName + " " + lastName);
-        holder.binding.txtFlightClass.setText(Helper.isEmpty(agent.getFlight_class_name(), ""));
-
-        if (isReview) {
-            holder.binding.imgDelete.setVisibility(View.GONE);
-        } else {
-            holder.binding.imgDelete.setVisibility(View.VISIBLE);
-            holder.binding.imgDelete.setOnClickListener(v -> {
-                mList.remove(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
-                notifyItemRangeChanged(holder.getAdapterPosition(), mList.size());
-            });
-        }
+        setFormatSeparator();
+        Dropdown currentItem = mFilteredList.get(holder.getAdapterPosition());
+        String id = currentItem.getId() + " - ";
+        String city = Helper.isEmpty(currentItem.getCity(), "");
+        String country = Helper.isEmpty(currentItem.getCountry(), "");
+        holder.binding.txtIata.setText(Helper.isEmpty(currentItem.getIata(),""));
+        holder.binding.txtAirport.setText(Helper.isEmpty(currentItem.getName(),""));
+        holder.binding.txtCity.setText(city + ", " + country);
     }
 
     @Override
@@ -80,12 +71,12 @@ public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAd
                 if (charString.isEmpty()) {
                     mFilteredList = mList;
                 } else {
-                    List<Passenger> filteredList = new ArrayList<>();
-                    for (Passenger row : mList) {
+                    List<Dropdown> filteredList = new ArrayList<>();
+                    for (Dropdown row : mList) {
 
                         /*filter by name*/
-                        if (String.valueOf(row.getFirst_name()).toLowerCase().contains(charString.toLowerCase()) ||
-                                String.valueOf(row.getLast_name()).toLowerCase().contains(charString.toLowerCase())) {
+                        if (String.valueOf(row.getId()).toLowerCase().contains(charString.toLowerCase()) ||
+                                String.valueOf(row.getName()).toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -100,7 +91,7 @@ public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAd
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<Passenger>) filterResults.values;
+                mFilteredList = (ArrayList<Dropdown>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -113,9 +104,9 @@ public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAd
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnAdapterListener onAdapterListener;
-        RowViewPassengerBinding binding;
+        RowViewAirportsBinding binding;
 
-        public ViewHolder(@NonNull RowViewPassengerBinding binding, OnAdapterListener onAdapterListener) {
+        public ViewHolder(@NonNull RowViewAirportsBinding binding, OnAdapterListener onAdapterListener) {
             super(binding.getRoot());
             this.binding = binding;
             this.onAdapterListener = onAdapterListener;
@@ -129,6 +120,13 @@ public class PassengerTripsAdapter extends RecyclerView.Adapter<PassengerTripsAd
     }
 
     public interface OnAdapterListener {
-        void onAdapterClick(Passenger detail, int pos);
+        void onAdapterClick(Dropdown detail, int pos);
+    }
+
+    private void setFormatSeparator() {
+        otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator(',');
+        otherSymbols.setGroupingSeparator('.');
+        format = new DecimalFormat(Constants.DECIMAL_PATTERN, otherSymbols);
     }
 }

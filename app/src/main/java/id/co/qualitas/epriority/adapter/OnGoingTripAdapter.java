@@ -7,12 +7,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.CardOngoingTripBinding;
 import id.co.qualitas.epriority.helper.Helper;
@@ -62,10 +64,34 @@ public class OnGoingTripAdapter extends RecyclerView.Adapter<OnGoingTripAdapter.
         }
 
         holder.binding.bookingIdTxt.setText("Booking Trips No.: #" + tripsResponse.getId());
-        holder.binding.destinationTxt.setText(Helper.isEmpty(tripsResponse.getRoute_to(), ""));
+        if (tripsResponse.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
+            holder.binding.destinationTxt.setText(Helper.isEmpty(tripsResponse.getRoute_to(), ""));
+        } else {
+            holder.binding.destinationTxt.setText(Helper.isEmpty(tripsResponse.getRoute_from(), ""));
+        }
         holder.binding.flightTxt.setText("Flight " + Helper.isEmpty(tripsResponse.getFlight_no(), ""));
         holder.binding.dateTxt.setText(date + " at " + time);
-        holder.binding.statusTxt.setText(Helper.isEmpty(tripsResponse.getStatus(), ""));
+        holder.binding.statusTxt.setText(!Helper.isNullOrEmpty(tripsResponse.getStatus()) ? Helper.capitalizeFirstLetter(tripsResponse.getStatus()) : "");
+        if (!Helper.isNullOrEmpty(tripsResponse.getStatus())) {
+            switch (tripsResponse.getStatus().toLowerCase()) {
+                case "pending":
+                    holder.binding.statusTxt.setTextColor(ContextCompat.getColor(mContext.requireContext(), R.color.pending_text));
+                    holder.binding.statusTxt.setBackgroundColor(ContextCompat.getColor(mContext.requireContext(), R.color.pending_bg));
+                    break;
+                case "upcoming":
+                    holder.binding.statusTxt.setTextColor(ContextCompat.getColor(mContext.requireContext(), R.color.assigned_text));
+                    holder.binding.statusTxt.setBackgroundColor(ContextCompat.getColor(mContext.requireContext(), R.color.assigned_bg));
+                    break;
+                case "active":
+                    holder.binding.statusTxt.setTextColor(ContextCompat.getColor(mContext.requireContext(), R.color.confirmed_text));
+                    holder.binding.statusTxt.setBackgroundColor(ContextCompat.getColor(mContext.requireContext(), R.color.confirmed_bg));
+                    break;
+                default:
+                    holder.binding.statusTxt.setTextColor(ContextCompat.getColor(mContext.requireContext(), R.color.default_text));
+                    holder.binding.statusTxt.setBackgroundColor(ContextCompat.getColor(mContext.requireContext(), R.color.default_bg));
+                    break;
+            }
+        }
     }
 
     @Override

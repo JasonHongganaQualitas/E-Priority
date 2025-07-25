@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,6 +33,7 @@ import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.NationalityAdapter;
 import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.databinding.DialogChooseAirportBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseNationalityBinding;
 import id.co.qualitas.epriority.databinding.FragmentCreatePassengerBinding;
 import id.co.qualitas.epriority.fragment.DateBirthPickerFragment;
@@ -41,6 +45,7 @@ import id.co.qualitas.epriority.interfaces.APIInterface;
 import id.co.qualitas.epriority.model.Dropdown;
 import id.co.qualitas.epriority.model.Passenger;
 import id.co.qualitas.epriority.model.TripRequest;
+import id.co.qualitas.epriority.model.TripsResponse;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +63,8 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
     private boolean loading = true;
     protected int pastVisiblesItems, visibleItemCount, totalItemCount;
     private LinearLayoutManager linearLayout;
+    private @NonNull DialogChooseNationalityBinding dialogBinding;
+    private TripsResponse createTrips;
 
 
     @Override
@@ -89,10 +96,19 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             binding.edtDateBirth.setClickable(true);
         }
 
+        if (binding.edtPassportIssueDate != null) {
+            binding.edtPassportIssueDate.setOnClickListener(v -> {
+                activeDateField = binding.edtPassportIssueDate; // Set active field
+                showDateBirthPickerDialog();
+            });
+            binding.edtPassportIssueDate.setFocusable(false);
+            binding.edtPassportIssueDate.setClickable(true);
+        }
+
         if (binding.edtPassportExpiryDate != null) {
             binding.edtPassportExpiryDate.setOnClickListener(v -> {
                 activeDateField = binding.edtPassportExpiryDate; // Set active field
-                showDatePickerDialog();
+                showDateBirthPickerDialog();
             });
             binding.edtPassportExpiryDate.setFocusable(false);
             binding.edtPassportExpiryDate.setClickable(true);
@@ -116,11 +132,84 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
                 inFlightMealRequired = false;
             }
         });
+    }
 
+    private String getSelectedSalutation() {
+        int selectedId = binding.radioGroupSalutation.getCheckedRadioButtonId();
+        if (selectedId != -1) {
+            RadioButton selectedRadioButton = findViewById(selectedId);
+            return selectedRadioButton.getText().toString();
+        }
+        return null;
     }
 
     private boolean checkNoEmptyData() {
         int empty = 0;
+
+        int selectedId = binding.radioGroupSalutation.getCheckedRadioButtonId();
+
+        if (selectedId == -1) {
+            setToast("Please select title");
+            empty++;
+        }
+
+        if (Helper.getItemParam(Constants.DATA_CREATE_TRIPS) != null) {
+            createTrips = (TripsResponse) Helper.getItemParam(Constants.DATA_CREATE_TRIPS);
+        }
+        if (Helper.isEmpty(binding.txtNationality)) {
+            binding.txtNationality.setError("Please select nationality");
+            empty++;
+        } else {
+            if (selectedNationality.getName().toLowerCase().equals("indonesia")) {
+                if (Helper.isEmpty(binding.edtNIK)) {
+                    binding.edtNIK.setError("Please enter National Identity Number (NIK)");
+                    empty++;
+                }
+
+                if (!createTrips.getSelectedAirport().getCountry().toLowerCase().equals("indonesia")) {
+                    if (Helper.isEmpty(binding.edtPassportNumber)) {
+                        binding.edtPassportNumber.setError("Please enter passport number");
+                        empty++;
+                    }
+                    if (Helper.isEmpty(binding.txtCountryPassport)) {
+                        binding.txtCountryPassport.setError("Please select country of passport");
+                        empty++;
+                    }
+                    if (Helper.isEmpty(binding.edtPassportIssueDate)) {
+                        binding.edtPassportIssueDate.setError("Please enter passport issue date");
+                        empty++;
+                    }
+                    if (Helper.isEmpty(binding.edtPassportExpiryDate)) {
+                        binding.edtPassportExpiryDate.setError("Please enter passport expiry date");
+                        empty++;
+                    }
+                } else {
+                    binding.edtPassportNumber.setError(null);
+                    binding.txtCountryPassport.setError(null);
+                    binding.edtPassportIssueDate.setError(null);
+                    binding.edtPassportExpiryDate.setError(null);
+                }
+            } else {
+                binding.edtNIK.setError(null);
+                if (Helper.isEmpty(binding.edtPassportNumber)) {
+                    binding.edtPassportNumber.setError("Please enter passport number");
+                    empty++;
+                }
+                if (Helper.isEmpty(binding.txtCountryPassport)) {
+                    binding.txtCountryPassport.setError("Please select country of passport");
+                    empty++;
+                }
+                if (Helper.isEmpty(binding.edtPassportIssueDate)) {
+                    binding.edtPassportIssueDate.setError("Please enter passport issue date");
+                    empty++;
+                }
+                if (Helper.isEmpty(binding.edtPassportExpiryDate)) {
+                    binding.edtPassportExpiryDate.setError("Please enter passport expiry date");
+                    empty++;
+                }
+            }
+        }
+
         if (Helper.isEmpty(binding.edtFirstName)) {
             binding.edtFirstName.setError("Please enter first name");
             empty++;
@@ -141,56 +230,56 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             binding.edtDateBirth.setError("Please enter date of birth");
             empty++;
         }
-        if (Helper.isEmpty(binding.txtNationality)) {
-            binding.txtNationality.setError("Please select nationality");
-            empty++;
-        }
-        if (selectedFlightClass == null) {
-            setToast("Please select flight class");
-            empty++;
-        }
-        if (Helper.isEmpty(binding.edtCabin)) {
-            binding.edtCabin.setError("Please enter cabin");
-            empty++;
-        }
-        if (Helper.isEmpty(binding.edtBaggage)) {
-            binding.edtBaggage.setError("Please enter baggage");
-            empty++;
-        }
-        if (Helper.isEmpty(binding.edtPassportNumber)) {
-            binding.edtPassportNumber.setError("Please enter passport number");
-            empty++;
-        }
-        if (Helper.isEmpty(binding.txtCountryPassport)) {
-            binding.txtCountryPassport.setError("Please select country of passport");
-            empty++;
-        }
-        if (Helper.isEmpty(binding.edtPassportExpiryDate)) {
-            binding.edtPassportExpiryDate.setError("Please enter passport expiry date");
-            empty++;
-        }
-
+//        if (selectedFlightClass == null) {
+//            setToast("Please select flight class");
+//            empty++;
+//        }
+//        if (Helper.isEmpty(binding.edtCabin)) {
+//            binding.edtCabin.setError("Please enter cabin");
+//            empty++;
+//        }
+//        if (Helper.isEmpty(binding.edtBaggage)) {
+//            binding.edtBaggage.setError("Please enter baggage");
+//            empty++;
+//        }
         return empty == 0;
     }
 
     private void saveData() {
         Passenger passenger = new Passenger();
+
+        int selectedId = binding.radioGroupSalutation.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedId);
+        String selectedSalutation = selectedRadioButton.getText().toString();
+
+        passenger.setTitle(selectedSalutation);
+        passenger.setNik(!Helper.isEmpty(binding.edtNIK) ? binding.edtNIK.getText().toString() : null);
         passenger.setFirst_name(binding.edtFirstName.getText().toString());
         passenger.setLast_name(binding.edtLastName.getText().toString());
         passenger.setEmail(binding.edtEmail.getText().toString());
         passenger.setPhone_no(binding.edtPhoneNumber.getText().toString());
         passenger.setBirth_date(Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateBirth.getText().toString()));
-        passenger.setCabin(Integer.parseInt(binding.edtCabin.getText().toString()));
-        passenger.setBaggage(Integer.parseInt(binding.edtBaggage.getText().toString()));
+        passenger.setNationality_id(selectedNationality != null ? selectedNationality.getId() : 0);
+        passenger.setNationality_name(selectedNationality != null ? selectedNationality.getName() : null);
+        passenger.setSelectedNationality(selectedNationality != null ? selectedNationality : null);
+
+        passenger.setPassport_no(!Helper.isEmpty(binding.edtPassportNumber) ? binding.edtPassportNumber.getText().toString() : null);
+        passenger.setIssue_date(!Helper.isEmpty(binding.edtPassportIssueDate)
+                ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportIssueDate.getText().toString())
+                : null);
+        passenger.setPassport_expdate(!Helper.isEmpty(binding.edtPassportExpiryDate)
+                ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportExpiryDate.getText().toString())
+                : null);
+        passenger.setPassport_country_id(selectedNationalityPassport != null ? selectedNationalityPassport.getId() : 0);
+        passenger.setPassport_country_name(selectedNationalityPassport != null ? selectedNationalityPassport.getName() : null);
+        passenger.setSelectedNationalityPassport(selectedNationalityPassport != null ? selectedNationalityPassport : null);
+
+        passenger.setCabin(!Helper.isEmpty(binding.edtCabin) ? Integer.parseInt(binding.edtCabin.getText().toString()) : 0);
+        passenger.setBaggage(!Helper.isEmpty(binding.edtBaggage) ? Integer.parseInt(binding.edtBaggage.getText().toString()) : 0);
         passenger.setInflight_meal(inFlightMealRequired ? 1 : 0);
-        passenger.setNationality_id(selectedNationality.getId());
-        passenger.setSelectedNationality(selectedNationality);
-        passenger.setFlight_class_id(selectedFlightClass.getId());
-        passenger.setSelectedFlightClass(selectedFlightClass);
-        passenger.setPassport_no(binding.edtPassportNumber.getText().toString());
-        passenger.setPassport_expdate(Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPassportExpiryDate.getText().toString()));
-        passenger.setPassport_country_id(selectedNationalityPassport.getId());
-        passenger.setSelectedNationalityPassport(selectedNationalityPassport);
+        passenger.setFlight_class_id(selectedFlightClass != null ? selectedFlightClass.getId() : 0);
+        passenger.setFlight_class_name(selectedFlightClass != null ? selectedFlightClass.getName() : null);
+        passenger.setSelectedFlightClass(selectedFlightClass != null ? selectedFlightClass : null);
         passenger.setSeat_layout(null);
         Helper.setItemParam(Constants.DATA_PASSENGER, passenger);
     }
@@ -263,8 +352,8 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
     public void getListCountries(String search, boolean fromSearch) {
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
         TripRequest tripRequest = new TripRequest();
-        tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT));
-        tripRequest.setOffset(offset);
+        tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT_DROPDOWN));
+        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
         tripRequest.setSearch(search);
         Call<WSMessage> httpRequest = apiInterface.getListCountries(tripRequest);
         httpRequest.enqueue(new Callback<WSMessage>() {
@@ -278,13 +367,18 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
                             Type listType = new TypeToken<ArrayList<Dropdown>>() {
                             }.getType();
                             List<Dropdown> tempList = new Gson().fromJson(jsonInString, listType);
-                            if (offset == 0) {
-                                nationalityList = new ArrayList<>();
-                            }
+                            nationalityList = new ArrayList<>();
                             nationalityList.addAll(tempList);
                             nationalityAdapter.setFilteredList(nationalityList);
                         }
                     }
+                }
+                if (Helper.isEmptyOrNull(nationalityList)) {
+                    dialogBinding.llEmpty.setVisibility(View.VISIBLE);
+                    dialogBinding.recyclerView.setVisibility(View.GONE);
+                } else {
+                    dialogBinding.llEmpty.setVisibility(View.GONE);
+                    dialogBinding.recyclerView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -335,43 +429,23 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
     }
 
     private void openDialogNationality(boolean fromNationality) {
-        if (Helper.isEmptyOrNull(nationalityList)) {
-            nationalityList = new ArrayList<>();
-        }
-        offset = 0;
-        getListCountries("", false);
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-
-        DialogChooseNationalityBinding dialogBinding = DialogChooseNationalityBinding.inflate(LayoutInflater.from(CreatePassengerActivity.this));
-        dialog = new Dialog(CreatePassengerActivity.this);
-        dialog.setContentView(dialogBinding.getRoot());
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.show();
+        nationalityList = new ArrayList<>();
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        dialogBinding = DialogChooseNationalityBinding.inflate(getLayoutInflater());
+        bottomSheetDialog.setContentView(dialogBinding.getRoot());
+        bottomSheetDialog.show();
 
         dialogBinding.btnSearch.setOnClickListener(v -> {
-            getListCountries(dialogBinding.editText.getText().toString().trim(), true);
+            if (!Helper.isEmpty(dialogBinding.editText)) {
+                String search = dialogBinding.editText.getText().toString().trim();
+                if (search.length() > 1) {
+                    getListCountries(dialogBinding.editText.getText().toString().trim(), true);
+                }
+            }
         });
 
         linearLayout = new LinearLayoutManager(CreatePassengerActivity.this);
         dialogBinding.recyclerView.setLayoutManager(linearLayout);
-        dialogBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (offset == 0) {
-                    itemCount();
-                } else {
-                    if (dy > 0) //check for scroll down
-                    {
-                        itemCount();
-                    } else {
-                        loading = true;
-                    }
-                }
-            }
-        });
 
         nationalityAdapter = new NationalityAdapter(CreatePassengerActivity.this, nationalityList, (header, pos) -> {
             if (fromNationality) {
@@ -381,23 +455,8 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
                 selectedNationalityPassport = header;
                 binding.txtCountryPassport.setText(selectedNationalityPassport.getName());
             }
-            dialog.dismiss();
+            bottomSheetDialog.dismiss();
         });
         dialogBinding.recyclerView.setAdapter(nationalityAdapter);
     }
-
-    public void itemCount() {
-        visibleItemCount = linearLayout.getChildCount();
-        totalItemCount = linearLayout.getItemCount();
-        pastVisiblesItems = linearLayout.findFirstVisibleItemPosition();
-
-        if (loading) {
-            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                loading = false;
-                offset = totalItemCount;
-                getListCountries("", false);
-            }
-        }
-    }
-
 }

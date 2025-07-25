@@ -14,6 +14,9 @@ import android.view.Window;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import org.checkerframework.checker.units.qual.C;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,19 +82,28 @@ public class ReviewBookingActivity extends BaseActivity {
     }
 
     private void setData() {
-        String dateFrom = "", dateTo = "";
-        if (createTrips.getDate_from() != null) {
-            dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, createTrips.getDate_from());
+//        String dateFrom = "", dateTo = "";
+        String tripDate = "", dateFrom = "";
+//        if (createTrips.getDate_from() != null) {
+//            dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, createTrips.getDate_from());
+//        }
+//        if (createTrips.getDate_to() != null) {
+//            dateTo = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, createTrips.getDate_to());
+//        }
+        if (createTrips.getTrip_date() != null) {
+            tripDate = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, createTrips.getTrip_date());
         }
-        if (createTrips.getDate_to() != null) {
-            dateTo = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, createTrips.getDate_to());
+
+        if (createTrips.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
+            binding.txtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
+        } else {
+            binding.txtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
         }
 
         binding.txtType.setText(Helper.isEmpty(createTrips.getTrip_type(), ""));
-        binding.txtDateFrom.setText(dateFrom);
-        binding.txtDateTo.setText(dateTo);
-        binding.txtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
-        binding.txtRouteTo.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
+        binding.txtDateFrom.setText(tripDate);
+//        binding.txtDateTo.setText(dateTo);
+//        binding.txtRouteTo.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
         binding.txtBookingId.setText(Helper.isEmpty(createTrips.getBooking_id(), ""));
         binding.txtFlightNumber.setText(Helper.isEmpty(createTrips.getFlight_no(), ""));
         binding.passangerDetTitleTxt.setText("Passenger Details (" + createTrips.getPassenger_count() + ")");
@@ -105,6 +117,8 @@ public class ReviewBookingActivity extends BaseActivity {
                 dateFrom = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, param.getPickup_time());
             }
             binding.txtContact.setText(Helper.isEmpty(param.getContact_no(), ""));
+            binding.txtPickUpLocation.setText(Helper.isEmpty(param.getPickup_location(), ""));
+            binding.txtDropOffLocation.setText(Helper.isEmpty(param.getDropoff_location(), ""));
             binding.txtVehicleType.setText(Helper.isEmpty(param.getSelectedVehicleType().getName(), ""));
             binding.txtOtherAirport.setText(Helper.isEmpty(param.getRequest_note(), ""));
             binding.txtPickUpTime.setText(dateFrom);
@@ -171,32 +185,6 @@ public class ReviewBookingActivity extends BaseActivity {
         binding.agentRV.setAdapter(agentAdapter);
     }
 
-    @SuppressLint("ObsoleteSdkInt")
-    private void bottomDialogDetailPassenger(Passenger header) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        BottomsheetDetailPassengerBinding bottomSheetBinding = BottomsheetDetailPassengerBinding.inflate(getLayoutInflater());
-        String dateBirth = !Helper.isEmpty(header.getBirth_date()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getBirth_date()) : "";
-        String expDate = !Helper.isEmpty(header.getPassport_expdate()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_2, Constants.DATE_PATTERN_8, header.getPassport_expdate()) : "";
-
-        bottomSheetBinding.txtFirstName.setText(Helper.isEmpty(header.getFirst_name(), ""));
-        bottomSheetBinding.txtLastName.setText(Helper.isEmpty(header.getLast_name(), ""));
-        bottomSheetBinding.txtEmail.setText(Helper.isEmpty(header.getEmail(), ""));
-        bottomSheetBinding.txtPhoneNumber.setText(Helper.isEmpty(header.getPhone_no(), ""));
-        bottomSheetBinding.txtDateBirth.setText(dateBirth);
-        bottomSheetBinding.txtNationality.setText(Helper.isEmpty(header.getSelectedNationality().getName(), ""));
-        bottomSheetBinding.txtFlightClass.setText(Helper.isEmpty(header.getSelectedFlightClass().getName(), ""));
-        bottomSheetBinding.txtCabin.setText(header.getCabin() + "");
-        bottomSheetBinding.txtBaggage.setText(header.getBaggage() + "");
-        bottomSheetBinding.txtInFLightMeal.setText(header.getInflight_meal() == 1 ? "Yes" : "No");
-        bottomSheetBinding.txtPassportNumber.setText(Helper.isEmpty(header.getPassport_no(), ""));
-        bottomSheetBinding.txtCountryPassport.setText(Helper.isEmpty(header.getSelectedNationalityPassport().getName(), ""));
-        bottomSheetBinding.txtPassportExpiryDate.setText(expDate);
-
-        bottomSheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.cancel());
-        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
-        bottomSheetDialog.show();
-    }
-
     public void createTrips() {
         openDialogProgress();
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
@@ -215,11 +203,19 @@ public class ReviewBookingActivity extends BaseActivity {
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(response.message());
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    setToast(response.message());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject json = new JSONObject(errorBody);
+                        String serverMessage = json.optString("message", "Server error");
+                        setToast(serverMessage);
+                    } catch (Exception e) {
+                        setToast("Something went wrong. Please try again.");
+                    }
                 }
+
             }
 
             @Override
