@@ -208,7 +208,7 @@ public class ProfileFragment extends BaseFragment {
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }

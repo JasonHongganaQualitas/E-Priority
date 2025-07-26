@@ -172,7 +172,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="From"
+                        android:text="Route"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -217,59 +217,59 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:orientation="vertical">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="To"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="To"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="vertical">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:orientation="vertical">-->
 
-                        <EditText
-                            android:id="@+id/edtDateTo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_edittext"
-                            android:hint="ex: 15-08-2025"
-                            android:padding="8dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_reg2" />
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtDateTo"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bg_rounded_edittext"-->
+<!--                            android:hint="ex: 15-08-2025"-->
+<!--                            android:padding="8dp"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="@dimen/text_reg2" />-->
 
-                        <EditText
-                            android:id="@+id/edtTimeTo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_rounded_edittext"
-                            android:hint="ex: 08:00"
-                            android:padding="8dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_reg2" />
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtTimeTo"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:background="@drawable/bg_rounded_edittext"-->
+<!--                            android:hint="ex: 08:00"-->
+<!--                            android:padding="8dp"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="@dimen/text_reg2" />-->
 
-                        <EditText
-                            android:id="@+id/edtRouteTo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_rounded_edittext"
-                            android:hint="ex: Frankfurt (FRA)"
-                            android:padding="8dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_reg2" />
-                    </LinearLayout>
-                </LinearLayout>
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtRouteTo"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:background="@drawable/bg_rounded_edittext"-->
+<!--                            android:hint="ex: Frankfurt (FRA)"-->
+<!--                            android:padding="8dp"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="@dimen/text_reg2" />-->
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
             </LinearLayout>
 
         </LinearLayout>
@@ -576,6 +576,42 @@
                         android:textSize="@dimen/text_reg2" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Pick Up Location"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/edtPickUpLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_rounded_edittext"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Drop Off Location"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/edtDropOffLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_rounded_edittext"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_reg2" />
 
                 <TextView
                     android:layout_width="wrap_content"

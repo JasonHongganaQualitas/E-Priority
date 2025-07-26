@@ -60,7 +60,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.10.0"
     implementation 'com.github.frogobox:frogo-ui:2.0.5'
-    implementation 'com.github.frogobox.frogo-ui:core-ui:2.0.5'
+//    implementation 'com.github.frogobox.frogo-ui:core-ui:2.0.5'
     implementation "com.github.bumptech.glide:glide:4.16.0"
     implementation 'androidx.activity:activity:1.8.0'
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))

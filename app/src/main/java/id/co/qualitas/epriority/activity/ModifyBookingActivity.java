@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,11 +33,13 @@ import java.util.Locale;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.adapter.AgentAdapter;
+import id.co.qualitas.epriority.adapter.AirportAdapter;
 import id.co.qualitas.epriority.adapter.PassengerTripsAdapter;
 import id.co.qualitas.epriority.adapter.SpinnerDropDownAdapter;
 import id.co.qualitas.epriority.constants.Constants;
 import id.co.qualitas.epriority.databinding.BottomsheetFlightInstructionBinding;
 import id.co.qualitas.epriority.databinding.DialogChooseAgentBinding;
+import id.co.qualitas.epriority.databinding.DialogChooseAirportBinding;
 import id.co.qualitas.epriority.databinding.DialogUpdateSubmittedBinding;
 import id.co.qualitas.epriority.databinding.FragmentModifyBookingBinding;
 import id.co.qualitas.epriority.fragment.DatePickerFragment;
@@ -48,6 +51,7 @@ import id.co.qualitas.epriority.model.Agent;
 import id.co.qualitas.epriority.model.Dropdown;
 import id.co.qualitas.epriority.model.Packages;
 import id.co.qualitas.epriority.model.Passenger;
+import id.co.qualitas.epriority.model.TripRequest;
 import id.co.qualitas.epriority.model.TripsResponse;
 import id.co.qualitas.epriority.model.WSMessage;
 import retrofit2.Call;
@@ -71,6 +75,10 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
     private int offset;
     private boolean loading = true;
     protected int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private @NonNull DialogChooseAirportBinding bottomSheetBinding;
+    private List<Dropdown> airportList;
+    private Dropdown selectedAirport;
+    private AirportAdapter airportAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +108,149 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         });
     }
 
+    private void setViewOnClick() {
+        binding.llAddPassenger.setOnClickListener(v -> {
+            if (Helper.isEmpty(binding.edtNumberPassenger)) {
+                binding.edtNumberPassenger.setError("Please enter passenger count");
+            } else if (Integer.parseInt(binding.edtNumberPassenger.getText().toString()) < 0) {
+                setToast("Number of passenger can't 0");
+            } else if (passengerList.size() >= Integer.parseInt(binding.edtNumberPassenger.getText().toString())) {
+                setToast("Passenger can't be more than passenger count");
+            } else if (Helper.isEmpty(binding.edtRouteFrom)) {
+                binding.edtRouteFrom.setError("Please enter route city");
+            } else {
+                Helper.removeItemParam(Constants.DATA_PASSENGER);
+                saveData();//llAddPassenger
+                intent = new Intent(getApplicationContext(), CreatePassengerActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+
+        if (binding.edtRouteFrom != null) {
+            binding.edtRouteFrom.setOnClickListener(v -> {
+                dialogBottomAirport();
+            });
+            binding.edtRouteFrom.setFocusable(false);
+            binding.edtRouteFrom.setClickable(true);
+        }
+
+        if (binding.edtDateFrom != null) {
+            binding.edtDateFrom.setOnClickListener(v -> {
+                activeDateField = binding.edtDateFrom; // Set active field
+                showDatePickerDialog();//edtDateFrom
+            });
+            binding.edtDateFrom.setFocusable(false);
+            binding.edtDateFrom.setClickable(true);
+        }
+
+//        if (binding.edtDateTo != null) {
+//            binding.edtDateTo.setOnClickListener(v -> {
+//                activeDateField = binding.edtDateTo; // Set active field
+//                showDatePickerDialog();//edtDateTo
+//            });
+//            binding.edtDateTo.setFocusable(false);
+//            binding.edtDateTo.setClickable(true);
+//        }
+
+        if (binding.edtTimeFrom != null) {
+            binding.edtTimeFrom.setOnClickListener(v -> {
+                activeTimeField = binding.edtTimeFrom; // Set active field
+                openDialogTimePicker();//edtTimeFrom
+            });
+            binding.edtTimeFrom.setFocusable(false);
+            binding.edtTimeFrom.setClickable(true);
+        }
+
+//        if (binding.edtTimeTo != null) {
+//            binding.edtTimeTo.setOnClickListener(v -> {
+//                activeTimeField = binding.edtTimeTo; // Set active field
+//                openDialogTimePicker();//edtTimeTo
+//            });
+//            binding.edtTimeTo.setFocusable(false);
+//            binding.edtTimeTo.setClickable(true);
+//        }
+
+        binding.imgQuestionFN.setOnClickListener(v -> showFlightInstructionBottomSheet(createTrips.getTrip_type().equals("Arrival")));
+        binding.imgQuestionFRC.setOnClickListener(v -> showFRCInstructionBottomSheet());
+
+        binding.btnChooseAgent.setOnClickListener(v -> {
+            openDialogChooseAgent();
+        });
+
+        binding.llAirportHeader.setOnClickListener(v -> {
+            selectAirport();//click
+        });
+
+        binding.llLoungeHeader.setOnClickListener(v -> {
+            selectLounge();
+        });
+
+        binding.llFlightHeader.setOnClickListener(v -> {
+            selectFlight();
+        });
+
+        binding.llFastLaneHeader.setOnClickListener(v -> {
+            selectFastLane();
+        });
+
+        binding.llBaggageHeader.setOnClickListener(v -> {
+            selectBaggage();
+        });
+
+        binding.cbAirport.setOnClickListener(v -> {
+            selectAirport();
+        });
+
+        binding.cbLounge.setOnClickListener(v -> {
+            selectLounge();
+        });
+
+        binding.cbFlight.setOnClickListener(v -> {
+            selectFlight();
+        });
+
+        binding.cbFastLane.setOnClickListener(v -> {
+            selectFastLane();
+        });
+
+        binding.cbBaggage.setOnClickListener(v -> {
+            selectBaggage();
+        });
+    }
+
+    private void setData() {
+        if (Helper.getItemParam(Constants.DATA_CREATE_TRIPS) != null) {
+            createTrips = (TripsResponse) Helper.getItemParam(Constants.DATA_CREATE_TRIPS);
+
+            if (Helper.getItemParam(Constants.DATA_PASSENGER) != null) {
+                dataPassenger = (Passenger) Helper.getItemParam(Constants.DATA_PASSENGER);
+                passengerList = new ArrayList<>();
+                if (Helper.isNotEmptyOrNull(createTrips.getPassengers())) {
+                    passengerList = createTrips.getPassengers();
+                } else {
+                    passengerList = new ArrayList<>();
+                }
+                passengerList.add(dataPassenger);
+                createTrips.setPassengers(passengerList);
+            }
+
+            Helper.removeItemParam(Constants.DATA_PASSENGER);
+        } else {
+            passengerList = new ArrayList<>();
+        }
+
+        if (Helper.getItemParam(Constants.DETAIL_PASSENGER) != null) {
+            Passenger edtPassenger = (Passenger) Helper.getItemParam(Constants.DETAIL_PASSENGER);
+            if (Helper.isNotEmptyOrNull(passengerList)) {
+                passengerList.remove(edtPassenger);
+                passengerList.add(edtPassenger.getPos_passenger(), edtPassenger);
+            }
+            Helper.removeItemParam(Constants.DETAIL_PASSENGER);
+        }
+        getPackages();
+    }
+
     @SuppressLint("ObsoleteSdkInt")
     private void showInstructionBottomSheetAgent() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
@@ -122,30 +273,30 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             binding.edtDateFrom.setError("Please enter date");
             empty++;
         }
-        if (Helper.isEmpty(binding.edtDateTo)) {
-            binding.edtDateTo.setError("Please enter date");
-            empty++;
-        }
+//        if (Helper.isEmpty(binding.edtDateTo)) {
+//            binding.edtDateTo.setError("Please enter date");
+//            empty++;
+//        }
         if (Helper.isEmpty(binding.edtTimeFrom)) {
             binding.edtTimeFrom.setError("Please enter time");
             empty++;
         }
-        if (Helper.isEmpty(binding.edtTimeTo)) {
-            binding.edtTimeTo.setError("Please enter time");
-            empty++;
-        }
+//        if (Helper.isEmpty(binding.edtTimeTo)) {
+//            binding.edtTimeTo.setError("Please enter time");
+//            empty++;
+//        }
         if (Helper.isEmpty(binding.edtAirline)) {
             binding.edtAirline.setError("Please enter flight number");
             empty++;
         }
-        if (Helper.isEmpty(binding.edtRouteFrom)) {
+        if (Helper.isEmpty(binding.edtRouteFrom) && selectedAirport == null) {
             binding.edtRouteFrom.setError("Please enter route from");
             empty++;
         }
-        if (Helper.isEmpty(binding.edtRouteTo)) {
-            binding.edtRouteTo.setError("Please enter route to");
-            empty++;
-        }
+//        if (Helper.isEmpty(binding.edtRouteTo)) {
+//            binding.edtRouteTo.setError("Please enter route to");
+//            empty++;
+//        }
         if (Helper.isEmpty(binding.edtNumberPassenger)) {
             binding.edtNumberPassenger.setError("Please enter passenger count");
             empty++;
@@ -153,6 +304,65 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         if (Helper.isEmptyOrNull(passengerList)) {
             setToast("Please add passenger");
             empty++;
+        } else {
+            String selectedCountry = selectedAirport.getCountry();
+            boolean isInternational = !selectedCountry.equalsIgnoreCase("indonesia");
+
+            for (Passenger passenger : passengerList) {
+                boolean isIndonesian = passenger.getNationality_name().equalsIgnoreCase("indonesia");
+
+                if (isIndonesian) {
+                    if (Helper.isNullOrEmpty(passenger.getNik())) {
+                        setToast("Please enter National Identity Number (NIN)");
+                        empty++;
+                        break;
+                    }
+
+                    if (isInternational) {
+                        if (Helper.isNullOrEmpty(passenger.getPassport_no())) {
+                            setToast("Please enter passport number");
+                            empty++;
+                            break;
+                        }
+                        if (Helper.isNullOrEmpty(passenger.getPassport_country_name())) {
+                            setToast("Please select country of passport");
+                            empty++;
+                            break;
+                        }
+                        if (Helper.isNullOrEmpty(passenger.getIssue_date())) {
+                            setToast("Please enter passport issue date");
+                            empty++;
+                            break;
+                        }
+                        if (Helper.isNullOrEmpty(passenger.getPassport_expdate())) {
+                            setToast("Please enter passport expiry date");
+                            empty++;
+                            break;
+                        }
+                    }
+                } else {
+                    if (Helper.isNullOrEmpty(passenger.getPassport_no())) {
+                        setToast("Please enter passport number");
+                        empty++;
+                        break;
+                    }
+                    if (Helper.isNullOrEmpty(passenger.getPassport_country_name())) {
+                        setToast("Please select country of passport");
+                        empty++;
+                        break;
+                    }
+                    if (Helper.isNullOrEmpty(passenger.getIssue_date())) {
+                        setToast("Please enter passport issue date");
+                        empty++;
+                        break;
+                    }
+                    if (Helper.isNullOrEmpty(passenger.getPassport_expdate())) {
+                        setToast("Please enter passport expiry date");
+                        empty++;
+                        break;
+                    }
+                }
+            }
         }
 
         if (airportSelected) {
@@ -162,6 +372,14 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             }
             if (Helper.isEmpty(binding.edtPickUpDate)) {
                 binding.edtPickUpDate.setError("Please enter pick up date");
+                empty++;
+            }
+            if (Helper.isEmpty(binding.edtPickUpLocation)) {
+                binding.edtPickUpLocation.setError("Please enter pick up location");
+                empty++;
+            }
+            if (Helper.isEmpty(binding.edtDropOffLocation)) {
+                binding.edtDropOffLocation.setError("Please enter drop off location");
                 empty++;
             }
             if (Helper.isEmpty(binding.edtContact)) {
@@ -225,38 +443,6 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         }, 500);
     }
 
-    private void setData() {
-        if (Helper.getItemParam(Constants.DATA_CREATE_TRIPS) != null) {
-            createTrips = (TripsResponse) Helper.getItemParam(Constants.DATA_CREATE_TRIPS);
-
-            if (Helper.getItemParam(Constants.DATA_PASSENGER) != null) {
-                dataPassenger = (Passenger) Helper.getItemParam(Constants.DATA_PASSENGER);
-                passengerList = new ArrayList<>();
-                if (Helper.isNotEmptyOrNull(createTrips.getPassengers())) {
-                    passengerList = createTrips.getPassengers();
-                } else {
-                    passengerList = new ArrayList<>();
-                }
-                passengerList.add(dataPassenger);
-                createTrips.setPassengers(passengerList);
-            }
-
-            Helper.removeItemParam(Constants.DATA_PASSENGER);
-        } else {
-            passengerList = new ArrayList<>();
-        }
-
-        if (Helper.getItemParam(Constants.DETAIL_PASSENGER) != null) {
-            Passenger edtPassenger = (Passenger) Helper.getItemParam(Constants.DETAIL_PASSENGER);
-            if (Helper.isNotEmptyOrNull(passengerList)) {
-                passengerList.remove(edtPassenger);
-                passengerList.add(edtPassenger.getPos_passenger(), edtPassenger);
-            }
-            Helper.removeItemParam(Constants.DETAIL_PASSENGER);
-        }
-        getPackages();
-    }
-
     public <T extends Dropdown> void selectSpinnerItemById(Spinner spinner, List<T> itemList, Dropdown selectedItem) {
         int positionToSelect = -1;
 
@@ -282,17 +468,29 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
         String dateTo = !Helper.isNullOrEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_8, createTrips.getDate_to()) : null;
         String timeTo = !Helper.isNullOrEmpty(createTrips.getDate_to()) ? Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_9, createTrips.getDate_to()) : null;
 
+        if (createTrips.getTrip_type().equalsIgnoreCase(Constants.ARRIVAL)) {
+            binding.edtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
+            binding.edtDateFrom.setText(dateTo);
+            binding.edtTimeFrom.setText(timeTo);
+        } else {
+            binding.edtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
+            binding.edtDateFrom.setText(dateFrom);
+            binding.edtTimeFrom.setText(timeFrom);
+        }
+
         binding.txtTripId.setText("Booking Trips No. #" + createTrips.getTrip_id());
         binding.txtType.setText(Helper.isEmpty(createTrips.getTrip_type(), ""));
 //        binding.edtFlightReservationCode.setText(Helper.isEmpty(createTrips.getBooking_id(), ""));
         binding.edtAirline.setText(Helper.isEmpty(createTrips.getFlight_no(), ""));
-        binding.edtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
-        binding.edtRouteTo.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
+//        binding.edtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
+//        binding.edtRouteTo.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
         binding.edtNumberPassenger.setText(Helper.isEmpty(createTrips.getPassenger_count() + "", ""));
-        binding.edtDateFrom.setText(dateFrom);
-        binding.edtTimeFrom.setText(timeFrom);
-        binding.edtDateTo.setText(dateTo);
-        binding.edtTimeTo.setText(timeTo);
+//        binding.edtDateFrom.setText(dateFrom);
+//        binding.edtTimeFrom.setText(timeFrom);
+//        binding.edtDateTo.setText(dateTo);
+//        binding.edtTimeTo.setText(timeTo);
+
+        selectedAirport = createTrips.getAirport_detail();
 
         mChoosenAgentList = new ArrayList<>();
         if (Helper.isNotEmptyOrNull(createTrips.getAgent_list())) {
@@ -317,6 +515,8 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
                 }
                 selectedVehicleType = new Dropdown(param.getVehicle_type_id(), param.getVehicle_type_name());
                 binding.edtContact.setText(Helper.isEmpty(param.getContact_no(), ""));
+                binding.edtPickUpLocation.setText(Helper.isEmpty(param.getPickup_location(), ""));
+                binding.edtDropOffLocation.setText(Helper.isEmpty(param.getDropoff_location(), ""));
                 binding.edtOtherAirport.setText(Helper.isEmpty(param.getRequest_note(), ""));
                 binding.edtPickUpTime.setText(timePickUp);
                 binding.edtPickUpDate.setText(datePickUp);
@@ -364,19 +564,33 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             createTrips = new TripsResponse();
         }
         String dateFrom = !Helper.isEmpty(binding.edtDateFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateFrom.getText().toString()) : null;
-        String dateTo = !Helper.isEmpty(binding.edtDateTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateTo.getText().toString()) : null;
+//        String dateTo = !Helper.isEmpty(binding.edtDateTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtDateTo.getText().toString()) : null;
         String timeFrom = !Helper.isEmpty(binding.edtTimeFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeFrom.getText().toString()) : null;
-        String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
+//        String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
+
+        if (createTrips.getTrip_type().equalsIgnoreCase(Constants.ARRIVAL)) {
+            createTrips.setDate_to(dateFrom + " " + timeFrom);
+            createTrips.setDate_from(null);
+            createTrips.setRoute_to(binding.edtRouteFrom.getText().toString());
+            createTrips.setRoute_from(null);
+        } else {
+            createTrips.setDate_from(dateFrom + " " + timeFrom);
+            createTrips.setDate_to(null);
+            createTrips.setRoute_from(binding.edtRouteFrom.getText().toString());
+            createTrips.setRoute_to(null);
+        }
+
         createTrips.setCustomer_id(user.getId());
-        createTrips.setTrip_type(binding.txtType.getText().toString());
+//        createTrips.setTrip_type(binding.txtType.getText().toString());
 //        createTrips.setBooking_id(binding.edtFlightReservationCode.getText().toString());
+        createTrips.setSelectedAirport(selectedAirport);
         createTrips.setFlight_no(binding.edtAirline.getText().toString());
         createTrips.setAirline(binding.edtAirline.getText().toString());
-        createTrips.setDate_from(dateFrom + " " + timeFrom);
-        createTrips.setDate_to(dateTo + " " + timeTo);
+//        createTrips.setDate_from(dateFrom + " " + timeFrom);
+//        createTrips.setDate_to(dateTo + " " + timeTo);
         createTrips.setAircraft("");
-        createTrips.setRoute_from(binding.edtRouteFrom.getText().toString());
-        createTrips.setRoute_to(binding.edtRouteTo.getText().toString());
+//        createTrips.setRoute_from(binding.edtRouteFrom.getText().toString());
+//        createTrips.setRoute_to(binding.edtRouteTo.getText().toString());
         createTrips.setPassenger_count(Integer.parseInt(binding.edtNumberPassenger.getText().toString()));
         createTrips.setPassengers(passengerList);
 
@@ -390,6 +604,8 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             String date = Helper.changeFormatDate(Constants.DATE_PATTERN_8, Constants.DATE_PATTERN_2, binding.edtPickUpDate.getText().toString());
             detail.setPickup_time(date + " " + time);
             detail.setContact_no(binding.edtContact.getText().toString());
+            detail.setPickup_location(binding.edtPickUpLocation.getText().toString());
+            detail.setDropoff_location(binding.edtDropOffLocation.getText().toString());
             detail.setRequest_note(binding.edtOtherAirport.getText().toString());
             detail.setSelectedVehicleType(selectedVehicleType);
             header.setTrip_airporttransfer(detail);
@@ -483,107 +699,90 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }
 
-    private void setViewOnClick() {
-        binding.llAddPassenger.setOnClickListener(v -> {
-            if (Helper.isEmpty(binding.edtNumberPassenger)) {
-                binding.edtNumberPassenger.setError("Please enter passenger count");
-            } else if (passengerList.size() >= Integer.parseInt(binding.edtNumberPassenger.getText().toString())) {
-                setToast("Passenger can't be more than passenger count");
-            } else {
-                Helper.removeItemParam(Constants.DATA_PASSENGER);
-                saveData();//llAddPassenger
-                intent = new Intent(getApplicationContext(), CreatePassengerActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
+    public void getPackages() {
+        openDialogProgress();
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        Call<WSMessage> httpRequest = apiInterface.getListPackage(createTrips.getTrip_type().toLowerCase());
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            String jsonInString = new Gson().toJson(result.getResult());
+                            masterPackage = new Gson().fromJson(jsonInString, Packages.class);
+                            setPackages();
+                        } else {
+                            setToast(result.getMessage());
+                        }
+                    } else {
+                        setToast(Constants.INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    setToast(Constants.INTERNAL_SERVER_ERROR);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                dialog.dismiss();
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
-        if (binding.edtDateFrom != null) {
-            binding.edtDateFrom.setOnClickListener(v -> {
-                activeDateField = binding.edtDateFrom; // Set active field
-                showDatePickerDialog();//edtDateFrom
-            });
-            binding.edtDateFrom.setFocusable(false);
-            binding.edtDateFrom.setClickable(true);
+    }
+
+    private void setPackages() {
+        if (Helper.isNotEmptyOrNull(masterPackage.getPackages())) {
+            for (Dropdown dropdown : masterPackage.getPackages()) {
+                if (dropdown.getId() == 1) {
+                    binding.llAirportHeader.setVisibility(View.VISIBLE);
+                    binding.llAirportDetail.setVisibility(View.GONE);
+                }
+                if (dropdown.getId() == 2) {
+                    binding.llLoungeHeader.setVisibility(View.VISIBLE);
+                    binding.llLoungeDetail.setVisibility(View.GONE);
+                }
+                if (dropdown.getId() == 3) {
+                    binding.llFlightHeader.setVisibility(View.VISIBLE);
+                    binding.llFlightDetail.setVisibility(View.GONE);
+                }
+                if (dropdown.getId() == 4) {
+                    binding.llFastLaneHeader.setVisibility(View.VISIBLE);
+                    binding.llFastLaneDetail.setVisibility(View.GONE);
+                }
+                if (dropdown.getId() == 5) {
+                    binding.llBaggageHeader.setVisibility(View.VISIBLE);
+                    binding.llBaggageDetail.setVisibility(View.GONE);
+                }
+            }
+
+            setDetailAirport();
+            setDetailLounge();
+            setDetailFlight();
+            setDetailFast();
+            setDetailBaggage();
+        } else {
+            binding.llAirportHeader.setVisibility(View.GONE);
+            binding.llAirportDetail.setVisibility(View.GONE);
+            binding.llLoungeHeader.setVisibility(View.GONE);
+            binding.llLoungeDetail.setVisibility(View.GONE);
+            binding.llFlightHeader.setVisibility(View.GONE);
+            binding.llFlightDetail.setVisibility(View.GONE);
+            binding.llFastLaneHeader.setVisibility(View.GONE);
+            binding.llFastLaneDetail.setVisibility(View.GONE);
+            binding.llBaggageHeader.setVisibility(View.GONE);
+            binding.llBaggageDetail.setVisibility(View.GONE);
         }
-
-        if (binding.edtDateTo != null) {
-            binding.edtDateTo.setOnClickListener(v -> {
-                activeDateField = binding.edtDateTo; // Set active field
-                showDatePickerDialog();//edtDateTo
-            });
-            binding.edtDateTo.setFocusable(false);
-            binding.edtDateTo.setClickable(true);
-        }
-
-        if (binding.edtTimeFrom != null) {
-            binding.edtTimeFrom.setOnClickListener(v -> {
-                activeTimeField = binding.edtTimeFrom; // Set active field
-                openDialogTimePicker();//edtTimeFrom
-            });
-            binding.edtTimeFrom.setFocusable(false);
-            binding.edtTimeFrom.setClickable(true);
-        }
-
-        if (binding.edtTimeTo != null) {
-            binding.edtTimeTo.setOnClickListener(v -> {
-                activeTimeField = binding.edtTimeTo; // Set active field
-                openDialogTimePicker();//edtTimeTo
-            });
-            binding.edtTimeTo.setFocusable(false);
-            binding.edtTimeTo.setClickable(true);
-        }
-
-        binding.imgQuestionFN.setOnClickListener(v -> showFlightInstructionBottomSheet(createTrips.getTrip_type().equals("Arrival")));
-        binding.imgQuestionFRC.setOnClickListener(v -> showFRCInstructionBottomSheet());
-
-        binding.btnChooseAgent.setOnClickListener(v -> {
-            openDialogChooseAgent();
-        });
-
-        binding.llAirportHeader.setOnClickListener(v -> {
-            selectAirport();//click
-        });
-
-        binding.llLoungeHeader.setOnClickListener(v -> {
-            selectLounge();
-        });
-
-        binding.llFlightHeader.setOnClickListener(v -> {
-            selectFlight();
-        });
-
-        binding.llFastLaneHeader.setOnClickListener(v -> {
-            selectFastLane();
-        });
-
-        binding.llBaggageHeader.setOnClickListener(v -> {
-            selectBaggage();
-        });
-
-        binding.cbAirport.setOnClickListener(v -> {
-            selectAirport();
-        });
-
-        binding.cbLounge.setOnClickListener(v -> {
-            selectLounge();
-        });
-
-        binding.cbFlight.setOnClickListener(v -> {
-            selectFlight();
-        });
-
-        binding.cbFastLane.setOnClickListener(v -> {
-            selectFastLane();
-        });
-
-        binding.cbBaggage.setOnClickListener(v -> {
-            selectBaggage();
-        });
+        setDataView();
+        setViewOnClick();
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -649,12 +848,13 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
     private void iniAdapter() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(ModifyBookingActivity.this));
         adapter = new PassengerTripsAdapter(ModifyBookingActivity.this, passengerList, false, (header, pos) -> {
-            header.setPos_passenger(pos);
-            Helper.setItemParam(Constants.DETAIL_PASSENGER, header);
-            saveData();//adapter click
-            intent = new Intent(getApplicationContext(), ModifyPassengerActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
+//            header.setPos_passenger(pos);
+//            Helper.setItemParam(Constants.DETAIL_PASSENGER, header);
+//            saveData();//adapter click
+//            intent = new Intent(getApplicationContext(), ModifyPassengerActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//            startActivity(intent);
+            bottomDialogDetailPassenger(header);
         });
         binding.recyclerView.setAdapter(adapter);
 
@@ -666,7 +866,8 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
 
     public void getAgent() {
         apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getListAgent(Helper.getDateNow(Constants.DATE_PATTERN_2), String.valueOf(offset), Constants.DEFAULT_LIMIT);
+        String dateTrip = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_2, createTrips.getTrip_date());
+        Call<WSMessage> httpRequest = apiInterface.getListAgent(dateTrip, String.valueOf(offset), Constants.DEFAULT_LIMIT);
         httpRequest.enqueue(new Callback<WSMessage>() {
             @Override
             public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
@@ -693,87 +894,6 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
                 call.cancel();
             }
         });
-    }
-
-    public void getPackages() {
-        openDialogProgress();
-        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
-        Call<WSMessage> httpRequest = apiInterface.getListPackage(createTrips.getTrip_type().toLowerCase());
-        httpRequest.enqueue(new Callback<WSMessage>() {
-            @Override
-            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
-                dialog.dismiss();
-                if (response.isSuccessful()) {
-                    WSMessage result = response.body();
-                    if (result != null) {
-                        if (result.getIdMessage() == 1) {
-                            String jsonInString = new Gson().toJson(result.getResult());
-                            masterPackage = new Gson().fromJson(jsonInString, Packages.class);
-                            setPackages();
-                        } else {
-                            setToast(result.getMessage());
-                        }
-                    } else {
-                        setToast(Constants.INTERNAL_SERVER_ERROR);
-                    }
-                } else {
-                    setToast(Constants.INTERNAL_SERVER_ERROR);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WSMessage> call, Throwable t) {
-                call.cancel();
-                dialog.dismiss();
-                setToast(t.getMessage());
-            }
-        });
-    }
-
-    private void setPackages() {
-        if (Helper.isNotEmptyOrNull(masterPackage.getPackages())) {
-            for (Dropdown dropdown : masterPackage.getPackages()) {
-                if (dropdown.getId() == 1) {
-                    binding.llAirportHeader.setVisibility(View.VISIBLE);
-                    binding.llAirportDetail.setVisibility(View.GONE);
-                }
-                if (dropdown.getId() == 2) {
-                    binding.llLoungeHeader.setVisibility(View.VISIBLE);
-                    binding.llLoungeDetail.setVisibility(View.GONE);
-                }
-                if (dropdown.getId() == 3) {
-                    binding.llFlightHeader.setVisibility(View.VISIBLE);
-                    binding.llFlightDetail.setVisibility(View.GONE);
-                }
-                if (dropdown.getId() == 4) {
-                    binding.llFastLaneHeader.setVisibility(View.VISIBLE);
-                    binding.llFastLaneDetail.setVisibility(View.GONE);
-                }
-                if (dropdown.getId() == 5) {
-                    binding.llBaggageHeader.setVisibility(View.VISIBLE);
-                    binding.llBaggageDetail.setVisibility(View.GONE);
-                }
-            }
-
-            setDetailAirport();
-            setDetailLounge();
-            setDetailFlight();
-            setDetailFast();
-            setDetailBaggage();
-        } else {
-            binding.llAirportHeader.setVisibility(View.GONE);
-            binding.llAirportDetail.setVisibility(View.GONE);
-            binding.llLoungeHeader.setVisibility(View.GONE);
-            binding.llLoungeDetail.setVisibility(View.GONE);
-            binding.llFlightHeader.setVisibility(View.GONE);
-            binding.llFlightDetail.setVisibility(View.GONE);
-            binding.llFastLaneHeader.setVisibility(View.GONE);
-            binding.llFastLaneDetail.setVisibility(View.GONE);
-            binding.llBaggageHeader.setVisibility(View.GONE);
-            binding.llBaggageDetail.setVisibility(View.GONE);
-        }
-        setDataView();
-        setViewOnClick();
     }
 
     private void setDetailAirport() {
@@ -1095,5 +1215,88 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
                 getAgent();//itemCount
             }
         }
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private void dialogBottomAirport() {
+        airportList = new ArrayList<>();
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetBinding = DialogChooseAirportBinding.inflate(getLayoutInflater());
+        linearLayout = new LinearLayoutManager(ModifyBookingActivity.this);
+        bottomSheetBinding.recyclerView.setLayoutManager(linearLayout);
+        if (Helper.isEmptyOrNull(airportList)) {
+            bottomSheetBinding.llEmpty.setVisibility(View.VISIBLE);
+            bottomSheetBinding.recyclerView.setVisibility(View.GONE);
+        } else {
+            bottomSheetBinding.llEmpty.setVisibility(View.GONE);
+            bottomSheetBinding.recyclerView.setVisibility(View.VISIBLE);
+        }
+
+        airportAdapter = new AirportAdapter(ModifyBookingActivity.this, airportList, (header, pos) -> {
+            selectedAirport = header;
+            binding.edtRouteFrom.setText(selectedAirport.getCity() + " (" + selectedAirport.getIata() + ")");
+            bottomSheetDialog.dismiss();
+        });
+        bottomSheetBinding.recyclerView.setAdapter(airportAdapter);
+
+        bottomSheetBinding.btnSearch.setOnClickListener(v -> {
+            if (!Helper.isEmpty(bottomSheetBinding.editText)) {
+                String search = bottomSheetBinding.editText.getText().toString().trim();
+                if (search.length() > 1) {
+                    getListAirport(bottomSheetBinding.editText.getText().toString().trim());
+                }
+            }
+        });
+
+        bottomSheetDialog.setContentView(bottomSheetBinding.getRoot());
+        bottomSheetDialog.show();
+    }
+
+    public void getListAirport(String search) {
+        apiInterface = RetrofitAPIClient.getClientWithToken().create(APIInterface.class);
+        TripRequest tripRequest = new TripRequest();
+        tripRequest.setLimit(Integer.parseInt(Constants.DEFAULT_LIMIT_DROPDOWN));
+        tripRequest.setOffset(Integer.parseInt(Constants.DEFAULT_OFFSET));
+        tripRequest.setSearch(search);
+        Call<WSMessage> httpRequest = apiInterface.getListAirport(tripRequest);
+        httpRequest.enqueue(new Callback<WSMessage>() {
+            @Override
+            public void onResponse(Call<WSMessage> call, Response<WSMessage> response) {
+                if (response.isSuccessful()) {
+                    WSMessage result = response.body();
+                    if (result != null) {
+                        if (result.getIdMessage() == 1) {
+                            String jsonInString = new Gson().toJson(result.getResult());
+                            Type listType = new TypeToken<ArrayList<Dropdown>>() {
+                            }.getType();
+                            List<Dropdown> tempList = new Gson().fromJson(jsonInString, listType);
+                            airportList = new ArrayList<>();
+                            airportList.addAll(tempList);
+                            airportAdapter.setFilteredList(airportList);
+                        }
+                    }
+                }
+                if (Helper.isEmptyOrNull(airportList)) {
+                    bottomSheetBinding.llEmpty.setVisibility(View.VISIBLE);
+                    bottomSheetBinding.recyclerView.setVisibility(View.GONE);
+                } else {
+                    bottomSheetBinding.llEmpty.setVisibility(View.GONE);
+                    bottomSheetBinding.recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WSMessage> call, Throwable t) {
+                call.cancel();
+                setToast(Constants.INTERNAL_SERVER_ERROR);
+                if (Helper.isEmptyOrNull(airportList)) {
+                    bottomSheetBinding.llEmpty.setVisibility(View.VISIBLE);
+                    bottomSheetBinding.recyclerView.setVisibility(View.GONE);
+                } else {
+                    bottomSheetBinding.llEmpty.setVisibility(View.GONE);
+                    bottomSheetBinding.recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 }

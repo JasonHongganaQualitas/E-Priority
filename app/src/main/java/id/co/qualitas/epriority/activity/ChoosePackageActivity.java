@@ -394,7 +394,7 @@ public class ChoosePackageActivity extends BaseActivity implements TimePickerFra
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }

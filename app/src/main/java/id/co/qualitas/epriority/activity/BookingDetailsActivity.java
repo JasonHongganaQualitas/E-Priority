@@ -133,7 +133,7 @@ public class BookingDetailsActivity extends BaseActivity {
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }
@@ -201,20 +201,25 @@ public class BookingDetailsActivity extends BaseActivity {
             }
         }
 
-        if (tripDetail.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
-            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_to(), ""));
+        if (tripDetail.getAirport_detail() != null) {
+            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getAirport_detail().getCity(), "") + " (" + Helper.isEmpty(tripDetail.getAirport_detail().getIata(), "") + ")");
+        }
+        if (tripDetail.getTrip_type().equalsIgnoreCase(Constants.ARRIVAL)) {
+//            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_to(), ""));
+            binding.txtDateFrom.setText(dateTo);
         } else {
-            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_from(), ""));
+//            binding.txtRouteFrom.setText(Helper.isEmpty(tripDetail.getRoute_from(), ""));
+            binding.txtDateFrom.setText(dateFrom);
         }
 
         binding.txtTripId.setText("Booking Trips No. #" + tripDetail.getTrip_id());
         binding.statusTxt.setText(!Helper.isNullOrEmpty(tripDetail.getStatus()) ? Helper.capitalizeFirstLetter(tripDetail.getStatus()) : "");
         binding.txtType.setText(Helper.isEmpty(tripDetail.getTrip_type(), ""));
         binding.txtTripDate.setText(date + " at " + time);
-        binding.txtDateFrom.setText(dateFrom);
+//        binding.txtDateFrom.setText(dateFrom);
 //        binding.txtDateTo.setText(dateTo);
 //        binding.txtRouteTo.setText(Helper.isEmpty(tripDetail.getRoute_to(), ""));
-        binding.txtBookingId.setText(Helper.isEmpty(tripDetail.getBooking_id(), ""));
+//        binding.txtBookingId.setText(Helper.isEmpty(tripDetail.getBooking_id(), ""));
         binding.txtFlightNumber.setText(Helper.isEmpty(tripDetail.getFlight_no(), ""));
         binding.passangerDetTitleTxt.setText("Passenger Details (" + tripDetail.getPassenger_count() + ")");
 

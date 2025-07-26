@@ -94,7 +94,7 @@ public class ReviewBookingActivity extends BaseActivity {
             tripDate = Helper.changeFormatDate(Constants.DATE_PATTERN_12, Constants.DATE_PATTERN_5, createTrips.getTrip_date());
         }
 
-        if (createTrips.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
+        if (createTrips.getTrip_type().equalsIgnoreCase(Constants.ARRIVAL)) {
             binding.txtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_to(), ""));
         } else {
             binding.txtRouteFrom.setText(Helper.isEmpty(createTrips.getRoute_from(), ""));
@@ -222,7 +222,7 @@ public class ReviewBookingActivity extends BaseActivity {
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }

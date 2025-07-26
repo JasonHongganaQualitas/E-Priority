@@ -36,6 +36,7 @@ public class TripsResponse {
     public Packages packages;
     public String city;
     public Dropdown selectedAirport;
+    public Dropdown airport_detail;
     private List<Agent> agent_list;
 
     //detail
@@ -52,6 +53,15 @@ public class TripsResponse {
         this.locationAndFlight = locationAndFlight;
         this.peopleCount = peopleCount;
         this.status = status;
+    }
+
+
+    public Dropdown getAirport_detail() {
+        return airport_detail;
+    }
+
+    public void setAirport_detail(Dropdown airport_detail) {
+        this.airport_detail = airport_detail;
     }
 
     public Dropdown getSelectedAirport() {

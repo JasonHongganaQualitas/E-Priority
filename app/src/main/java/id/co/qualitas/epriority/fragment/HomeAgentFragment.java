@@ -252,7 +252,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }
@@ -288,7 +288,7 @@ public class HomeAgentFragment extends BaseFragment implements IOnBackPressed {
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }

@@ -160,53 +160,26 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             binding.txtNationality.setError("Please select nationality");
             empty++;
         } else {
-            if (selectedNationality.getName().toLowerCase().equals("indonesia")) {
+            boolean isIndonesian = selectedNationality.getName().equalsIgnoreCase("indonesia");
+            boolean isInternational = !createTrips.getSelectedAirport().getCountry().equalsIgnoreCase("indonesia");
+
+            if (isIndonesian) {
                 if (Helper.isEmpty(binding.edtNIK)) {
-                    binding.edtNIK.setError("Please enter National Identity Number (NIK)");
+                    binding.edtNIK.setError("Please enter National Identity Number (NIN)");
                     empty++;
+                } else {
+                    binding.edtNIK.setError(null);
                 }
 
-                if (!createTrips.getSelectedAirport().getCountry().toLowerCase().equals("indonesia")) {
-                    if (Helper.isEmpty(binding.edtPassportNumber)) {
-                        binding.edtPassportNumber.setError("Please enter passport number");
-                        empty++;
-                    }
-                    if (Helper.isEmpty(binding.txtCountryPassport)) {
-                        binding.txtCountryPassport.setError("Please select country of passport");
-                        empty++;
-                    }
-                    if (Helper.isEmpty(binding.edtPassportIssueDate)) {
-                        binding.edtPassportIssueDate.setError("Please enter passport issue date");
-                        empty++;
-                    }
-                    if (Helper.isEmpty(binding.edtPassportExpiryDate)) {
-                        binding.edtPassportExpiryDate.setError("Please enter passport expiry date");
-                        empty++;
-                    }
+                if (isInternational) {
+                    empty += validatePassportFields();
                 } else {
-                    binding.edtPassportNumber.setError(null);
-                    binding.txtCountryPassport.setError(null);
-                    binding.edtPassportIssueDate.setError(null);
-                    binding.edtPassportExpiryDate.setError(null);
+                    clearPassportErrors();
                 }
+
             } else {
                 binding.edtNIK.setError(null);
-                if (Helper.isEmpty(binding.edtPassportNumber)) {
-                    binding.edtPassportNumber.setError("Please enter passport number");
-                    empty++;
-                }
-                if (Helper.isEmpty(binding.txtCountryPassport)) {
-                    binding.txtCountryPassport.setError("Please select country of passport");
-                    empty++;
-                }
-                if (Helper.isEmpty(binding.edtPassportIssueDate)) {
-                    binding.edtPassportIssueDate.setError("Please enter passport issue date");
-                    empty++;
-                }
-                if (Helper.isEmpty(binding.edtPassportExpiryDate)) {
-                    binding.edtPassportExpiryDate.setError("Please enter passport expiry date");
-                    empty++;
-                }
+                empty += validatePassportFields();
             }
         }
 
@@ -244,6 +217,48 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
 //        }
         return empty == 0;
     }
+
+    private int validatePassportFields() {
+        int count = 0;
+
+        if (Helper.isEmpty(binding.edtPassportNumber)) {
+            binding.edtPassportNumber.setError("Please enter passport number");
+            count++;
+        } else {
+            binding.edtPassportNumber.setError(null);
+        }
+
+        if (Helper.isEmpty(binding.txtCountryPassport)) {
+            binding.txtCountryPassport.setError("Please select country of passport");
+            count++;
+        } else {
+            binding.txtCountryPassport.setError(null);
+        }
+
+        if (Helper.isEmpty(binding.edtPassportIssueDate)) {
+            binding.edtPassportIssueDate.setError("Please enter passport issue date");
+            count++;
+        } else {
+            binding.edtPassportIssueDate.setError(null);
+        }
+
+        if (Helper.isEmpty(binding.edtPassportExpiryDate)) {
+            binding.edtPassportExpiryDate.setError("Please enter passport expiry date");
+            count++;
+        } else {
+            binding.edtPassportExpiryDate.setError(null);
+        }
+
+        return count;
+    }
+
+    private void clearPassportErrors() {
+        binding.edtPassportNumber.setError(null);
+        binding.txtCountryPassport.setError(null);
+        binding.edtPassportIssueDate.setError(null);
+        binding.edtPassportExpiryDate.setError(null);
+    }
+
 
     private void saveData() {
         Passenger passenger = new Passenger();
@@ -385,7 +400,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }
@@ -422,7 +437,7 @@ public class CreatePassengerActivity extends BaseActivity implements DatePickerF
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
                 initAdapterFlightClass();
             }
         });

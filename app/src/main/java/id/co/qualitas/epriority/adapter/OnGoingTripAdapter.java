@@ -64,7 +64,7 @@ public class OnGoingTripAdapter extends RecyclerView.Adapter<OnGoingTripAdapter.
         }
 
         holder.binding.bookingIdTxt.setText("Booking Trips No.: #" + tripsResponse.getId());
-        if (tripsResponse.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
+        if (tripsResponse.getTrip_type().equalsIgnoreCase(Constants.ARRIVAL)) {
             holder.binding.destinationTxt.setText(Helper.isEmpty(tripsResponse.getRoute_to(), ""));
         } else {
             holder.binding.destinationTxt.setText(Helper.isEmpty(tripsResponse.getRoute_from(), ""));
@@ -122,7 +122,9 @@ public class OnGoingTripAdapter extends RecyclerView.Adapter<OnGoingTripAdapter.
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mFilteredList = (ArrayList<TripsResponse>) filterResults.values;
+                @SuppressWarnings("unchecked")
+                ArrayList<TripsResponse> newList = (ArrayList<TripsResponse>) filterResults.values;
+                mFilteredList = newList;
                 notifyDataSetChanged();
             }
         };

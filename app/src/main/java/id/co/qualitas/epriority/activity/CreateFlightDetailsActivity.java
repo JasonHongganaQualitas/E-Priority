@@ -229,7 +229,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
                 if (Helper.isEmptyOrNull(airportList)) {
                     bottomSheetBinding.llEmpty.setVisibility(View.VISIBLE);
                     bottomSheetBinding.recyclerView.setVisibility(View.GONE);
@@ -300,7 +300,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
             binding.edtAirline.setError("Please enter flight number");
             empty++;
         }
-        if (Helper.isEmpty(binding.edtRouteFrom)) {
+        if (Helper.isEmpty(binding.edtRouteFrom) && selectedAirport == null) {
             binding.edtRouteFrom.setError("Please enter route city");
             empty++;
         }
@@ -315,6 +315,65 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
         if (Helper.isEmptyOrNull(passengerList)) {
             setToast("Please add passenger");
             empty++;
+        } else {
+            String selectedCountry = selectedAirport.getCountry();
+            boolean isInternational = !selectedCountry.equalsIgnoreCase("indonesia");
+
+            for (Passenger passenger : passengerList) {
+                boolean isIndonesian = passenger.getNationality_name().equalsIgnoreCase("indonesia");
+
+                if (isIndonesian) {
+                    if (Helper.isNullOrEmpty(passenger.getNik())) {
+                        setToast("Please enter National Identity Number (NIN)");
+                        empty++;
+                        break;
+                    }
+
+                    if (isInternational) {
+                        if (Helper.isNullOrEmpty(passenger.getPassport_no())) {
+                            setToast("Please enter passport number");
+                            empty++;
+                            break;
+                        }
+                        if (Helper.isNullOrEmpty(passenger.getPassport_country_name())) {
+                            setToast("Please select country of passport");
+                            empty++;
+                            break;
+                        }
+                        if (Helper.isNullOrEmpty(passenger.getIssue_date())) {
+                            setToast("Please enter passport issue date");
+                            empty++;
+                            break;
+                        }
+                        if (Helper.isNullOrEmpty(passenger.getPassport_expdate())) {
+                            setToast("Please enter passport expiry date");
+                            empty++;
+                            break;
+                        }
+                    }
+                } else {
+                    if (Helper.isNullOrEmpty(passenger.getPassport_no())) {
+                        setToast("Please enter passport number");
+                        empty++;
+                        break;
+                    }
+                    if (Helper.isNullOrEmpty(passenger.getPassport_country_name())) {
+                        setToast("Please select country of passport");
+                        empty++;
+                        break;
+                    }
+                    if (Helper.isNullOrEmpty(passenger.getIssue_date())) {
+                        setToast("Please enter passport issue date");
+                        empty++;
+                        break;
+                    }
+                    if (Helper.isNullOrEmpty(passenger.getPassport_expdate())) {
+                        setToast("Please enter passport expiry date");
+                        empty++;
+                        break;
+                    }
+                }
+            }
         }
 
         return empty == 0;
@@ -335,7 +394,7 @@ public class CreateFlightDetailsActivity extends BaseActivity implements TimePic
         String timeFrom = !Helper.isEmpty(binding.edtTimeFrom) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeFrom.getText().toString()) : null;
 //        String timeTo = !Helper.isEmpty(binding.edtTimeTo) ? Helper.changeFormatDate(Constants.DATE_PATTERN_9, Constants.DATE_PATTERN_13, binding.edtTimeTo.getText().toString()) : null;
 
-        if (createTrips.getTrip_type().toLowerCase().equals(Constants.ARRIVAL)) {
+        if (createTrips.getTrip_type().equalsIgnoreCase(Constants.ARRIVAL)) {
             createTrips.setDate_to(dateFrom + " " + timeFrom);
             createTrips.setDate_from(null);
             createTrips.setRoute_to(binding.edtRouteFrom.getText().toString());

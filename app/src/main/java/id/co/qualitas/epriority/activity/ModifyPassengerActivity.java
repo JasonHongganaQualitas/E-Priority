@@ -331,7 +331,7 @@ public class ModifyPassengerActivity extends BaseActivity implements DatePickerF
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });
     }
@@ -368,7 +368,7 @@ public class ModifyPassengerActivity extends BaseActivity implements DatePickerF
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
-                setToast(t.getMessage());
+                setToast(Constants.INTERNAL_SERVER_ERROR);
                 initAdapterFlightClass();
             }
         });
