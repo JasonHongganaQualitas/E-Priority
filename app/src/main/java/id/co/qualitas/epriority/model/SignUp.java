@@ -8,7 +8,8 @@ public class SignUp implements Serializable {
     private String code;
     private String username;
     private String password;
-    private String phoneNumber;
+    private String phone_number;
+
     private String newPassword;
     private String confirmPassword;
 
@@ -69,10 +70,10 @@ public class SignUp implements Serializable {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return phone_number;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phone_number = phoneNumber;
     }
 }

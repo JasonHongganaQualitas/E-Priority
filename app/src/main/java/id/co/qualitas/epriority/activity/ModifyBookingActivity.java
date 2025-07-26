@@ -688,10 +688,10 @@ public class ModifyBookingActivity extends BaseActivity implements TimePickerFra
                             setToast(result.getMessage());
                         }
                     } else {
-                        setToast(Constants.INTERNAL_SERVER_ERROR);
+                        Helper.showErrorToast(getApplicationContext(), response);
                     }
                 } else {
-                    setToast(Constants.INTERNAL_SERVER_ERROR);
+                    Helper.showErrorToast(getApplicationContext(), response);
                 }
             }
 

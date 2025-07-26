@@ -47,6 +47,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -55,6 +57,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import id.co.qualitas.epriority.R;
 import id.co.qualitas.epriority.constants.Constants;
+import id.co.qualitas.epriority.model.WSMessage;
+import retrofit2.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,6 +77,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
@@ -200,6 +205,25 @@ public class Helper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void showErrorToast(Context context, Response<?> response) {
+        try {
+            if (response.errorBody() != null) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<WSMessage<Object>>() {}.getType();
+                WSMessage<?> wsMessage = gson.fromJson(response.errorBody().charStream(), type);
+                String message = (wsMessage != null && wsMessage.getMessage() != null)
+                        ? wsMessage.getMessage()
+                        : "Unexpected error occurred";
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Unknown error occurred", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Error reading server response", Toast.LENGTH_LONG).show();
+        }
     }
 
     public static Object stringToObject(String str) {

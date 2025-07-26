@@ -206,22 +206,15 @@ public class ReviewBookingActivity extends BaseActivity {
                         setToast(Constants.INTERNAL_SERVER_ERROR);
                     }
                 } else {
-                    try {
-                        String errorBody = response.errorBody().string();
-                        JSONObject json = new JSONObject(errorBody);
-                        String serverMessage = json.optString("message", "Server error");
-                        setToast(serverMessage);
-                    } catch (Exception e) {
-                        setToast("Something went wrong. Please try again.");
-                    }
+                    Helper.showErrorToast(getApplicationContext(), response);
                 }
-
             }
 
             @Override
             public void onFailure(Call<WSMessage> call, Throwable t) {
                 call.cancel();
                 dialog.dismiss();
+
                 setToast(Constants.INTERNAL_SERVER_ERROR);
             }
         });

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class WSMessage implements Serializable {
+public class WSMessage<T> implements Serializable {
     @SerializedName("id_message")
     int idMessage;
     @SerializedName("message")

@@ -71,12 +71,12 @@ public class SignUpActivity extends BaseActivity {
             if (!showPassword) {
                 //show password
                 binding.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
                 showPassword = true;
             } else {
                 // hide password
                 binding.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
+                binding.imgShowPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
                 showPassword = false;
             }
             binding.etPassword.setSelection(Helper.isEmpty(binding.etPassword) ? 0 : binding.etPassword.getText().length());
@@ -86,12 +86,12 @@ public class SignUpActivity extends BaseActivity {
             if (!showConfirmPassword) {
                 //show password
                 binding.etConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
+                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
                 showConfirmPassword = true;
             } else {
                 // hide password
                 binding.etConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_show));
+                binding.imgShowConfirmPassword.setImageDrawable(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.ic_pass_hide));
                 showConfirmPassword = false;
             }
             binding.etConfirmPassword.setSelection(Helper.isEmpty(binding.etConfirmPassword) ? 0 : binding.etConfirmPassword.getText().length());
